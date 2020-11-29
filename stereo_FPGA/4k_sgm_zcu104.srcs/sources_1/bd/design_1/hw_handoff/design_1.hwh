@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Sat Nov 28 13:21:24 2020" VIVADOVERSION="2020.1">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Sun Nov 29 07:54:36 2020" VIVADOVERSION="2020.1">
 
   <SYSTEMINFO ARCH="zynquplus" BOARD="xilinx.com:zcu104:part0:1.1" DEVICE="xczu7ev" NAME="design_1" PACKAGE="ffvc1156" SPEEDGRADE="-2"/>
 
@@ -31,22 +31,22 @@
             <CONNECTION INSTANCE="RGB_to_Grayscale_v1_0_0" PORT="m_axis_gray_tready"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="31" NAME="s_axis_lr_tdata" RIGHT="0" SIGIS="undef" SIGNAME="Inter_col_v1_0_0_s_axis_lr_tdata">
+        <PORT DIR="I" LEFT="31" NAME="s_axis_lr_tdata" RIGHT="0" SIGIS="undef" SIGNAME="RGB_to_Grayscale_v1_0_0_m_axis_gray_tdata">
           <CONNECTIONS>
             <CONNECTION INSTANCE="RGB_to_Grayscale_v1_0_0" PORT="m_axis_gray_tdata"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="s_axis_lr_tvalid" SIGIS="undef" SIGNAME="Inter_col_v1_0_0_s_axis_lr_tvalid">
+        <PORT DIR="I" NAME="s_axis_lr_tvalid" SIGIS="undef" SIGNAME="RGB_to_Grayscale_v1_0_0_m_axis_gray_tvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="RGB_to_Grayscale_v1_0_0" PORT="m_axis_gray_tvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="s_axis_lr_tlast" SIGIS="undef" SIGNAME="Inter_col_v1_0_0_s_axis_lr_tlast">
+        <PORT DIR="I" NAME="s_axis_lr_tlast" SIGIS="undef" SIGNAME="RGB_to_Grayscale_v1_0_0_m_axis_gray_tlast">
           <CONNECTIONS>
             <CONNECTION INSTANCE="RGB_to_Grayscale_v1_0_0" PORT="m_axis_gray_tlast"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="s_axis_lr_tuser" SIGIS="undef" SIGNAME="Inter_col_v1_0_0_s_axis_lr_tuser">
+        <PORT DIR="I" NAME="s_axis_lr_tuser" SIGIS="undef" SIGNAME="RGB_to_Grayscale_v1_0_0_m_axis_gray_tuser">
           <CONNECTIONS>
             <CONNECTION INSTANCE="RGB_to_Grayscale_v1_0_0" PORT="m_axis_gray_tuser"/>
           </CONNECTIONS>
@@ -147,7 +147,7 @@
             <PORTMAP LOGICAL="TREADY" PHYSICAL="m_axis_r_tready"/>
           </PORTMAPS>
         </BUSINTERFACE>
-        <BUSINTERFACE BUSNAME="RGB_to_Grayscale_v1_0_0_m_axis_gray" NAME="s_axis_lr" TYPE="TARGET" VLNV="xilinx.com:interface:axis:1.0">
+        <BUSINTERFACE BUSNAME="__NOC__" NAME="s_axis_lr" TYPE="TARGET" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="TDATA_NUM_BYTES" VALUE="4"/>
           <PARAMETER NAME="TDEST_WIDTH" VALUE="0"/>
           <PARAMETER NAME="TID_WIDTH" VALUE="0"/>
@@ -215,23 +215,27 @@
             <CONNECTION INSTANCE="hdmi_in_uhd_4_0" PORT="VIDEO_IN_tvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="m_axis_gray_tvalid" SIGIS="undef" SIGNAME="Inter_col_v1_0_0_s_axis_lr_tvalid">
+        <PORT DIR="O" NAME="m_axis_gray_tvalid" SIGIS="undef" SIGNAME="RGB_to_Grayscale_v1_0_0_m_axis_gray_tvalid">
           <CONNECTIONS>
+            <CONNECTION INSTANCE="hdmi_out_uhd_4_2" PORT="VIDEO_OUT_tvalid"/>
             <CONNECTION INSTANCE="Inter_col_v1_0_0" PORT="s_axis_lr_tvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="31" NAME="m_axis_gray_tdata" RIGHT="0" SIGIS="undef" SIGNAME="Inter_col_v1_0_0_s_axis_lr_tdata">
+        <PORT DIR="O" LEFT="31" NAME="m_axis_gray_tdata" RIGHT="0" SIGIS="undef" SIGNAME="RGB_to_Grayscale_v1_0_0_m_axis_gray_tdata">
           <CONNECTIONS>
+            <CONNECTION INSTANCE="hdmi_out_uhd_4_2" PORT="VIDEO_OUT_tdata"/>
             <CONNECTION INSTANCE="Inter_col_v1_0_0" PORT="s_axis_lr_tdata"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="m_axis_gray_tuser" SIGIS="undef" SIGNAME="Inter_col_v1_0_0_s_axis_lr_tuser">
+        <PORT DIR="O" NAME="m_axis_gray_tuser" SIGIS="undef" SIGNAME="RGB_to_Grayscale_v1_0_0_m_axis_gray_tuser">
           <CONNECTIONS>
+            <CONNECTION INSTANCE="hdmi_out_uhd_4_2" PORT="VIDEO_OUT_tuser"/>
             <CONNECTION INSTANCE="Inter_col_v1_0_0" PORT="s_axis_lr_tuser"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="m_axis_gray_tlast" SIGIS="undef" SIGNAME="Inter_col_v1_0_0_s_axis_lr_tlast">
+        <PORT DIR="O" NAME="m_axis_gray_tlast" SIGIS="undef" SIGNAME="RGB_to_Grayscale_v1_0_0_m_axis_gray_tlast">
           <CONNECTIONS>
+            <CONNECTION INSTANCE="hdmi_out_uhd_4_2" PORT="VIDEO_OUT_tlast"/>
             <CONNECTION INSTANCE="Inter_col_v1_0_0" PORT="s_axis_lr_tlast"/>
           </CONNECTIONS>
         </PORT>
@@ -242,7 +246,7 @@
         </PORT>
       </PORTS>
       <BUSINTERFACES>
-        <BUSINTERFACE BUSNAME="RGB_to_Grayscale_v1_0_0_m_axis_gray" NAME="m_axis_gray" TYPE="INITIATOR" VLNV="xilinx.com:interface:axis:1.0">
+        <BUSINTERFACE BUSNAME="__NOC__" NAME="m_axis_gray" TYPE="INITIATOR" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="TDATA_NUM_BYTES" VALUE="4"/>
           <PARAMETER NAME="TDEST_WIDTH" VALUE="0"/>
           <PARAMETER NAME="TID_WIDTH" VALUE="0"/>
@@ -302,6 +306,7 @@
             <CONNECTION INSTANCE="RGB_to_Grayscale_v1_0_0" PORT="aclk"/>
             <CONNECTION INSTANCE="hdmi_out_uhd_4_0" PORT="s_axis_video_aclk"/>
             <CONNECTION INSTANCE="hdmi_out_uhd_4_1" PORT="s_axis_video_aclk"/>
+            <CONNECTION INSTANCE="hdmi_out_uhd_4_2" PORT="s_axis_video_aclk"/>
             <CONNECTION INSTANCE="Inter_col_v1_0_0" PORT="aclk"/>
           </CONNECTIONS>
         </PORT>
@@ -467,6 +472,66 @@
       </PORTS>
       <BUSINTERFACES>
         <BUSINTERFACE BUSNAME="Inter_col_v1_0_0_m_axis_r" NAME="VIDEO_OUT" TYPE="TARGET" VLNV="xilinx.com:interface:axis:1.0">
+          <PARAMETER NAME="TDATA_NUM_BYTES" VALUE="4"/>
+          <PARAMETER NAME="TDEST_WIDTH" VALUE="0"/>
+          <PARAMETER NAME="TID_WIDTH" VALUE="0"/>
+          <PARAMETER NAME="TUSER_WIDTH" VALUE="1"/>
+          <PARAMETER NAME="HAS_TREADY" VALUE="1"/>
+          <PARAMETER NAME="HAS_TSTRB" VALUE="0"/>
+          <PARAMETER NAME="HAS_TKEEP" VALUE="0"/>
+          <PARAMETER NAME="HAS_TLAST" VALUE="1"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="100000000"/>
+          <PARAMETER NAME="PHASE" VALUE="0.000"/>
+          <PARAMETER NAME="CLK_DOMAIN"/>
+          <PARAMETER NAME="LAYERED_METADATA" VALUE="undef"/>
+          <PARAMETER NAME="INSERT_VIP" VALUE="0"/>
+          <PORTMAPS>
+            <PORTMAP LOGICAL="TDATA" PHYSICAL="VIDEO_OUT_tdata"/>
+            <PORTMAP LOGICAL="TLAST" PHYSICAL="VIDEO_OUT_tlast"/>
+            <PORTMAP LOGICAL="TUSER" PHYSICAL="VIDEO_OUT_tuser"/>
+            <PORTMAP LOGICAL="TVALID" PHYSICAL="VIDEO_OUT_tvalid"/>
+            <PORTMAP LOGICAL="TREADY" PHYSICAL="VIDEO_OUT_tready"/>
+          </PORTMAPS>
+        </BUSINTERFACE>
+      </BUSINTERFACES>
+    </MODULE>
+    <MODULE COREREVISION="1" FULLNAME="/hdmi_out_uhd_4_2" HWVERSION="1.0" INSTANCE="hdmi_out_uhd_4_2" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="hdmi_out_uhd_4" VLNV="xilinx.com:module_ref:hdmi_out_uhd_4:1.0">
+      <DOCUMENTS/>
+      <PARAMETERS>
+        <PARAMETER NAME="name" VALUE="gray"/>
+        <PARAMETER NAME="Component_Name" VALUE="design_1_hdmi_out_uhd_4_0_2"/>
+        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
+      </PARAMETERS>
+      <PORTS>
+        <PORT CLKFREQUENCY="100000000" DIR="I" NAME="s_axis_video_aclk" SIGIS="clk" SIGNAME="hdmi_in_uhd_4_0_s_axis_video_aclk">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="hdmi_in_uhd_4_0" PORT="s_axis_video_aclk"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="31" NAME="VIDEO_OUT_tdata" RIGHT="0" SIGIS="undef" SIGNAME="RGB_to_Grayscale_v1_0_0_m_axis_gray_tdata">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="RGB_to_Grayscale_v1_0_0" PORT="m_axis_gray_tdata"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="VIDEO_OUT_tlast" SIGIS="undef" SIGNAME="RGB_to_Grayscale_v1_0_0_m_axis_gray_tlast">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="RGB_to_Grayscale_v1_0_0" PORT="m_axis_gray_tlast"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="VIDEO_OUT_tready" SIGIS="undef"/>
+        <PORT DIR="I" NAME="VIDEO_OUT_tuser" SIGIS="undef" SIGNAME="RGB_to_Grayscale_v1_0_0_m_axis_gray_tuser">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="RGB_to_Grayscale_v1_0_0" PORT="m_axis_gray_tuser"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="VIDEO_OUT_tvalid" SIGIS="undef" SIGNAME="RGB_to_Grayscale_v1_0_0_m_axis_gray_tvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="RGB_to_Grayscale_v1_0_0" PORT="m_axis_gray_tvalid"/>
+          </CONNECTIONS>
+        </PORT>
+      </PORTS>
+      <BUSINTERFACES>
+        <BUSINTERFACE BUSNAME="__NOC__" NAME="VIDEO_OUT" TYPE="TARGET" VLNV="xilinx.com:interface:axis:1.0">
           <PARAMETER NAME="TDATA_NUM_BYTES" VALUE="4"/>
           <PARAMETER NAME="TDEST_WIDTH" VALUE="0"/>
           <PARAMETER NAME="TID_WIDTH" VALUE="0"/>

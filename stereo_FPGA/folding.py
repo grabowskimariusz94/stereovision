@@ -18,7 +18,7 @@ def fold(img_l:np.ndarray, img_r:np.ndarray):
     img_lr = np.ndarray([h, w-1, c ])
 
     for x in range(w-1):
-        if x%2==1:
+        if x%2==0:
             img_lr[:, x, :] = img_l[:, x, :]
         else:
             img_lr[:, x, :] = img_r[:, x, :]

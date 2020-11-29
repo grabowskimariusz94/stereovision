@@ -27,30 +27,6 @@
 						"TVALID": { "actual": "m_axis_r_tvalid"}
 					}
 				},
-				"/Inter_col_v1_0_0/s_axis_lr": {
-					"interface": "xilinx.com:interface:axis:1.0",
-					"ports": {
-						"ACLK": { "actual": "aclk"},
-						"ARESETN": { "actual": "aresetn"},
-						"TDATA": { "actual": "s_axis_lr_tdata"},
-						"TLAST": { "actual": "s_axis_lr_tlast"},
-						"TREADY": { "actual": "s_axis_lr_tready"},
-						"TUSER": { "actual": "s_axis_lr_tuser"},
-						"TVALID": { "actual": "s_axis_lr_tvalid"}
-					}
-				},
-				"/RGB_to_Grayscale_v1_0_0/m_axis_gray": {
-					"interface": "xilinx.com:interface:axis:1.0",
-					"ports": {
-						"ACLK": { "actual": "aclk"},
-						"ARESETN": { "actual": "aresetn"},
-						"TDATA": { "actual": "m_axis_gray_tdata"},
-						"TLAST": { "actual": "m_axis_gray_tlast"},
-						"TREADY": { "actual": "m_axis_gray_tready"},
-						"TUSER": { "actual": "m_axis_gray_tuser"},
-						"TVALID": { "actual": "m_axis_gray_tvalid"}
-					}
-				},
 				"/RGB_to_Grayscale_v1_0_0/s_axis_rgb": {
 					"interface": "xilinx.com:interface:axis:1.0",
 					"ports": {

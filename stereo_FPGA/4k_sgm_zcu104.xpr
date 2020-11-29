@@ -37,20 +37,20 @@
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
     <Option Name="DSABoardId" Val="zcu104"/>
-    <Option Name="WTXSimLaunchSim" Val="64"/>
+    <Option Name="WTXSimLaunchSim" Val="78"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
     <Option Name="WTVcsLaunchSim" Val="0"/>
     <Option Name="WTRivieraLaunchSim" Val="0"/>
     <Option Name="WTActivehdlLaunchSim" Val="0"/>
-    <Option Name="WTXSimExportSim" Val="44"/>
-    <Option Name="WTModelSimExportSim" Val="44"/>
-    <Option Name="WTQuestaExportSim" Val="44"/>
-    <Option Name="WTIesExportSim" Val="44"/>
-    <Option Name="WTVcsExportSim" Val="44"/>
-    <Option Name="WTRivieraExportSim" Val="44"/>
-    <Option Name="WTActivehdlExportSim" Val="44"/>
+    <Option Name="WTXSimExportSim" Val="54"/>
+    <Option Name="WTModelSimExportSim" Val="54"/>
+    <Option Name="WTQuestaExportSim" Val="54"/>
+    <Option Name="WTIesExportSim" Val="54"/>
+    <Option Name="WTVcsExportSim" Val="54"/>
+    <Option Name="WTRivieraExportSim" Val="54"/>
+    <Option Name="WTActivehdlExportSim" Val="54"/>
     <Option Name="GenerateIPUpgradeLog" Val="TRUE"/>
     <Option Name="XSimRadix" Val="hex"/>
     <Option Name="XSimTimeUnit" Val="ns"/>

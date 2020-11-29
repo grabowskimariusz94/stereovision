@@ -14,6 +14,7 @@
       "hdmi_out_uhd_4_0": "",
       "hdmi_out_uhd_4_1": "",
       "hdmi_in_uhd_4_0": "",
+      "hdmi_out_uhd_4_2": "",
       "Inter_col_v1_0_0": ""
     },
     "components": {
@@ -465,6 +466,96 @@
           }
         }
       },
+      "hdmi_out_uhd_4_2": {
+        "vlnv": "xilinx.com:module_ref:hdmi_out_uhd_4:1.0",
+        "xci_name": "design_1_hdmi_out_uhd_4_0_2",
+        "parameters": {
+          "name": {
+            "value": "gray"
+          }
+        },
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "hdmi_out_uhd_4",
+          "boundary_crc": "0x0"
+        },
+        "interface_ports": {
+          "VIDEO_OUT": {
+            "mode": "Slave",
+            "vlnv": "xilinx.com:interface:axis_rtl:1.0",
+            "parameters": {
+              "TDATA_NUM_BYTES": {
+                "value": "4",
+                "value_src": "constant"
+              },
+              "TDEST_WIDTH": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "TID_WIDTH": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "TUSER_WIDTH": {
+                "value": "1",
+                "value_src": "constant"
+              },
+              "HAS_TREADY": {
+                "value": "1",
+                "value_src": "constant"
+              },
+              "HAS_TSTRB": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "HAS_TKEEP": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "HAS_TLAST": {
+                "value": "1",
+                "value_src": "constant"
+              }
+            },
+            "port_maps": {
+              "TDATA": {
+                "physical_name": "VIDEO_OUT_tdata",
+                "direction": "I",
+                "left": "31",
+                "right": "0"
+              },
+              "TLAST": {
+                "physical_name": "VIDEO_OUT_tlast",
+                "direction": "I"
+              },
+              "TUSER": {
+                "physical_name": "VIDEO_OUT_tuser",
+                "direction": "I"
+              },
+              "TVALID": {
+                "physical_name": "VIDEO_OUT_tvalid",
+                "direction": "I"
+              },
+              "TREADY": {
+                "physical_name": "VIDEO_OUT_tready",
+                "direction": "O"
+              }
+            }
+          }
+        },
+        "ports": {
+          "s_axis_video_aclk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "CLK_DOMAIN": {
+                "value": "design_1_hdmi_in_uhd_4_0_0_s_axis_video_aclk",
+                "value_src": "default_prop"
+              }
+            }
+          }
+        }
+      },
       "Inter_col_v1_0_0": {
         "vlnv": "xilinx.com:module_ref:Inter_col_v1_0:1.0",
         "xci_name": "design_1_Inter_col_v1_0_0_0",
@@ -706,6 +797,12 @@
       }
     },
     "interface_nets": {
+      "Inter_col_v1_0_0_m_axis_r": {
+        "interface_ports": [
+          "Inter_col_v1_0_0/m_axis_r",
+          "hdmi_out_uhd_4_1/VIDEO_OUT"
+        ]
+      },
       "hdmi_in_uhd_4_0_VIDEO_IN": {
         "interface_ports": [
           "hdmi_in_uhd_4_0/VIDEO_IN",
@@ -717,18 +814,6 @@
           "Inter_col_v1_0_0/m_axis_l",
           "hdmi_out_uhd_4_0/VIDEO_OUT"
         ]
-      },
-      "RGB_to_Grayscale_v1_0_0_m_axis_gray": {
-        "interface_ports": [
-          "RGB_to_Grayscale_v1_0_0/m_axis_gray",
-          "Inter_col_v1_0_0/s_axis_lr"
-        ]
-      },
-      "Inter_col_v1_0_0_m_axis_r": {
-        "interface_ports": [
-          "Inter_col_v1_0_0/m_axis_r",
-          "hdmi_out_uhd_4_1/VIDEO_OUT"
-        ]
       }
     },
     "nets": {
@@ -738,6 +823,7 @@
           "RGB_to_Grayscale_v1_0_0/aclk",
           "hdmi_out_uhd_4_0/s_axis_video_aclk",
           "hdmi_out_uhd_4_1/s_axis_video_aclk",
+          "hdmi_out_uhd_4_2/s_axis_video_aclk",
           "Inter_col_v1_0_0/aclk"
         ]
       },
@@ -746,6 +832,40 @@
           "hdmi_in_uhd_4_0/s_axis_video_aresetn",
           "RGB_to_Grayscale_v1_0_0/aresetn",
           "Inter_col_v1_0_0/aresetn"
+        ]
+      },
+      "RGB_to_Grayscale_v1_0_0_m_axis_gray_tdata": {
+        "ports": [
+          "RGB_to_Grayscale_v1_0_0/m_axis_gray_tdata",
+          "hdmi_out_uhd_4_2/VIDEO_OUT_tdata",
+          "Inter_col_v1_0_0/s_axis_lr_tdata"
+        ]
+      },
+      "RGB_to_Grayscale_v1_0_0_m_axis_gray_tlast": {
+        "ports": [
+          "RGB_to_Grayscale_v1_0_0/m_axis_gray_tlast",
+          "hdmi_out_uhd_4_2/VIDEO_OUT_tlast",
+          "Inter_col_v1_0_0/s_axis_lr_tlast"
+        ]
+      },
+      "RGB_to_Grayscale_v1_0_0_m_axis_gray_tuser": {
+        "ports": [
+          "RGB_to_Grayscale_v1_0_0/m_axis_gray_tuser",
+          "hdmi_out_uhd_4_2/VIDEO_OUT_tuser",
+          "Inter_col_v1_0_0/s_axis_lr_tuser"
+        ]
+      },
+      "RGB_to_Grayscale_v1_0_0_m_axis_gray_tvalid": {
+        "ports": [
+          "RGB_to_Grayscale_v1_0_0/m_axis_gray_tvalid",
+          "hdmi_out_uhd_4_2/VIDEO_OUT_tvalid",
+          "Inter_col_v1_0_0/s_axis_lr_tvalid"
+        ]
+      },
+      "Inter_col_v1_0_0_s_axis_lr_tready": {
+        "ports": [
+          "Inter_col_v1_0_0/s_axis_lr_tready",
+          "RGB_to_Grayscale_v1_0_0/m_axis_gray_tready"
         ]
       }
     }
