@@ -3,30 +3,6 @@
 	"modules": {
 		"design_1": {
 			"proto_instances": {
-				"/Inter_col_v1_0_0/m_axis_l": {
-					"interface": "xilinx.com:interface:axis:1.0",
-					"ports": {
-						"ACLK": { "actual": "aclk"},
-						"ARESETN": { "actual": "aresetn"},
-						"TDATA": { "actual": "m_axis_l_tdata"},
-						"TLAST": { "actual": "m_axis_l_tlast"},
-						"TREADY": { "actual": "m_axis_l_tready"},
-						"TUSER": { "actual": "m_axis_l_tuser"},
-						"TVALID": { "actual": "m_axis_l_tvalid"}
-					}
-				},
-				"/Inter_col_v1_0_0/m_axis_r": {
-					"interface": "xilinx.com:interface:axis:1.0",
-					"ports": {
-						"ACLK": { "actual": "aclk"},
-						"ARESETN": { "actual": "aresetn"},
-						"TDATA": { "actual": "m_axis_r_tdata"},
-						"TLAST": { "actual": "m_axis_r_tlast"},
-						"TREADY": { "actual": "m_axis_r_tready"},
-						"TUSER": { "actual": "m_axis_r_tuser"},
-						"TVALID": { "actual": "m_axis_r_tvalid"}
-					}
-				},
 				"/RGB_to_Grayscale_v1_0_0/s_axis_rgb": {
 					"interface": "xilinx.com:interface:axis:1.0",
 					"ports": {
@@ -39,6 +15,17 @@
 						"TVALID": { "actual": "s_axis_rgb_tvalid"}
 					}
 				},
+				"/SAD_0/M_AXIS_R": {
+					"interface": "xilinx.com:interface:axis:1.0",
+					"ports": {
+						"ACLK": { "actual": "aclk"},
+						"ARESETN": { "actual": "aresetn"},
+						"TDATA": { "actual": "m_axis_r_tdata"},
+						"TLAST": { "actual": "m_axis_r_tlast"},
+						"TUSER": { "actual": "m_axis_r_tuser"},
+						"TVALID": { "actual": "m_axis_r_tvalid"}
+					}
+				},
 				"/hdmi_in_uhd_4_0/VIDEO_IN": {
 					"interface": "xilinx.com:interface:axis:1.0",
 					"ports": {
@@ -49,17 +36,7 @@
 						"TVALID": { "actual": "VIDEO_IN_tvalid"}
 					}
 				},
-				"/hdmi_out_uhd_4_0/VIDEO_OUT": {
-					"interface": "xilinx.com:interface:axis:1.0",
-					"ports": {
-						"TDATA": { "actual": "VIDEO_OUT_tdata"},
-						"TLAST": { "actual": "VIDEO_OUT_tlast"},
-						"TREADY": { "actual": "VIDEO_OUT_tready"},
-						"TUSER": { "actual": "VIDEO_OUT_tuser"},
-						"TVALID": { "actual": "VIDEO_OUT_tvalid"}
-					}
-				},
-				"/hdmi_out_uhd_4_1/VIDEO_OUT": {
+				"/hdmi_out_uhd_4_3/VIDEO_OUT": {
 					"interface": "xilinx.com:interface:axis:1.0",
 					"ports": {
 						"TDATA": { "actual": "VIDEO_OUT_tdata"},

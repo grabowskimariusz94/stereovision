@@ -1,0 +1,172 @@
+#-----------------------------------------------------------
+# Vivado v2020.1 (64-bit)
+# SW Build 2902540 on Wed May 27 19:54:49 MDT 2020
+# IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
+# Start of session at: Sat Dec  5 15:17:26 2020
+# Process ID: 13672
+# Current directory: C:/Users/User/Desktop/stereo_FPGA/ip_repo
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent7764 C:\Users\User\Desktop\stereo_FPGA\ip_repo\edit_SAD_v1_0.xpr
+# Log file: C:/Users/User/Desktop/stereo_FPGA/ip_repo/vivado.log
+# Journal file: C:/Users/User/Desktop/stereo_FPGA/ip_repo\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Users/User/Desktop/stereo_FPGA/ip_repo/edit_SAD_v1_0.xpr
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [C:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0.v:]
+Scanning sources...
+Finished scanning sources
+WARNING: [filemgmt 56-3] IP Repository Path: Could not find the directory 'C:/Users/User/Desktop/ip_repo/SAD_1.0'.
+WARNING: [filemgmt 56-3] Default IP Output Path : Could not find the directory 'C:/Users/User/Desktop/stereo_FPGA/ip_repo/edit_SAD_v1_0.srcs/sources_1'.
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0'.
+WARNING: [IP_Flow 19-2248] Failed to load user IP repository 'c:/Users/User/Desktop/ip_repo/SAD_1.0'; Can't find the specified path.
+If this directory should no longer be in your list of user repositories, go to the IP Settings dialog and remove it.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2020.1/data/ip'.
+open_project: Time (s): cpu = 00:00:27 ; elapsed = 00:00:14 . Memory (MB): peak = 1035.988 ; gain = 0.000
+update_compile_order -fileset sources_1
+open_project C:/Users/User/Documents/myLearning/FPGA/vision/ip_repo/imageProcessing/imageProcessing.xpr
+CRITICAL WARNING: [Project 1-19] Could not find the file 'C:/Users/users/user/documents/mylearning/fpga/vision/imageprocessing/component.xml'.
+CRITICAL WARNING: [Project 1-19] Could not find the file 'C:/Users/users/user/documents/mylearning/fpga/vision/imageprocessing/tb_behav.wcfg'.
+Scanning sources...
+Finished scanning sources
+WARNING: [filemgmt 56-3] IP Repository Path: Could not find the directory 'C:/Users/users/user/documents/mylearning/fpga/vision/imageprocessing'.
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+WARNING: [IP_Flow 19-2248] Failed to load user IP repository 'c:/Users/users/user/documents/mylearning/fpga/vision/imageprocessing'; Can't find the specified path.
+If this directory should no longer be in your list of user repositories, go to the IP Settings dialog and remove it.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2020.1/data/ip'.
+open_project: Time (s): cpu = 00:00:12 ; elapsed = 00:00:06 . Memory (MB): peak = 1035.988 ; gain = 0.000
+update_compile_order -fileset sources_1
+current_project edit_SAD_v1_0
+file mkdir C:/Users/User/Desktop/stereo_FPGA/ip_repo/edit_SAD_v1_0.srcs/sources_1/new
+close [ open C:/Users/User/Desktop/stereo_FPGA/ip_repo/edit_SAD_v1_0.srcs/sources_1/new/Min_SAD.v w ]
+add_files C:/Users/User/Desktop/stereo_FPGA/ip_repo/edit_SAD_v1_0.srcs/sources_1/new/Min_SAD.v
+update_compile_order -fileset sources_1
+current_project imageProcessing
+current_project edit_SAD_v1_0
+update_compile_order -fileset sources_1
+set_property source_mgmt_mode DisplayOnly [current_project]
+current_project imageProcessing
+export_ip_user_files -of_objects  [get_files C:/Users/User/Documents/myLearning/FPGA/vision/ip_repo/imageProcessing/imageProcessing.srcs/sources_1/new/conv.v] -no_script -reset -force -quiet
+remove_files  C:/Users/User/Documents/myLearning/FPGA/vision/ip_repo/imageProcessing/imageProcessing.srcs/sources_1/new/conv.v
+add_files -norecurse C:/Users/User/Documents/myLearning/FPGA/vision/ip_repo/imageProcessing/imageProcessing.srcs/sources_1/new/conv.v
+update_compile_order -fileset sources_1
+current_project edit_SAD_v1_0
+ipx::open_ipxact_file C:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/component.xml
+WARNING: [IP_Flow 19-5226] Project source file 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/component.xml' ignored by IP packager.
+WARNING: [IP_Flow 19-3833] Unreferenced file from the top module is not packaged: 'C:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/src/RGB_to_Grayscale_v1_0.v'.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_verilogsynthesis (Verilog Synthesis)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_S_AXIS_L.v' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_verilogsynthesis (Verilog Synthesis)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_S_AXIS_R.v' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_verilogsynthesis (Verilog Synthesis)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_M_AXIS_L.v' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_verilogsynthesis (Verilog Synthesis)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_M_AXIS_R.v' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_verilogsynthesis (Verilog Synthesis)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0.v' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-4308] Project file 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/src/LB_Control.v' is not found in the component files. It will be added automatically when merging sources and repackaging. Please remove the file from the source project if this is not desired.
+WARNING: [IP_Flow 19-4308] Project file 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/src/Line_Buffer.v' is not found in the component files. It will be added automatically when merging sources and repackaging. Please remove the file from the source project if this is not desired.
+WARNING: [IP_Flow 19-4308] Project file 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/edit_SAD_v1_0.srcs/sources_1/new/Min_SAD.v' is not found in the component files. It will be added automatically when merging sources and repackaging. Please remove the file from the source project if this is not desired.
+WARNING: [IP_Flow 19-4308] Project file 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/src/SAD.v' is not found in the component files. It will be added automatically when merging sources and repackaging. Please remove the file from the source project if this is not desired.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_verilogbehavioralsimulation (Verilog Simulation)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_S_AXIS_L.v' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_verilogbehavioralsimulation (Verilog Simulation)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_S_AXIS_R.v' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_verilogbehavioralsimulation (Verilog Simulation)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_M_AXIS_L.v' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_verilogbehavioralsimulation (Verilog Simulation)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_M_AXIS_R.v' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-3898] File Group 'xilinx_verilogbehavioralsimulation (Verilog Simulation)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0.v' is not found in the project sources. It will be removed from the packaged IP when the sources are merged. If still required, please add this file to the project and re-package.
+WARNING: [IP_Flow 19-4308] Project file 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/src/LB_Control.v' is not found in the component files. It will be added automatically when merging sources and repackaging. Please remove the file from the source project if this is not desired.
+WARNING: [IP_Flow 19-4308] Project file 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/src/Line_Buffer.v' is not found in the component files. It will be added automatically when merging sources and repackaging. Please remove the file from the source project if this is not desired.
+WARNING: [IP_Flow 19-4308] Project file 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/edit_SAD_v1_0.srcs/sources_1/new/Min_SAD.v' is not found in the component files. It will be added automatically when merging sources and repackaging. Please remove the file from the source project if this is not desired.
+WARNING: [IP_Flow 19-4308] Project file 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/src/SAD.v' is not found in the component files. It will be added automatically when merging sources and repackaging. Please remove the file from the source project if this is not desired.
+ipx::merge_project_changes hdl_parameters [ipx::current_core]
+WARNING: [IP_Flow 19-5226] Project source file 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/component.xml' ignored by IP packager.
+WARNING: [IP_Flow 19-3833] Unreferenced file from the top module is not packaged: 'C:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/src/RGB_to_Grayscale_v1_0.v'.
+WARNING: [IP_Flow 19-5109] File Group 'xilinx_verilogsynthesis (Verilog Synthesis)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_S_AXIS_L.v' does not exist in the project sources. It has been removed from the packaged IP. If still required, please add this file to the project, merge sources and re-package.
+WARNING: [IP_Flow 19-5109] File Group 'xilinx_verilogsynthesis (Verilog Synthesis)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_S_AXIS_R.v' does not exist in the project sources. It has been removed from the packaged IP. If still required, please add this file to the project, merge sources and re-package.
+WARNING: [IP_Flow 19-5109] File Group 'xilinx_verilogsynthesis (Verilog Synthesis)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_M_AXIS_L.v' does not exist in the project sources. It has been removed from the packaged IP. If still required, please add this file to the project, merge sources and re-package.
+WARNING: [IP_Flow 19-5109] File Group 'xilinx_verilogsynthesis (Verilog Synthesis)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_M_AXIS_R.v' does not exist in the project sources. It has been removed from the packaged IP. If still required, please add this file to the project, merge sources and re-package.
+WARNING: [IP_Flow 19-5109] File Group 'xilinx_verilogbehavioralsimulation (Verilog Simulation)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_S_AXIS_L.v' does not exist in the project sources. It has been removed from the packaged IP. If still required, please add this file to the project, merge sources and re-package.
+WARNING: [IP_Flow 19-5109] File Group 'xilinx_verilogbehavioralsimulation (Verilog Simulation)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_S_AXIS_R.v' does not exist in the project sources. It has been removed from the packaged IP. If still required, please add this file to the project, merge sources and re-package.
+WARNING: [IP_Flow 19-5109] File Group 'xilinx_verilogbehavioralsimulation (Verilog Simulation)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_M_AXIS_L.v' does not exist in the project sources. It has been removed from the packaged IP. If still required, please add this file to the project, merge sources and re-package.
+WARNING: [IP_Flow 19-5109] File Group 'xilinx_verilogbehavioralsimulation (Verilog Simulation)': File 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/hdl/SAD_v1_0_M_AXIS_R.v' does not exist in the project sources. It has been removed from the packaged IP. If still required, please add this file to the project, merge sources and re-package.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (s_axis_l_tstrb) was removed from the interface 'S_AXIS_L'. Please review the IP interface 'S_AXIS_L'.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (s_axis_r_tstrb) was removed from the interface 'S_AXIS_R'. Please review the IP interface 'S_AXIS_R'.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (m_axis_l_tstrb) was removed from the interface 'M_AXIS_L'. Please review the IP interface 'M_AXIS_L'.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (m_axis_r_tstrb) was removed from the interface 'M_AXIS_R'. Please review the IP interface 'M_AXIS_R'.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (s_axis_l_aresetn) was removed from the interface 'S_AXIS_L_RST'. Please review the IP interface 'S_AXIS_L_RST'.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (s_axis_l_aclk) was removed from the interface 'S_AXIS_L_CLK'. Please review the IP interface 'S_AXIS_L_CLK'.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (s_axis_r_aresetn) was removed from the interface 'S_AXIS_R_RST'. Please review the IP interface 'S_AXIS_R_RST'.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (s_axis_r_aclk) was removed from the interface 'S_AXIS_R_CLK'. Please review the IP interface 'S_AXIS_R_CLK'.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (m_axis_l_aresetn) was removed from the interface 'M_AXIS_L_RST'. Please review the IP interface 'M_AXIS_L_RST'.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (m_axis_l_aclk) was removed from the interface 'M_AXIS_L_CLK'. Please review the IP interface 'M_AXIS_L_CLK'.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (m_axis_r_aresetn) was removed from the interface 'M_AXIS_R_RST'. Please review the IP interface 'M_AXIS_R_RST'.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (m_axis_r_aclk) was removed from the interface 'M_AXIS_R_CLK'. Please review the IP interface 'M_AXIS_R_CLK'.
+INFO: [IP_Flow 19-5107] Inferred bus interface 'aresetn' of definition 'xilinx.com:signal:reset:1.0' (from Xilinx Repository).
+INFO: [IP_Flow 19-5107] Inferred bus interface 'aclk' of definition 'xilinx.com:signal:clock:1.0' (from Xilinx Repository).
+INFO: [IP_Flow 19-4728] Bus Interface 'aresetn': Added interface parameter 'POLARITY' with value 'ACTIVE_LOW'.
+INFO: [IP_Flow 19-4728] Bus Interface 'aclk': Added interface parameter 'ASSOCIATED_RESET' with value 'aresetn'.
+ERROR: [Common 17-39] 'ipx::merge_project_changes' failed due to earlier errors.
+ipx::remove_bus_interface S_AXIS_L_RST [ipx::current_core]
+ipx::remove_bus_interface S_AXIS_L_CLK [ipx::current_core]
+ipx::remove_bus_interface S_AXIS_R_CLK [ipx::current_core]
+ipx::remove_bus_interface M_AXIS_L_RST [ipx::current_core]
+ipx::remove_bus_interface M_AXIS_L_CLK [ipx::current_core]
+ipx::remove_bus_interface M_AXIS_R_RST [ipx::current_core]
+ipx::remove_bus_interface S_AXIS_R_RST [ipx::current_core]
+ipx::remove_bus_interface M_AXIS_R_CLK [ipx::current_core]
+ipx::infer_bus_interfaces xilinx.com:interface:axis_rtl:1.0 [ipx::current_core]
+INFO: [IP_Flow 19-4728] Bus Interface 'aclk': Added interface parameter 'ASSOCIATED_BUSIF' with value 'S_AXIS_L'.
+set_property core_revision 2 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0
+INFO: [IP_Flow 19-725] Reloaded user IP repository 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0'
+open_project C:/Users/User/Desktop/stereo_FPGA/4k_sgm_zcu104.xpr
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/User/Desktop/stereo_FPGA/ip_repo'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2020.1/data/ip'.
+open_project: Time (s): cpu = 00:00:09 ; elapsed = 00:00:08 . Memory (MB): peak = 1951.945 ; gain = 21.875
+update_compile_order -fileset sources_1
+open_bd_design {C:/Users/User/Desktop/stereo_FPGA/4k_sgm_zcu104.srcs/sources_1/bd/design_1/design_1.bd}
+Adding component instance block -- xilinx.com:module_ref:hdmi_out_uhd_4:1.0 - hdmi_out_uhd_4_0
+Adding component instance block -- xilinx.com:module_ref:hdmi_out_uhd_4:1.0 - hdmi_out_uhd_4_1
+Adding component instance block -- xilinx.com:module_ref:hdmi_in_uhd_4:1.0 - hdmi_in_uhd_4_0
+Adding component instance block -- xilinx.com:module_ref:hdmi_out_uhd_4:1.0 - hdmi_out_uhd_4_2
+Adding component instance block -- xilinx.com:module_ref:RGB_to_Grayscale_v1_0:1.0 - RGB_to_Grayscale_v1_0_0
+Adding component instance block -- xilinx.com:module_ref:Inter_col_v1_0:1.0 - Inter_col_v1_0_0
+Successfully read diagram <design_1> from BD file <C:/Users/User/Desktop/stereo_FPGA/4k_sgm_zcu104.srcs/sources_1/bd/design_1/design_1.bd>
+open_bd_design: Time (s): cpu = 00:00:11 ; elapsed = 00:00:12 . Memory (MB): peak = 1951.945 ; gain = 0.000
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:user:SAD:1.0 SAD_0
+endgroup
+set_property location {5 1484 431} [get_bd_cells SAD_0]
+delete_bd_objs [get_bd_intf_nets Inter_col_v1_0_0_m_axis_l]
+connect_bd_net [get_bd_pins hdmi_out_uhd_4_0/VIDEO_OUT_tdata] [get_bd_pins Inter_col_v1_0_0/m_axis_l_tdata]
+connect_bd_net [get_bd_pins hdmi_out_uhd_4_0/VIDEO_OUT_tlast] [get_bd_pins Inter_col_v1_0_0/m_axis_l_tlast]
+connect_bd_net [get_bd_pins hdmi_out_uhd_4_0/VIDEO_OUT_tuser] [get_bd_pins Inter_col_v1_0_0/m_axis_l_tuser]
+connect_bd_net [get_bd_pins hdmi_out_uhd_4_0/VIDEO_OUT_tvalid] [get_bd_pins Inter_col_v1_0_0/m_axis_l_tvalid]
+connect_bd_net [get_bd_pins hdmi_out_uhd_4_0/VIDEO_OUT_tready] [get_bd_pins Inter_col_v1_0_0/m_axis_l_tready]
+set_property location {5 1532 308} [get_bd_cells SAD_0]
+connect_bd_net [get_bd_pins SAD_0/s_axis_l_tdata] [get_bd_pins Inter_col_v1_0_0/m_axis_l_tdata]
+connect_bd_net [get_bd_pins SAD_0/s_axis_l_tlast] [get_bd_pins Inter_col_v1_0_0/m_axis_l_tlast]
+connect_bd_net [get_bd_pins SAD_0/s_axis_l_tuser] [get_bd_pins Inter_col_v1_0_0/m_axis_l_tuser]
+connect_bd_net [get_bd_pins SAD_0/s_axis_l_tvalid] [get_bd_pins Inter_col_v1_0_0/m_axis_l_tvalid]
+delete_bd_objs [get_bd_nets hdmi_out_uhd_4_0_VIDEO_OUT_tready]
+current_project edit_SAD_v1_0
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+ipx::merge_project_changes hdl_parameters [ipx::current_core]
+WARNING: [IP_Flow 19-5226] Project source file 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/component.xml' ignored by IP packager.
+WARNING: [IP_Flow 19-3833] Unreferenced file from the top module is not packaged: 'C:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0/src/RGB_to_Grayscale_v1_0.v'.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (s_axis_l_tready) was removed from the interface 'S_AXIS_L'. Please review the IP interface 'S_AXIS_L'.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (s_axis_r_tready) was removed from the interface 'S_AXIS_R'. Please review the IP interface 'S_AXIS_R'.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (m_axis_l_tready) was removed from the interface 'M_AXIS_L'. Please review the IP interface 'M_AXIS_L'.
+CRITICAL WARNING: [IP_Flow 19-4834] IP port (m_axis_r_tready) was removed from the interface 'M_AXIS_R'. Please review the IP interface 'M_AXIS_R'.
+set_property core_revision 3 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0
+INFO: [IP_Flow 19-725] Reloaded user IP repository 'c:/Users/User/Desktop/stereo_FPGA/ip_repo/SAD_1.0'
+close_project
+current_project imageProcessing
+close_project
+update_ip_catalog -rebuild -scan_changes
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/User/Desktop/stereo_FPGA/ip_repo'.

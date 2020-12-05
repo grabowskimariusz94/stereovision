@@ -40,7 +40,7 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 
 # The design that will be created by this Tcl script contains the following 
 # module references:
-# Inter_col_v1_0, RGB_to_Grayscale_v1_0, hdmi_in_uhd_4, hdmi_out_uhd_4, hdmi_out_uhd_4, hdmi_out_uhd_4
+# Inter_col_v1_0, RGB_to_Grayscale_v1_0, hdmi_in_uhd_4, hdmi_out_uhd_4, hdmi_out_uhd_4, hdmi_out_uhd_4, hdmi_out_uhd_4
 
 # Please add the sources of those modules before sourcing this Tcl script.
 
@@ -188,6 +188,9 @@ proc create_root_design { parentCell } {
      return 1
    }
   
+  # Create instance: SAD_0, and set properties
+  set SAD_0 [ create_bd_cell -type ip -vlnv xilinx.com:user:SAD:1.0 SAD_0 ]
+
   # Create instance: hdmi_in_uhd_4_0, and set properties
   set block_name hdmi_in_uhd_4
   set block_cell_name hdmi_in_uhd_4_0
@@ -241,19 +244,39 @@ proc create_root_design { parentCell } {
    CONFIG.name {gray} \
  ] $hdmi_out_uhd_4_2
 
+  # Create instance: hdmi_out_uhd_4_3, and set properties
+  set block_name hdmi_out_uhd_4
+  set block_cell_name hdmi_out_uhd_4_3
+  if { [catch {set hdmi_out_uhd_4_3 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
+     catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   } elseif { $hdmi_out_uhd_4_3 eq "" } {
+     catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   }
+    set_property -dict [ list \
+   CONFIG.name {dispR} \
+ ] $hdmi_out_uhd_4_3
+
   # Create interface connections
-  connect_bd_intf_net -intf_net Inter_col_v1_0_0_m_axis_l [get_bd_intf_pins Inter_col_v1_0_0/m_axis_l] [get_bd_intf_pins hdmi_out_uhd_4_0/VIDEO_OUT]
-  connect_bd_intf_net -intf_net Inter_col_v1_0_0_m_axis_r [get_bd_intf_pins Inter_col_v1_0_0/m_axis_r] [get_bd_intf_pins hdmi_out_uhd_4_1/VIDEO_OUT]
+  connect_bd_intf_net -intf_net SAD_0_M_AXIS_R [get_bd_intf_pins SAD_0/M_AXIS_R] [get_bd_intf_pins hdmi_out_uhd_4_3/VIDEO_OUT]
   connect_bd_intf_net -intf_net hdmi_in_uhd_4_0_VIDEO_IN [get_bd_intf_pins RGB_to_Grayscale_v1_0_0/s_axis_rgb] [get_bd_intf_pins hdmi_in_uhd_4_0/VIDEO_IN]
 
   # Create port connections
-  connect_bd_net -net Inter_col_v1_0_0_s_axis_lr_tready [get_bd_pins Inter_col_v1_0_0/s_axis_lr_tready] [get_bd_pins RGB_to_Grayscale_v1_0_0/m_axis_gray_tready]
+  connect_bd_net -net Inter_col_v1_0_0_m_axis_l_tdata [get_bd_pins Inter_col_v1_0_0/m_axis_l_tdata] [get_bd_pins SAD_0/s_axis_l_tdata] [get_bd_pins hdmi_out_uhd_4_0/VIDEO_OUT_tdata]
+  connect_bd_net -net Inter_col_v1_0_0_m_axis_l_tlast [get_bd_pins Inter_col_v1_0_0/m_axis_l_tlast] [get_bd_pins SAD_0/s_axis_l_tlast] [get_bd_pins hdmi_out_uhd_4_0/VIDEO_OUT_tlast]
+  connect_bd_net -net Inter_col_v1_0_0_m_axis_l_tuser [get_bd_pins Inter_col_v1_0_0/m_axis_l_tuser] [get_bd_pins SAD_0/s_axis_l_tuser] [get_bd_pins hdmi_out_uhd_4_0/VIDEO_OUT_tuser]
+  connect_bd_net -net Inter_col_v1_0_0_m_axis_l_tvalid [get_bd_pins Inter_col_v1_0_0/m_axis_l_tvalid] [get_bd_pins SAD_0/s_axis_l_tvalid] [get_bd_pins hdmi_out_uhd_4_0/VIDEO_OUT_tvalid]
+  connect_bd_net -net Inter_col_v1_0_0_m_axis_r_tdata [get_bd_pins Inter_col_v1_0_0/m_axis_r_tdata] [get_bd_pins SAD_0/s_axis_r_tdata] [get_bd_pins hdmi_out_uhd_4_1/VIDEO_OUT_tdata]
+  connect_bd_net -net Inter_col_v1_0_0_m_axis_r_tlast [get_bd_pins Inter_col_v1_0_0/m_axis_r_tlast] [get_bd_pins SAD_0/s_axis_r_tlast] [get_bd_pins hdmi_out_uhd_4_1/VIDEO_OUT_tlast]
+  connect_bd_net -net Inter_col_v1_0_0_m_axis_r_tuser [get_bd_pins Inter_col_v1_0_0/m_axis_r_tuser] [get_bd_pins SAD_0/s_axis_r_tuser] [get_bd_pins hdmi_out_uhd_4_1/VIDEO_OUT_tuser]
+  connect_bd_net -net Inter_col_v1_0_0_m_axis_r_tvalid [get_bd_pins Inter_col_v1_0_0/m_axis_r_tvalid] [get_bd_pins SAD_0/s_axis_r_tvalid] [get_bd_pins hdmi_out_uhd_4_1/VIDEO_OUT_tvalid]
   connect_bd_net -net RGB_to_Grayscale_v1_0_0_m_axis_gray_tdata [get_bd_pins Inter_col_v1_0_0/s_axis_lr_tdata] [get_bd_pins RGB_to_Grayscale_v1_0_0/m_axis_gray_tdata] [get_bd_pins hdmi_out_uhd_4_2/VIDEO_OUT_tdata]
   connect_bd_net -net RGB_to_Grayscale_v1_0_0_m_axis_gray_tlast [get_bd_pins Inter_col_v1_0_0/s_axis_lr_tlast] [get_bd_pins RGB_to_Grayscale_v1_0_0/m_axis_gray_tlast] [get_bd_pins hdmi_out_uhd_4_2/VIDEO_OUT_tlast]
   connect_bd_net -net RGB_to_Grayscale_v1_0_0_m_axis_gray_tuser [get_bd_pins Inter_col_v1_0_0/s_axis_lr_tuser] [get_bd_pins RGB_to_Grayscale_v1_0_0/m_axis_gray_tuser] [get_bd_pins hdmi_out_uhd_4_2/VIDEO_OUT_tuser]
   connect_bd_net -net RGB_to_Grayscale_v1_0_0_m_axis_gray_tvalid [get_bd_pins Inter_col_v1_0_0/s_axis_lr_tvalid] [get_bd_pins RGB_to_Grayscale_v1_0_0/m_axis_gray_tvalid] [get_bd_pins hdmi_out_uhd_4_2/VIDEO_OUT_tvalid]
-  connect_bd_net -net hdmi_in_uhd_4_0_s_axis_video_aclk [get_bd_pins Inter_col_v1_0_0/aclk] [get_bd_pins RGB_to_Grayscale_v1_0_0/aclk] [get_bd_pins hdmi_in_uhd_4_0/s_axis_video_aclk] [get_bd_pins hdmi_out_uhd_4_0/s_axis_video_aclk] [get_bd_pins hdmi_out_uhd_4_1/s_axis_video_aclk] [get_bd_pins hdmi_out_uhd_4_2/s_axis_video_aclk]
-  connect_bd_net -net hdmi_in_uhd_4_0_s_axis_video_aresetn [get_bd_pins Inter_col_v1_0_0/aresetn] [get_bd_pins RGB_to_Grayscale_v1_0_0/aresetn] [get_bd_pins hdmi_in_uhd_4_0/s_axis_video_aresetn]
+  connect_bd_net -net hdmi_in_uhd_4_0_s_axis_video_aclk [get_bd_pins Inter_col_v1_0_0/aclk] [get_bd_pins RGB_to_Grayscale_v1_0_0/aclk] [get_bd_pins SAD_0/aclk] [get_bd_pins hdmi_in_uhd_4_0/s_axis_video_aclk] [get_bd_pins hdmi_out_uhd_4_0/s_axis_video_aclk] [get_bd_pins hdmi_out_uhd_4_1/s_axis_video_aclk] [get_bd_pins hdmi_out_uhd_4_2/s_axis_video_aclk] [get_bd_pins hdmi_out_uhd_4_3/s_axis_video_aclk]
+  connect_bd_net -net hdmi_in_uhd_4_0_s_axis_video_aresetn [get_bd_pins Inter_col_v1_0_0/aresetn] [get_bd_pins RGB_to_Grayscale_v1_0_0/aresetn] [get_bd_pins SAD_0/aresetn] [get_bd_pins hdmi_in_uhd_4_0/s_axis_video_aresetn]
 
   # Create address segments
 
