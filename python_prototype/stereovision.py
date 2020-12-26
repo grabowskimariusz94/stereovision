@@ -7,6 +7,44 @@ import matplotlib.pyplot as plt
 from PIL import Image
 
 
+def read(img_l: str, img_r: str):
+    img_l = mpimg.imread(img_l)
+    img_r = mpimg.imread(img_r)
+    return img_l, img_r
+
+def write(img_lr: np.ndarray, name: str):
+    plt.imsave(name, img_lr)
+
+def fold(img_l: np.ndarray, img_r: np.ndarray):
+    h, w, c = img_l.shape
+    img_lr = np.ndarray([h, w, c])
+
+    for x in range(w):
+        if x % 2 == 0:
+            img_lr[:, x, :] = img_l[:, x, :]
+        else:
+            img_lr[:, x, :] = img_r[:, x, :]
+
+    return img_lr
+
+def unfold(img_lr: np.ndarray):
+    h, w = img_lr.shape
+    img_l = np.ndarray([h, w])
+    img_r = np.ndarray([h, w])
+    for x in range(w - 1):
+        if x % 2 == 0:
+            img_l[:, x] = img_lr[:, x]
+            img_r[:, x] = (img_lr[:, x - 1] + img_lr[:, x + 1]) / 2
+        else:
+            img_r[:, x] = img_lr[:, x]
+            img_l[:, x] = (img_lr[:, x - 1] + img_lr[:, x + 1]) / 2
+    return img_l, img_r
+
+def RGB_to_Grayscale(img_lr:np.ndarray):
+    gray_lr = img_lr[:, :, 0] *77 + img_lr[:, :, 1] * 150 + img_lr[:, :, 2] *29
+    gray_lr[gray_lr>255]=255
+    return gray_lr
+
 def sad(img_l: np.ndarray, img_r: np.ndarray, min_row: int, max_row: int, min_col: int, max_col: int , d: int) -> float:
     sad_val = 0.0
     sad_mat = np.abs(img_r[min_row : max_row, min_col:max_col] - img_l[min_row : max_row, min_col+d:max_col+d])
@@ -14,14 +52,10 @@ def sad(img_l: np.ndarray, img_r: np.ndarray, min_row: int, max_row: int, min_co
     return sad_val
 
 
-def semi_global(img_l: str, img_r: str, d_range: int, win: int, rl: bool):
-    img_l = mpimg.imread(img_l)
-    img_r = mpimg.imread(img_r)
-    gray_l = img_l[:, :, 0] * 0.299 + img_l[:, :, 1] * 0.587 + img_l[:, :, 2] * 0.144
-    gray_r = img_r[:, :, 0] * 0.299 + img_r[:, :, 1] * 0.587 + img_r[:, :, 2] * 0.144
-    h, w = gray_l.shape
+def semi_global(img_l: np.ndarray, img_r: np.ndarray, d_range: int, win: int, rl: bool):
+    h, w = img_l.shape
     c = list()
-    disparity = np.zeros(gray_l.shape)
+    disparity = np.zeros(img_l.shape)
 
     # fitting costs
     for y in range(h):
@@ -46,9 +80,16 @@ def semi_global(img_l: str, img_r: str, d_range: int, win: int, rl: bool):
                     block_id = i - d_min
                 else:
                     block_id = -i + d_max - 1
-                sads[block_id] = sad(gray_l, gray_r, min_row, max_row, min_col, max_col, i)
+                sads[block_id] = sad(img_l, img_r, min_row, max_row, min_col, max_col, i)
             c[y][x] = list(sads)
             # best_match = np.argmin(sads)
+
+    """ returning just after cost calculation   
+    for y in range(h):
+        for x in range(w):
+            disparity[y][x] = np.argmin(c[y][x])
+    return disparity
+    """
     # Cost aggregation
     l = [[], [], [], []]
     for y in range(h):
@@ -77,26 +118,26 @@ def semi_global(img_l: str, img_r: str, d_range: int, win: int, rl: bool):
                     if d == 0 and d_len == 1:
                         l[0][y][x].append(c[y][x][d]
                                           + l[0][y - 1][x][d]
-                                          - np.argmin([l[0][y - 1][x][:]]))
+                                          - np.min([l[0][y - 1][x][:]]))
                     elif d == 0:
                         l[0][y][x].append(c[y][x][d]
-                                          + np.argmin([l[0][y - 1][x][d],
-                                                       l[0][y - 1][x][d + 1] + p1,
-                                                       np.argmin([l[0][y - 1][x][:]]) + p2])
-                                          - np.argmin([l[0][y - 1][x][:]]))
+                                          + np.min([l[0][y - 1][x][d],
+                                                    l[0][y - 1][x][d + 1] + p1,
+                                                    np.min([l[0][y - 1][x][:]]) + p2])
+                                          - np.min([l[0][y - 1][x][:]]))
                     elif d == (d_len - 1):
                         l[0][y][x].append(c[y][x][d]
-                                          + np.argmin([l[0][y - 1][x][d],
-                                                       l[0][y - 1][x][d - 1] + p1,
-                                                       np.argmin([l[0][y - 1][x][:]]) + p2])
-                                          - np.argmin([l[0][y - 1][x][:]]))
+                                          + np.min([l[0][y - 1][x][d],
+                                                    l[0][y - 1][x][d - 1] + p1,
+                                                    np.min([l[0][y - 1][x][:]]) + p2])
+                                          - np.min([l[0][y - 1][x][:]]))
                     else:
                         l[0][y][x].append(c[y][x][d]
-                                          + np.argmin([l[0][y - 1][x][d],
-                                                       l[0][y - 1][x][d - 1] + p1,
-                                                       l[0][y - 1][x][d + 1] + p1,
-                                                       np.argmin([l[0][y - 1][x][:]]) + p2])
-                                          - np.argmin([l[0][y - 1][x][:]]))
+                                          + np.min([l[0][y - 1][x][d],
+                                                    l[0][y - 1][x][d - 1] + p1,
+                                                    l[0][y - 1][x][d + 1] + p1,
+                                                    np.min([l[0][y - 1][x][:]]) + p2])
+                                          - np.min([l[0][y - 1][x][:]]))
                 # right
                 if x == 0:
                     l[2][y][x].append(c[y][x][d])
@@ -107,26 +148,26 @@ def semi_global(img_l: str, img_r: str, d_range: int, win: int, rl: bool):
                     elif d == 0 and d_prev_len == 1:
                         l[2][y][x].append(c[y][x][d]
                                           + l[2][y][x - 1][d]
-                                          - np.argmin([l[2][y][x - 1][:]]))
+                                          - np.min([l[2][y][x - 1][:]]))
                     elif d == 0:
                         l[2][y][x].append(c[y][x][d]
-                                          + np.argmin([l[2][y][x - 1][d],
-                                                       l[2][y][x - 1][d + 1] + p1,
-                                                       np.argmin([l[2][y][x - 1][:]]) + p2])
-                                          - np.argmin([l[2][y][x - 1][:]]))
+                                          + np.min([l[2][y][x - 1][d],
+                                                    l[2][y][x - 1][d + 1] + p1,
+                                                    np.min([l[2][y][x - 1][:]]) + p2])
+                                          - np.min([l[2][y][x - 1][:]]))
                     elif d == (d_prev_len - 1):
                         l[2][y][x].append(c[y][x][d]
-                                          + np.argmin([l[2][y][x - 1][d],
-                                                       l[2][y][x - 1][d - 1] + p1,
-                                                       np.argmin([l[0][y][x - 1][:]]) + p2])
-                                          - np.argmin([l[2][y][x - 1][:]]))
+                                          + np.min([l[2][y][x - 1][d],
+                                                    l[2][y][x - 1][d - 1] + p1,
+                                                    np.min([l[0][y][x - 1][:]]) + p2])
+                                          - np.min([l[2][y][x - 1][:]]))
                     else:
                         l[2][y][x].append(c[y][x][d]
-                                          + np.argmin([l[2][y][x - 1][d],
-                                                       l[2][y][x - 1][d - 1] + p1,
-                                                       l[2][y][x - 1][d + 1] + p1,
-                                                       np.argmin([l[2][y][x - 1][:]]) + p2])
-                                          - np.argmin([l[2][y][x - 1][:]]))
+                                          + np.min([l[2][y][x - 1][d],
+                                                    l[2][y][x - 1][d - 1] + p1,
+                                                    l[2][y][x - 1][d + 1] + p1,
+                                                    np.min([l[2][y][x - 1][:]]) + p2])
+                                          - np.min([l[2][y][x - 1][:]]))
             d_len = len(c[y_b][x_b][:])
             for d in range(d_len):
                 # up
@@ -136,26 +177,26 @@ def semi_global(img_l: str, img_r: str, d_range: int, win: int, rl: bool):
                     if d == 0 and d_len == 1:
                         l[1][y_b][x_b].append(c[y_b][x_b][d]
                                               + l[1][y_b + 1][x_b][d]
-                                              - np.argmin([l[1][y_b + 1][x_b][:]]))
+                                              - np.min([l[1][y_b + 1][x_b][:]]))
                     elif d == 0:
                         l[1][y_b][x_b].append(c[y_b][x_b][d]
-                                              + np.argmin([l[1][y_b + 1][x_b][d],
-                                                           l[1][y_b + 1][x_b][d + 1] + p1,
-                                                           np.argmin([l[1][y_b + 1][x_b][:]]) + p2])
-                                              - np.argmin([l[1][y_b + 1][x_b][:]]))
+                                              + np.min([l[1][y_b + 1][x_b][d],
+                                                        l[1][y_b + 1][x_b][d + 1] + p1,
+                                                        np.min([l[1][y_b + 1][x_b][:]]) + p2])
+                                              - np.min([l[1][y_b + 1][x_b][:]]))
                     elif d == (d_len - 1):
                         l[1][y_b][x_b].append(c[y_b][x_b][d]
-                                              + np.argmin([l[1][y_b + 1][x_b][d],
-                                                           l[1][y_b + 1][x_b][d - 1] + p1,
-                                                           np.argmin([l[1][y_b + 1][x_b][:]]) + p2])
-                                              - np.argmin([l[1][y_b + 1][x_b][:]]))
+                                              + np.min([l[1][y_b + 1][x_b][d],
+                                                        l[1][y_b + 1][x_b][d - 1] + p1,
+                                                        np.min([l[1][y_b + 1][x_b][:]]) + p2])
+                                              - np.min([l[1][y_b + 1][x_b][:]]))
                     else:
                         l[1][y_b][x_b].append(c[y_b][x_b][d]
-                                              + np.argmin([l[1][y_b + 1][x_b][d],
-                                                           l[1][y_b + 1][x_b][d - 1] + p1,
-                                                           l[1][y_b + 1][x_b][d + 1] + p1,
-                                                           np.argmin([l[1][y_b + 1][x_b][:]]) + p2])
-                                              - np.argmin([l[1][y_b + 1][x_b][:]]))
+                                              + np.min([l[1][y_b + 1][x_b][d],
+                                                        l[1][y_b + 1][x_b][d - 1] + p1,
+                                                        l[1][y_b + 1][x_b][d + 1] + p1,
+                                                        np.min([l[1][y_b + 1][x_b][:]]) + p2])
+                                              - np.min([l[1][y_b + 1][x_b][:]]))
                 # left
                 if x == 0:
                     l[3][y_b][x_b].append(c[y_b][x_b][d])
@@ -166,26 +207,26 @@ def semi_global(img_l: str, img_r: str, d_range: int, win: int, rl: bool):
                     elif d == 0 and d_prev_len == 1:
                         l[3][y_b][x_b].append(c[y_b][x_b][d]
                                               + l[3][y_b][x_b + 1][d]
-                                              - np.argmin([l[3][y_b][x_b + 1][:]]))
+                                              - np.min([l[3][y_b][x_b + 1][:]]))
                     elif d == 0:
                         l[3][y_b][x_b].append(c[y_b][x_b][d]
-                                              + np.argmin([l[3][y_b][x_b + 1][d],
-                                                           l[3][y_b][x_b + 1][d + 1] + p1,
-                                                           np.argmin([l[3][y_b][x_b + 1][:]]) + p2])
-                                              - np.argmin([l[3][y_b][x_b + 1][:]]))
+                                              + np.min([l[3][y_b][x_b + 1][d],
+                                                        l[3][y_b][x_b + 1][d + 1] + p1,
+                                                        np.min([l[3][y_b][x_b + 1][:]]) + p2])
+                                              - np.min([l[3][y_b][x_b + 1][:]]))
                     elif d == (d_prev_len - 1):
                         l[3][y_b][x_b].append(c[y_b][x_b][d]
-                                              + np.argmin([l[3][y_b][x_b + 1][d],
-                                                           l[3][y_b][x_b + 1][d - 1] + p1,
-                                                           np.argmin([l[3][y_b][x_b + 1][:]]) + p2])
-                                              - np.argmin([l[3][y_b][x_b + 1][:]]))
+                                              + np.min([l[3][y_b][x_b + 1][d],
+                                                        l[3][y_b][x_b + 1][d - 1] + p1,
+                                                        np.min([l[3][y_b][x_b + 1][:]]) + p2])
+                                              - np.min([l[3][y_b][x_b + 1][:]]))
                     else:
                         l[3][y_b][x_b].append(c[y_b][x_b][d]
-                                              + np.argmin([l[3][y_b][x_b + 1][d],
-                                                           l[3][y_b][x_b + 1][d - 1] + p1,
-                                                           l[3][y_b][x_b + 1][d + 1] + p1,
-                                                           np.argmin([l[3][y_b][x_b + 1][:]]) + p2])
-                                              - np.argmin([l[3][y_b][x_b + 1][:]]))
+                                              + np.min([l[3][y_b][x_b + 1][d],
+                                                        l[3][y_b][x_b + 1][d - 1] + p1,
+                                                        l[3][y_b][x_b + 1][d + 1] + p1,
+                                                        np.min([l[3][y_b][x_b + 1][:]]) + p2])
+                                              - np.min([l[3][y_b][x_b + 1][:]]))
 
     for y in range(h):
         for x in range(w):
@@ -195,7 +236,6 @@ def semi_global(img_l: str, img_r: str, d_range: int, win: int, rl: bool):
                 s[d] = l[0][y][x][d] + l[1][y][x][d] + l[2][y][x][d] + l[3][y][x][d]
             disparity[y][x] = np.argmin(s)
     return disparity
-
 def consistency_check(disp1,disp2,rl):
     h, w = disp1.shape
     disparity = np.zeros(disp1.shape)
@@ -267,17 +307,17 @@ def evaluation(origl,origr,displ,dispr,namel,namer):
     plt.imsave(namer,dispr)
 
 def test_01():
-    disparityr = semi_global("teddy/left.png", "teddy/right.png", 64, 5,True)
-    disparityl = semi_global("teddy/right.png", "teddy/left.png", 64, 5,False)
-    plt.imshow(disparityr, cmap='gray', vmin=0, vmax=64)
-    plt.imshow(disparityl, cmap='gray', vmin=0, vmax=64)
-    origtedl = mpimg.imread("teddy/displ.pgm")
-    origtedr = mpimg.imread("teddy/dispr.pgm")
-    dispr = consistency_check(disparityr, disparityl, True)
-    displ = consistency_check(disparityl, disparityr, False)
-    print("Teddy 11:")
-    evaluation(origtedl, origtedr, displ, dispr, "teddy/teddy11L.png", "teddy/teddy11R.png")
-    plt.show()
+    imgl, imgr = read("teddy/left.png","teddy/right.png")
+    orig_l,orig_r = read("teddy/displ.pgm","teddy/dispr.pgm")
+    img_lr = fold(imgl, imgr)
+    img_gray = RGB_to_Grayscale(img_lr)
+    img_l, img_r = unfold(img_gray)
+    disp_l = semi_global(img_l, img_r, 64, 1, True)
+    disp_r = semi_global(img_r, img_l, 64, 1, False)
+    disp_r_checked = consistency_check(disp_l, disp_r, True)
+    disp_l_checked = consistency_check(disp_r, disp_l, False)
+    print("Teddy 3:")
+    evaluation(orig_l, orig_r, disp_l_checked, disp_r_checked, "teddy/teddy3L.png", "teddy/teddy3R.png")
 
 if __name__ == '__main__':
     test_01()
