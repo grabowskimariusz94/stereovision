@@ -14,14 +14,15 @@ int main() {
     imgl = stereo.read("Qk/im0.png");
     imgr = stereo.read("Qk/im1.png");
     img = stereo.fold(imgl, imgr);
-    stereo.write(img, "Qk/StereoBM/folded.ppm");
+    stereo.write(img, "Qk/folded.ppm");
     img_gray = stereo.RGB_to_Grayscale(img);
-    stereo.write(img_gray, "Qk/StereoBM/gray.pgm");
+    stereo.write(img_gray, "Qk/gray.pgm");
     unfolded = stereo.unfold(img_gray);
-    stereo.write(unfolded[0], "Qk/StereoBM/unfoldedL.pgm");
-    stereo.write(unfolded[1], "Qk/StereoBM/unfoldedR.pgm");
+    stereo.write(unfolded[0], "Qk/unfoldedL.pgm");
+    stereo.write(unfolded[1], "Qk/unfoldedR.pgm");
     
     // using Stereovision
+    
     disp = stereo.semi_global(unfolded,64,1);
     stereo.write(disp[0], "Qk/dispL.pgm");
     stereo.write(disp[1], "Qk/dispR.pgm");
@@ -40,12 +41,24 @@ int main() {
     
 
     
-    // using dispBM
+    // using StereoBM
     /*
     cv::Mat dispBM;
-    auto S = cv::StereoBM::create(64, 5);
+    auto S = cv::StereoBM::create(63, 5);
     S->compute(unfolded[0], unfolded[1], dispBM);
     stereo.write(dispBM, "Qk/StereoBM/disp.pgm", true);
+    const std::string window_name1 = "OpenCV_1";
+    cv::namedWindow(window_name1, cv::WINDOW_AUTOSIZE);
+    cv::imshow(window_name1, dispBM);
+    cv::waitKey(0);
+    */
+
+    // using StereoSGBM
+    /*
+    cv::Mat dispBM;
+    auto S = cv::StereoSGBM::create(0, 63, 3, P1, P2);
+    S->compute(unfolded[0], unfolded[1], dispBM);
+    stereo.write(dispBM, "Qk/StereoSGBM/disp.pgm", true);
     const std::string window_name1 = "OpenCV_1";
     cv::namedWindow(window_name1, cv::WINDOW_AUTOSIZE);
     cv::imshow(window_name1, dispBM);
