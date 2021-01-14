@@ -9,6 +9,8 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/calib3d.hpp>
 #include <opencv2/core/mat.hpp>
+#include <ctime>
+
 
 #define P1 5
 #define P2 70
@@ -24,9 +26,13 @@ public:
 	cv::Mat fold(cv::Mat img_l, cv::Mat img_r);
 	std::vector<cv::Mat> unfold(cv::Mat img);
 	int sad(cv::Mat img_base, cv::Mat img_match, int min_y, int max_y, int min_x, int max_x, int d);
+	uint8_t calcR(cv::Mat img, int  x, int y, uint8_t win);
+	std::vector<std::vector<std::vector<std::vector<int>>>> disp_est(std::vector<cv::Mat> imgs, uint8_t d_range, uint8_t win); // disparity estimation 
 	std::vector<std::vector<std::vector<std::vector<int>>>> cost_agregation(std::vector<std::vector<std::vector<int>>> c, int h, int w);
-	std::vector<cv::Mat> semi_global(std::vector<cv::Mat> imgs, int d_range, int win);
+	std::vector<cv::Mat> semi_global(std::vector<std::vector<std::vector<std::vector<int>>>> c);
 	std::vector<cv::Mat> consistency_check(std::vector<cv::Mat> imgs);
+
+	void save_after_disp_est(std::vector<std::vector<std::vector<std::vector<int>>>> c, const std::string file_name_l, const std::string file_name_r);
 
 private:
 };

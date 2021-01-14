@@ -103,7 +103,95 @@ int Stereovision::sad(cv::Mat img_base, cv::Mat img_match, int min_y, int max_y,
             sad_val = sad_val + ((sad_int<0)? (-sad_int) : (sad_int));
         }
     }
+
     return sad_val;
+}
+
+uint8_t Stereovision::calcR(cv::Mat img, int  x, int y, uint8_t win) {
+    uint8_t R = 0;
+    int h = img.rows;
+    int w = img.cols;
+    unsigned char* pb = (unsigned char*)(img.data);
+    uint8_t middle_pix = pb[img.step * y+ x];
+    for (int iy = std::max(0, y - win); iy <= std::min(h-1, y + win); ++iy) {
+        for (int ix = std::max(0, x - win); ix <= std::min(w-1, x + win); ++ix) {
+            R += ((pb[img.step * iy + ix] < middle_pix) ? 1 : 0);
+        }
+    }
+    return R;
+}
+
+std::vector<std::vector<std::vector<std::vector<int>>>> Stereovision::disp_est(std::vector<cv::Mat> imgs, uint8_t d_range, uint8_t win) {
+    cv::Mat imgL = imgs[0];
+    cv::Mat imgR = imgs[1];
+
+    int h = imgL.rows;
+    int w = imgL.cols;
+    //////////////////////////////////////////////////////////////////////////////
+    //SAD
+    //////////////////////////////////////////////////////////////////////////////
+    std::vector<std::vector<int>> width(w);
+    std::vector<std::vector<std::vector<int>>> cl(h, width), cr(h, width);
+    std::vector<std::vector<std::vector<std::vector<int>>>> c;
+
+    for (int y = 0; y < h; ++y) {
+        int min_y = (y - win < 0) ? 0 : y - win;
+        int max_y = (y + win > h - 1) ? (h - 1) : y + win;
+        for (int x = 0; x < w; ++x) {
+            int min_x = (x - win < 0) ? 0 : x - win;
+            int max_x = (x + win > w - 1) ? (w - 1) : x + win;
+
+            int dl_min = (-d_range > -min_x) ? -d_range : -min_x;
+            int dl_max = 0;
+            int dr_min = 0;
+            int dr_max = (d_range < w - max_x) ? d_range : (w - max_x);
+
+
+            std::vector<int> sadsl(dl_max - dl_min + 1);
+            std::vector<int> sadsr(dr_max - dr_min + 1);
+
+            for (int i = dl_min; i <= dl_max; ++i) {
+                sadsl[-i + dl_max] = (sad(imgL, imgR, min_y, max_y, min_x, max_x, i));
+            }
+            for (int i = dr_min; i <= dr_max; ++i) {
+                sadsr[i - dr_min] = (sad(imgR, imgL, min_y, max_y, min_x, max_x, i));
+            }
+            cl[y][x] = sadsl;
+            cr[y][x] = sadsr;
+        }
+    }
+    //////////////////////////////////////////////////////////////////////////////
+    //disparity estimation based on area-based non-parametric rank-transform
+    /////////////////////////////////////////////////////////////////////////////
+    /*
+    cv::Mat RL(h, w, CV_8UC1); //area-based non-parametric rank-transform
+    cv::Mat RR(h, w, CV_8UC1);
+
+    // R Calculation
+    unsigned char* pl = (unsigned char*)(RL.data);
+    unsigned char* pr = (unsigned char*)(RR.data);
+
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+            pl[RL.step * y + x] = calcR(imgL, x, y, win);
+            pr[RR.step * y + x] = calcR(imgR, x, y, win);
+        }
+    }
+
+    // Cost Calculation
+
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+            for (int d = 0; d < d_range; ++d) {
+                if (x - d >= 0) cl[y][x].push_back(std::abs(pl[RL.step * y + x] - pr[RR.step * y + x - d]));
+                if (x + d < w) cr[y][x].push_back(std::abs(pr[RR.step * y + x] - pl[RL.step * y + x + d]));
+            }
+        }
+    }
+    */
+
+    c.push_back(cl); c.push_back(cr);
+    return c;
 }
 
 std::vector<std::vector<std::vector<std::vector<int>>>> Stereovision::cost_agregation(std::vector<std::vector<std::vector<int>>> c, int h, int w) {
@@ -233,63 +321,24 @@ std::vector<std::vector<std::vector<std::vector<int>>>> Stereovision::cost_agreg
     return l;
 }
 
-std::vector<cv::Mat> Stereovision::semi_global(std::vector<cv::Mat> imgs, int d_range, int win){
-    std::vector<cv::Mat> disp;
-    cv::Mat imgL = imgs[0];
-    cv::Mat imgR = imgs[1];
-    int h = imgL.rows;
-    int w = imgL.cols;
-    cv::Mat dispL(h, w, CV_8UC1);
-    cv::Mat dispR(h, w, CV_8UC1);
+std::vector<cv::Mat> Stereovision::semi_global(std::vector<std::vector<std::vector<std::vector<int>>>> c){
+    
+    auto cl = c[0];
+    auto cr = c[1];
 
-    // Cost Calculation
-
-    std::vector<std::vector<int>> width(w);
-    std::vector<std::vector<std::vector<int>>> cl(h, width), cr(h, width);
-
-    unsigned char* pdl = (unsigned char*)(dispL.data);
-    unsigned char* pdr = (unsigned char*)(dispR.data);
-
-    for (int y = 0; y < h; ++y) {
-        int min_y = (y - win < 0) ? 0 : y - win;
-        int max_y = (y + win > h -1) ? (h - 1) : y + win;
-        for (int x = 0; x < w; ++x) {
-            int min_x = (x - win < 0) ? 0 : x - win;
-            int max_x = (x + win > w - 1) ? (w - 1) : x + win;
-
-            int dl_min = (-d_range > -min_x) ? -d_range : -min_x;
-            int dl_max = 0;
-            int dr_min = 0;
-            int dr_max = (d_range < w - max_x) ? d_range : (w - max_x);
-            
-
-            std::vector<int> sadsl(dl_max - dl_min + 1);
-            std::vector<int> sadsr(dr_max - dr_min + 1);
-            
-            for (int i = dl_min; i <= dl_max; ++i) {
-                sadsl[-i+dl_max]=(sad( imgL, imgR, min_y, max_y, min_x, max_x, i));
-            }
-            for (int i = dr_min; i <= dr_max; ++i) {
-                sadsr[i-dr_min]=(sad( imgR, imgL, min_y, max_y, min_x, max_x, i));
-            }
-            cl[y][x] = sadsl;
-            cr[y][x] = sadsr;
-
-            std::vector<int>::iterator resultl = (std::min_element(cl[y][x].begin(), cl[y][x].end()));
-            std::vector<int>::iterator resultr = (std::min_element(cr[y][x].begin(), cr[y][x].end()));
-            pdl[dispL.step * y + x] = (unsigned char)(std::distance(cl[y][x].begin(), resultl));
-            pdr[dispR.step * y + x] = (unsigned char)(std::distance(cr[y][x].begin(), resultr));
-            
-        }
-    }
-    write(dispL, "Qk/dispSL.pgm");
-    write(dispR, "Qk/dispSR.pgm");
-    write(dispL, "Qk/dispSnormL.pgm",true);
-    write(dispR, "Qk/dispSnormR.pgm",true);
+    int h = c[0].size();
+    int w = c[0][0].size();
 
     // Cost Agregation 
     auto ll = cost_agregation(cl, h, w);
     auto lr = cost_agregation(cr, h, w);
+
+    cv::Mat dispL(h, w, CV_8UC1);
+    cv::Mat dispR(h, w, CV_8UC1);
+
+    unsigned char* pdl = (unsigned char*)(dispL.data);
+    unsigned char* pdr = (unsigned char*)(dispR.data);
+
     
     for (int y = 0; y < h; ++y) {
         for (int x = 0; x < w; ++x) {
@@ -310,6 +359,7 @@ std::vector<cv::Mat> Stereovision::semi_global(std::vector<cv::Mat> imgs, int d_
         }
     }
 
+    std::vector<cv::Mat> disp;
     disp.push_back(dispL);
     disp.push_back(dispR);
 
@@ -396,5 +446,26 @@ std::vector<cv::Mat> Stereovision::consistency_check(std::vector<cv::Mat> disp) 
     checked.push_back(checkR);
     
     return checked;
+}
 
+
+void Stereovision::save_after_disp_est(std::vector<std::vector<std::vector<std::vector<int>>>> c, const std::string file_name_l, const std::string file_name_r) {
+    int h = c[0].size();
+    int w = c[0][0].size();
+    cv::Mat dispL(h, w, CV_8UC1);
+    cv::Mat dispR(h, w, CV_8UC1);
+
+    unsigned char* pdl = (unsigned char*)(dispL.data);
+    unsigned char* pdr = (unsigned char*)(dispR.data);
+
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+            std::vector<int>::iterator resultl = std::min_element(c[0][y][x].begin(), c[0][y][x].end());
+            std::vector<int>::iterator resultr = std::min_element(c[1][y][x].begin(), c[1][y][x].end());
+            pdl[dispL.step * y + x] = (unsigned char)(std::distance(c[0][y][x].begin(), resultl));
+            pdr[dispR.step * y + x] = (unsigned char)(std::distance(c[1][y][x].begin(), resultr));
+        }
+    }
+    write(dispL, file_name_l, true);
+    write(dispR, file_name_r, true);
 }

@@ -1,10 +1,15 @@
 ﻿
 #include "stereovision.hpp"
 
+
 int main() {
 
     cv::Mat imgl,imgr,img,img_gray;
+    std::vector<std::vector<std::vector<std::vector<int>>>> c;
     std::vector<cv::Mat> unfolded, disp, checked;
+
+    std::clock_t start;
+    double duration;
 
     Stereovision stereo;
 
@@ -22,31 +27,38 @@ int main() {
     stereo.write(unfolded[1], "Qk/unfoldedR.pgm");
     
     // using Stereovision
+    start = std::clock();
+    c = stereo.disp_est(unfolded, 63, 1);
+    duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+    std::cout << "printf: " << duration << '\n';
+    stereo.save_after_disp_est(c, "Qk/dispSADL.pgm","Qk/dispSADR.pgm");
     
-    disp = stereo.semi_global(unfolded,64,1);
-    stereo.write(disp[0], "Qk/dispL.pgm");
-    stereo.write(disp[1], "Qk/dispR.pgm");
+    start = std::clock();
+    disp = stereo.semi_global(c);
     checked = stereo.consistency_check(disp);
-    stereo.write(disp[0], "Qk/dispLnorm.pgm",true);
-    stereo.write(disp[1], "Qk/dispRnorm.pgm",true);
+    duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+    std::cout << "printf: " << duration << '\n';
+    stereo.write(disp[0], "Qk/dispL.pgm",true);
+    stereo.write(disp[1], "Qk/dispR.pgm",true);
     stereo.write(checked[0], "Qk/checkL.pgm", true);
     stereo.write(checked[1], "Qk/checkR.pgm", true);
-    const std::string window_name1 = "OpenCV_1";
-    cv::namedWindow(window_name1, cv::WINDOW_AUTOSIZE);
-    cv::imshow(window_name1, checked[0]);
-    const std::string window_name2 = "OpenCV_2";
-    cv::namedWindow(window_name2, cv::WINDOW_AUTOSIZE);
-    cv::imshow(window_name2, checked[1]);
+
     cv::waitKey(0);
     
 
     
     // using StereoBM
     /*
+    start = std::clock();
+
     cv::Mat dispBM;
-    auto S = cv::StereoBM::create(63, 5);
+    auto S = cv::StereoBM::create(64, 5);
     S->compute(unfolded[0], unfolded[1], dispBM);
-    stereo.write(dispBM, "Qk/StereoBM/disp.pgm", true);
+
+    duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+    std::cout << "printf: " << duration << '\n';
+
+    stereo.write(dispBM, "Qk/StereoBM/disp.pgm", true); 
     const std::string window_name1 = "OpenCV_1";
     cv::namedWindow(window_name1, cv::WINDOW_AUTOSIZE);
     cv::imshow(window_name1, dispBM);
@@ -55,15 +67,21 @@ int main() {
 
     // using StereoSGBM
     /*
+    start = std::clock();
+
     cv::Mat dispBM;
     auto S = cv::StereoSGBM::create(0, 63, 3, P1, P2);
     S->compute(unfolded[0], unfolded[1], dispBM);
     stereo.write(dispBM, "Qk/StereoSGBM/disp.pgm", true);
-    const std::string window_name1 = "OpenCV_1";
-    cv::namedWindow(window_name1, cv::WINDOW_AUTOSIZE);
-    cv::imshow(window_name1, dispBM);
+
+    duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+    std::cout << "printf: " << duration << '\n';
+
     cv::waitKey(0);
     */
+
+    // using StereoSGM
+    
 
 
     return 0;
