@@ -23,14 +23,14 @@ void Stereovision::write(cv::Mat img, const std::string file_name, bool with_nor
 }
 
 cv::Mat Stereovision::fold(cv::Mat imgL, cv::Mat imgR) {
-    cv::Mat img(imgL.rows, imgR.cols, CV_8UC3);
+    cv::Mat img(imgL.rows, imgR.cols-1, CV_8UC3);
 
     unsigned char* p = (unsigned char*)(img.data);
     unsigned char* pl = (unsigned char*)(imgL.data);
     unsigned char* pr = (unsigned char*)(imgR.data);
 
     for (int row = 0; row < img.rows; ++row) {
-        for (int col = 0; col < img.cols; ++col) {
+        for (int col = 0; col < img.cols-1; ++col) {
             if (col % 2 == 0) {
                 p[img.step * row + 3 * col + 0] = pl[imgL.step * row + 3 * col + 0];
                 p[img.step * row + 3 * col + 1] = pl[imgL.step * row + 3 * col + 1];
@@ -56,8 +56,8 @@ cv::Mat Stereovision::RGB_to_Grayscale(cv::Mat img) {
                 unsigned char b = p[img.step * row + col];
                 unsigned char g = p[img.step * row + col + 1];
                 unsigned char r = p[img.step * row + col + 2];
-                double pre_pg;
-                pre_pg = ((double)r * 77 + (double)g * 150 + (double)b * 29) / 255;
+                uint16_t pre_pg;
+                pre_pg = ((uint16_t)r * 77 + (uint16_t)g * 150 + (uint16_t)b * 29) / 256;
                 pg[gray.step * row + col/3] = (pre_pg > 255) ? 255 : (unsigned char)(pre_pg);
             }
         }
@@ -76,10 +76,10 @@ std::vector<cv::Mat> Stereovision::unfold(cv::Mat img) {
         for (int col = 0; col < img.cols; ++col) {
             if (col % 2 == 0) {
                 pl[imgL.step * row + col] = p[img.step * row + col];
-                pr[imgL.step * row + col] = (col == 0) ? p[img.step * row + col + 1] / 2 : (p[img.step * row + col - 1] + p[img.step * row + col - 1]) / 2;
+                pr[imgL.step * row + col] = (col == 0) ? (p[img.step * row + col + 1] / 2) : ((p[img.step * row + col - 1]) / 2 + (p[img.step * row + col + 1]) / 2);
             }
             else {
-                pl[imgL.step * row + col] = (col == img.cols-1) ? p[img.step * row + col - 1] / 2 : (p[img.step * row + col - 1] + p[img.step * row + col - 1]) / 2;
+                pl[imgL.step * row + col] = (col == img.cols-1) ? (p[img.step * row + col - 1] / 2) : ((p[img.step * row + col - 1]) / 2 + (p[img.step * row + col + 1]) / 2);
                 pr[imgL.step * row + col] = p[img.step * row + col];
             }
         }
@@ -331,6 +331,7 @@ std::vector<cv::Mat> Stereovision::semi_global(std::vector<std::vector<std::vect
 
     // Cost Agregation 
     auto ll = cost_agregation(cl, h, w);
+    std::cout << "Half Done" << '\n';
     auto lr = cost_agregation(cr, h, w);
 
     cv::Mat dispL(h, w, CV_8UC1);
