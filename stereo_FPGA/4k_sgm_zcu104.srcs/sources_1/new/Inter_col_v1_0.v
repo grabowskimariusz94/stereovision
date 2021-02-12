@@ -34,10 +34,11 @@
 	);
     
     reg	tready = 1'b1;
-    reg [C_AXIS_LR_TDATA_WIDTH-1 : 0] tdataL=0, tdataR=0,tdataLout=0, tdataRout=0;
-    reg [2:0] tvalid, tlast, tuser;
-    reg [C_AXIS_LR_TDATA_WIDTH-1 : 0] lastLR[1:0];
+    reg [C_AXIS_LR_TDATA_WIDTH-1 : 0] tdataL=0, tdataR=0;
+    reg [2:0] tvalid, tlast, tuser; 
+    reg [C_AXIS_LR_TDATA_WIDTH-1 : 0] lastLR[2:0]; // in no simmetrical => [1:0];
     initial begin
+        lastLR[2] = 0; //
         lastLR[1] = 0;
         lastLR[0] = 0;
     end
@@ -51,7 +52,7 @@
         tvalid[2] <= tvalid[1]; 
         tlast[0] <= s_axis_lr_tlast;
         tlast[1] <= tlast[0]; 
-        tlast[2] <= tlast[1];
+        tlast[2] <= tlast[1]; 
         tuser[0] <= s_axis_lr_tuser;
         tuser[1] <= tuser[0]; 
         tuser[2] <= tuser[1]; 
@@ -63,14 +64,36 @@
 	   //if(s_axis_lr_tvalid) 
 	    lastLR[0] <= s_axis_lr_tdata;
 	    lastLR[1] <= lastLR[0];
+	    lastLR[2] <= lastLR[1]; //
     end
     
     // interpolation
     always @(posedge aclk) 
 	begin
-	    // TO DO: 
-	    // we lost first 2 bits, and last two bits are 0
-	    
+	   // simetrical version
+	   if(tvalid[1])
+        begin
+           if(tvalid[0])
+           begin
+               {tdataR[31-:8],tdataL[23-:8],tdataR[15-:8],tdataL[7-:8]} <= lastLR[1];
+               tdataL[31-:8] <= {1'b0,lastLR[0][7-:7]}+{1'b0,lastLR[1][23-:7]}; //arithmetic average
+               tdataR[23-:8] <= {1'b0,lastLR[1][31-:7]}+{1'b0,lastLR[1][15-:7]}; 
+               tdataL[15-:8] <= {1'b0,lastLR[1][23-:7]}+{1'b0,lastLR[1][7-:7]}; 
+               tdataR[7-:8] <= {1'b0,lastLR[1][15-:7]}+{1'b0,lastLR[2][31-:7]}; 
+           end
+           else
+           begin
+               {tdataR[31-:8],tdataL[23-:8],tdataR[15-:8],tdataL[7-:8]} <= lastLR[0];
+               tdataL[31-:8] <= {1'b0,s_axis_lr_tdata[7-:7]}+{1'b0,lastLR[0][23-:7]}; //arithmetic average
+               tdataR[23-:8] <= {1'b0,lastLR[0][31-:7]}+{1'b0,lastLR[0][15-:7]}; 
+               tdataL[15-:8] <= {1'b0,lastLR[0][23-:7]}+{1'b0,lastLR[0][7-:7]}; 
+               tdataR[7-:8] <= {1'b0,lastLR[0][15-:7]}+{1'b0,lastLR[2][31-:7]}; 
+           end
+	   end
+	   
+	   
+	   // not simetrical version
+	    /* 
         if(tvalid[1])
         begin
             if(tvalid[0])
@@ -90,6 +113,7 @@
                 tdataR[7-:8] <= {1'b0,lastLR[1][31-:7]}+{1'b0,lastLR[1][15-:7]}; 
             end
         end
+        */
     end
     
     

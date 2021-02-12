@@ -15,7 +15,7 @@ def write(img_lr:np.ndarray, name: str):
 
 def fold(img_l:np.ndarray, img_r:np.ndarray):
     h, w, c = img_l.shape
-    img_lr = np.ndarray([h, w-1, c ])
+    img_lr = np.ndarray([h, w-1, c ])  #-1 for resolusion devided by 4
 
     for x in range(w-1):
         if x%2==0:
@@ -29,6 +29,7 @@ def fold(img_l:np.ndarray, img_r:np.ndarray):
 def test_01():
     img_l, img_r = read("imgLR\im0.png","imgLR\im1.png")
     img = fold(img_l, img_r)
+    print(type(img))
     write(img ,"img_in\im01.ppm")
     plt.imshow(img)
     plt.show()
