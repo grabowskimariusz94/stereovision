@@ -26,13 +26,14 @@ localparam integer C_S00_MAX_SAMPLES_PER_CLOCK   = 4;    // Number of samples pe
 localparam integer C_S00_CHANNELS                = 3;    // Color Channels
 localparam integer C_S00_LINES_IN_FRAME          = 497; //2160;   // Lines in one frame of video
 localparam integer C_S00_PIXELS_PER_LINE         = 740;  //3840;   // Pixels per one line
-
-localparam HEADER_LEN                = 15;
 localparam MAX_SAMPLES_PER_CLOCK     = C_S00_MAX_SAMPLES_PER_CLOCK;
-localparam CONTEXT_SIZE              = 3;
-localparam WIDTH                     = MAX_SAMPLES_PER_CLOCK*C_S00_DATA_WIDTH+3;
 localparam C_S00_AXIS_TDATA_WIDTH    = MAX_SAMPLES_PER_CLOCK*C_S00_DATA_WIDTH;
 
+localparam MAX_DISP                  = 64;
+localparam HEADER_LEN                = 15;
+localparam CONTEXT_SIZE              = 3;
+localparam DATA_WIDTH                = 8; //(gray)
+localparam AXIS_TDATA_WIDTH          = MAX_SAMPLES_PER_CLOCK*DATA_WIDTH;
 
 
 wire s_axis_video_aclk;
@@ -89,7 +90,12 @@ file_input
 Stereovision
 #(
     .WIDTH(C_S00_PIXELS_PER_LINE),
-    .HEIGHT(C_S00_LINES_IN_FRAME)
+    .HEIGHT(C_S00_LINES_IN_FRAME),
+    .MAX_DISP(MAX_DISP),
+    .CNTX_SIZE(CONTEXT_SIZE),
+    .MAX_SAMPLES_PER_CLOCK(MAX_SAMPLES_PER_CLOCK),
+    .AXIS_TDATA_WIDTH(AXIS_TDATA_WIDTH),
+    .DATA_WIDTH(DATA_WIDTH)
 ) stereo
 (
         .aclk(s_axis_video_aclk),

@@ -115,7 +115,7 @@ wire [DATA_PACK_WIDTH - 1 : 0]  delay2cntx                  [CNTX_SIZE][PPC][PPC
 reg_pixel_t                     cntx_tab                    [CNTX_SIZE][CNTX_TAB_WIDTH];
 
 // --- For context validation ---
-reg [11 : 0]    vcnt_cntx   [PPC]       = '{PPC{'0}};
+reg [11 : 0]    vcnt_cntx   [N_CNTX]      = '{N_CNTX{'0}};
 reg             cntx_valid  [N_CNTX]    = '{N_CNTX{'0}};
 
 // --- For loops ---

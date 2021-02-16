@@ -3,13 +3,11 @@
 
 	module Inter_col_v1_0 #
 	(
-		// Parameters of Axi Slave Bus Interface AXIS_LR
 		parameter integer C_AXIS_LR_TDATA_WIDTH	= 32
 	)
 	(
 		
         input wire  aclk,
-		input wire  aresetn,
 
 		// Ports of Axi Slave Bus Interface S_AXIS_LR
 		output wire  s_axis_lr_tready,

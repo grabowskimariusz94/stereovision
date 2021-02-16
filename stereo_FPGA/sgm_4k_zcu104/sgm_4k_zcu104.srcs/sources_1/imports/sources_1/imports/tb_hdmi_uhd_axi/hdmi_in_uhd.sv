@@ -35,10 +35,10 @@ localparam WIDTH = DATA_WIDTH*MAX_SAMPLES_PER_CLOCK;
 // Settings for height x width image  
 //horizontal
 localparam hr           = C_S00_PIXELS_PER_LINE/MAX_SAMPLES_PER_CLOCK; //resolution
-localparam hp           = 0; //porch
+localparam hp           = 100; //porch
 //vertical
 localparam vr           = C_S00_LINES_IN_FRAME; //resolution
-localparam vp           = 0; //porch
+localparam vp           = 100; //porch
 
 
 // States
