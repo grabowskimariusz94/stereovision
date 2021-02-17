@@ -15,23 +15,23 @@ def bad(orig, calc,thres: int) -> float:
     h, w = orig.shape
     diff = np.zeros(orig.shape)
     s = 0
-    for y in range(h):
-        for x in range(50,w-50):
+    for y in range(2,h-2):
+        for x in range(63,w-2):
             diff[y][x] = (np.abs(int(calc[y][x]) - int(orig[y][x])))
             if diff[y][x]>=thres:
                 s = s+1
-    result = s/(h*(w-100))
-    plt.imshow(diff , cmap='gray')
+    result = s/((h-2)*(w-63))
+    plt.imshow(diff*100 , cmap='gray')
     plt.show()
     return result
 
 def rms(orig, calc) -> float:
     h, w = orig.shape
     s = 0
-    for y in range(h):
-        for x in range(50,w-50):
+    for y in range(2, h - 2):
+        for x in range(63, w - 2):
             s = s + np.abs(int(calc[y][x])-int(orig[y][x]))**2
-    result = (s / (h *(w-100)))**(1/2)
+    result = (s / ((h-2)*(w-63)))**(1/2)
     return result
 
 def evaluation(origl,origr,displ,dispr):#,namel,namer):
@@ -50,15 +50,9 @@ def evaluation(origl,origr,displ,dispr):#,namel,namer):
     #plt.imsave(namer,dispr)
 
 def test_01():
-    #origl, origr = read("Qk/unfoldedL.pgm","Qk/unfoldedR.pgm")
-    #displ,dispr = read("test/outL_00.pgm","test/outR_00.pgm")
-    #evaluation(origl,origr,displ,dispr)
-    gray, gray_org = read("test/gray_00.pgm","Qk/gray.pgm")
-    badl1 = bad(gray_org, gray, 1)
-    print(badl1)
-    badl2 = rms(gray_org, gray)
-    print(badl2)
-
+    dispCPP_L, origr = read("test/dispCPP_L.pgm","Qk/unfoldedR.pgm")
+    dispFPGA_L,dispr = read("test/dispFPGA_L_00.pgm","test/unfoldedR_00.pgm")
+    evaluation(dispCPP_L,origr,dispFPGA_L,dispr)
 
 if __name__ == '__main__':
     test_01()

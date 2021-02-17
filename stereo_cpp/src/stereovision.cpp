@@ -15,9 +15,9 @@ cv::Mat Stereovision::read(const std::string file_name, bool is_gray) {
     return img;
 }
 
-void Stereovision::write(cv::Mat img, const std::string file_name, bool with_normalizing) {
-    if(with_normalizing)
-        cv::normalize(img, img, 0, 255, cv::NORM_MINMAX);
+void Stereovision::write(cv::Mat img, const std::string file_name, bool with_normalizing, const uint8_t d_range) {
+    if (with_normalizing)
+        img = img * (256 / d_range);
     cv::imwrite(file_name, img);
 
 }
@@ -91,8 +91,9 @@ std::vector<cv::Mat> Stereovision::unfold(cv::Mat img) {
     return output;
 }
 
-int Stereovision::sad(cv::Mat img_base, cv::Mat img_match, int min_y, int max_y, int min_x, int max_x, int d) {
-    int sad_val = 0;
+uint8_t Stereovision::sad(cv::Mat img_base, cv::Mat img_match, int min_y, int max_y, int min_x, int max_x, int d) {
+    int sum = 0;
+    uint8_t sad_val;
 
     unsigned char* pb = (unsigned char*)(img_base.data);
     unsigned char* pm = (unsigned char*)(img_match.data);
@@ -100,10 +101,10 @@ int Stereovision::sad(cv::Mat img_base, cv::Mat img_match, int min_y, int max_y,
     for (int y = min_y; y <= max_y; ++y) {
         for (int x = min_x; x <= max_x; ++x) {
             int sad_int = pb[img_base.step * y + x] - pm[img_match.step * y + x + d];
-            sad_val = sad_val + ((sad_int<0)? (-sad_int) : (sad_int));
+            sum = sum + ((sad_int<0)? (-sad_int) : (sad_int));
         }
     }
-
+    sad_val = (sum > 255) ? 255 : sum;
     return sad_val;
 }
 
@@ -121,7 +122,7 @@ uint8_t Stereovision::calcR(cv::Mat img, int  x, int y, uint8_t win) {
     return R;
 }
 
-std::vector<std::vector<std::vector<std::vector<int>>>> Stereovision::disp_est(std::vector<cv::Mat> imgs, uint8_t d_range, uint8_t win) {
+std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::disp_est(std::vector<cv::Mat> imgs, uint8_t d_range, uint8_t win) {
     cv::Mat imgL = imgs[0];
     cv::Mat imgR = imgs[1];
 
@@ -130,34 +131,35 @@ std::vector<std::vector<std::vector<std::vector<int>>>> Stereovision::disp_est(s
     //////////////////////////////////////////////////////////////////////////////
     //SAD
     //////////////////////////////////////////////////////////////////////////////
-    std::vector<std::vector<int>> width(w);
-    std::vector<std::vector<std::vector<int>>> cl(h, width), cr(h, width);
-    std::vector<std::vector<std::vector<std::vector<int>>>> c;
+    std::vector<std::vector<uint8_t>> width(w);
+    std::vector<std::vector<std::vector<uint8_t>>> cl(h, width), cr(h, width);
+    std::vector<std::vector<std::vector<std::vector<uint8_t>>>> c;
 
     for (int y = 0; y < h; ++y) {
-        int min_y = (y - win < 0) ? 0 : y - win;
-        int max_y = (y + win > h - 1) ? (h - 1) : y + win;
-        for (int x = 0; x < w; ++x) {
-            int min_x = (x - win < 0) ? 0 : x - win;
-            int max_x = (x + win > w - 1) ? (w - 1) : x + win;
+        int min_y = (y - win < 0) ? 0 : (y - win);
+        int max_y = (y + win > h - 1) ? (h - 1) : (y + win);
+        for (int x = -1; x < w-1; ++x) { // shifted to right like in FPGA
+            int min_x = (x - win < 0) ? 0 : (x - win);
+            int max_x = (x + win > w - 1) ? (w - 1) : (x + win);
 
-            int dl_min = (-d_range > -min_x) ? -d_range : -min_x;
+            int dl_min = (-(d_range - 1) > -min_x) ? (-(d_range - 1)) : (-min_x);
             int dl_max = 0;
             int dr_min = 0;
-            int dr_max = (d_range < w - max_x) ? d_range : (w - max_x);
+            int dr_max = ((d_range - 1) < w - max_x) ? (d_range - 1) : (w - max_x);
 
 
-            std::vector<int> sadsl(dl_max - dl_min + 1);
-            std::vector<int> sadsr(dr_max - dr_min + 1);
+            std::vector<uint8_t> sadsl(dl_max - dl_min + 1);
+            std::vector<uint8_t> sadsr(dr_max - dr_min + 1);
 
             for (int i = dl_min; i <= dl_max; ++i) {
                 sadsl[-i + dl_max] = (sad(imgL, imgR, min_y, max_y, min_x, max_x, i));
             }
             for (int i = dr_min; i <= dr_max; ++i) {
                 sadsr[i - dr_min] = (sad(imgR, imgL, min_y, max_y, min_x, max_x, i));
-            }
-            cl[y][x] = sadsl;
-            cr[y][x] = sadsr;
+            } 
+            cl[y][x+1] = sadsl; //-1 cause shifted tp right
+            cr[y][x+1] = sadsr;
+
         }
     }
     //////////////////////////////////////////////////////////////////////////////
@@ -450,7 +452,7 @@ std::vector<cv::Mat> Stereovision::consistency_check(std::vector<cv::Mat> disp) 
 }
 
 
-void Stereovision::save_after_disp_est(std::vector<std::vector<std::vector<std::vector<int>>>> c, const std::string file_name_l, const std::string file_name_r) {
+void Stereovision::save_after_disp_est(std::vector<std::vector<std::vector<std::vector<uint8_t>>>> c, const std::string file_name_l, const std::string file_name_r,const uint8_t d_range) {
     int h = c[0].size();
     int w = c[0][0].size();
     cv::Mat dispL(h, w, CV_8UC1);
@@ -461,12 +463,12 @@ void Stereovision::save_after_disp_est(std::vector<std::vector<std::vector<std::
 
     for (int y = 0; y < h; ++y) {
         for (int x = 0; x < w; ++x) {
-            std::vector<int>::iterator resultl = std::min_element(c[0][y][x].begin(), c[0][y][x].end());
-            std::vector<int>::iterator resultr = std::min_element(c[1][y][x].begin(), c[1][y][x].end());
+            std::vector<uint8_t>::iterator resultl = std::min_element(c[0][y][x].begin(), c[0][y][x].end());
+            std::vector<uint8_t>::iterator resultr = std::min_element(c[1][y][x].begin(), c[1][y][x].end());
             pdl[dispL.step * y + x] = (unsigned char)(std::distance(c[0][y][x].begin(), resultl));
             pdr[dispR.step * y + x] = (unsigned char)(std::distance(c[1][y][x].begin(), resultr));
         }
     }
-    write(dispL, file_name_l, true);
-    write(dispR, file_name_r, true);
+    write(dispL, file_name_l, true, d_range);
+    write(dispR, file_name_r, true, d_range);
 }
