@@ -121,7 +121,6 @@
     );
     
     // decoding out_cntx_r_valid_int
-    logic valid;
     always @* begin
         out_cntx_r_valid = '{default:1};
         for(integer i = 0; i < (MAX_DISP+3); i = i + 1) begin
@@ -147,7 +146,7 @@
         end
     end
     always @(*) begin
-        for(integer p = CNTX_SIZE-1; p >= 0; p = p - 1) begin
+        for(integer p = MAX_SAMPLES_PER_CLOCK-1; p >= 0; p = p - 1) begin
           for (integer i = 0; i < CNTX_SIZE; i = i + 1) begin
              for (integer j = 0; j < CNTX_SIZE; j = j + 1)
                 cntx_l[p][i][j]= out_cntx_l[i][j][p][DATA_WIDTH-1:0];
