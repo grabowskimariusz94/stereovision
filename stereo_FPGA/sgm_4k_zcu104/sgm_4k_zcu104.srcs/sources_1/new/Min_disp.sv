@@ -43,7 +43,7 @@ module Min_disp#(
     );
     
     
-    Min_SAD Disp0(
+    Min_disp_pxl Disp0(
         .clk(aclk),
         .i_sads_data(s_axis_costs_tdata[0]), 
         //.i_sads_valid(SADR_valid[1]),
@@ -51,7 +51,7 @@ module Min_disp#(
         //.o_disp_valid(disp_valid[0])
     );
     
-    Min_SAD Disp1(
+    Min_disp_pxl Disp1(
         .clk(aclk),
         .i_sads_data(s_axis_costs_tdata[1]), 
         //.i_sads_valid(SADR_valid[1]),
@@ -59,7 +59,7 @@ module Min_disp#(
         //.o_disp_valid(disp_valid[1])
     );
     
-    Min_SAD Disp2(
+    Min_disp_pxl Disp2(
         .clk(aclk),
         .i_sads_data(s_axis_costs_tdata[2]), 
         //.i_sads_valid(SADR_valid[1]),
@@ -67,7 +67,7 @@ module Min_disp#(
         //.o_disp_valid(disp_valid[2])
     );
     
-    Min_SAD Disp3(
+    Min_disp_pxl Disp3(
         .clk(aclk),
         .i_sads_data(s_axis_costs_tdata[3]), 
         //.i_sads_valid(SADR_valid[1]),
@@ -84,29 +84,14 @@ module Min_disp#(
     begin
         Min_SAD_valid[0] <= s_axis_costs_tvalid;
         Min_SAD_valid[5:1] <= Min_SAD_valid[4:0];
-        m_axis_min_tvalid <= Min_SAD_valid[5];
         Min_SAD_last[0] <= s_axis_costs_tlast;
         Min_SAD_last[5:1] <= Min_SAD_last[4:0];
-        m_axis_min_tlast <= Min_SAD_last[5];
         Min_SAD_user[0] <= s_axis_costs_tuser;
         Min_SAD_user[5:1] <= Min_SAD_user[4:0];
-        m_axis_min_tuser <= Min_SAD_user[5];
     end
-    /*
-    assign m_axis_r_tdata[31-:8] = (255-not_m_axis_r[31-:8]);
-    assign m_axis_r_tdata[23-:8] = (255-not_m_axis_r[23-:8]);
-    assign m_axis_r_tdata[15-:8] = (255-not_m_axis_r[15-:8]);
-    assign m_axis_r_tdata[7-:8] = (255-not_m_axis_r[7-:8]);
-    */
-    /*
+   
+    assign m_axis_min_tvalid = Min_SAD_valid[5];
+    assign m_axis_min_tlast = Min_SAD_last[5];
+    assign m_axis_min_tuser = Min_SAD_user[5];
     
-     
-    assign m_axis_l_tvalid = Min_SAD_valid[5];
-    assign m_axis_l_tlast = Min_SAD_last[5];
-    assign m_axis_l_tuser = Min_SAD_user[5];
-    
-    assign m_axis_r_tvalid = Min_SAD_valid[5];
-    assign m_axis_r_tlast = Min_SAD_last[5];
-    assign m_axis_r_tuser = Min_SAD_user[5];
-    */
 endmodule

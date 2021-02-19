@@ -20,12 +20,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Find_Min#(
+module Min_disp_pxl#(
         parameter integer MAX_DISP = 64
     )
     (
         input clk,
-        input [63:0][7:0]  i_sads_data, //8*64
+        input [64:0][7:0]  i_sads_data, //8*64
         //input i_sads_valid,
         output [7:0] o_disp_data
         //output o_disp_valid

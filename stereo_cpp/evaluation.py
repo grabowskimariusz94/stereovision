@@ -50,9 +50,9 @@ def evaluation(origl,origr,displ,dispr):#,namel,namer):
     #plt.imsave(namer,dispr)
 
 def test_01():
-    dispCPP_L, origr = read("test/dispCPP_L.pgm","Qk/unfoldedR.pgm")
-    dispFPGA_L,dispr = read("test/dispFPGA_L_00.pgm","test/unfoldedR_00.pgm")
-    evaluation(dispCPP_L,origr,dispFPGA_L,dispr)
+    dispCPP_L, dispCPP_R = read("test/dispCPP_L.pgm","test/dispCPP_R.pgm")
+    dispFPGA_L,dispFPGA_R= read("test/dispL_00.pgm","test/dispR_00.pgm")
+    evaluation(dispCPP_L,dispCPP_R,dispFPGA_L,dispFPGA_R)
 
 if __name__ == '__main__':
     test_01()

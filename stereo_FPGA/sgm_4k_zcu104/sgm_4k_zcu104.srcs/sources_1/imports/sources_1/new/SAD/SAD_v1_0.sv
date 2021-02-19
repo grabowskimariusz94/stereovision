@@ -28,26 +28,26 @@
 
 		// Ports of Axi Master Bus Interface M_AXIS_L
 		output wire  m_axis_l_tvalid,
-		output wire [MAX_DISP-1:0][DATA_WIDTH-1:0] m_axis_l_tdata [MAX_SAMPLES_PER_CLOCK-1:0],
+		output reg [MAX_DISP-1:0][DATA_WIDTH-1:0] m_axis_l_tdata [MAX_SAMPLES_PER_CLOCK-1:0],
 		output wire  m_axis_l_tlast,
-		output wire  m_axis_l_tuser
+		output wire  m_axis_l_tuser,
         
-        /*
+        
 		// Ports of Axi Master Bus Interface M_AXIS_R
 		output wire  m_axis_r_tvalid,
-		output wire [AXIS_TDATA_WIDTH-1 : 0] m_axis_r_tdata,
+		output reg [MAX_DISP-1:0][DATA_WIDTH-1:0]  m_axis_r_tdata [MAX_SAMPLES_PER_CLOCK-1:0],
 		output wire  m_axis_r_tlast,
 		output wire  m_axis_r_tuser
-		*/
+	
 	);
 	
 // --------------------------------------
 //  Ncntx_Xppc
 // --------------------------------------   
-	logic [(DATA_WIDTH+3)-1:0] out_cntx_r [CNTX_SIZE][CNTX_SIZE][MAX_DISP+3];
-	logic out_cntx_r_valid_int [MAX_DISP+3],out_cntx_r_valid [MAX_DISP+3];
+	logic [(DATA_WIDTH+(MAX_SAMPLES_PER_CLOCK-1))-1:0] out_cntx_r [CNTX_SIZE][CNTX_SIZE][MAX_DISP+(MAX_SAMPLES_PER_CLOCK-1)];
+	logic out_cntx_r_valid_int [MAX_DISP+(MAX_SAMPLES_PER_CLOCK-1)],out_cntx_r_valid [MAX_DISP+(MAX_SAMPLES_PER_CLOCK-1)];
 	logic buf_r_tvalid, buf_r_tuser, buf_r_tlast;
-	logic [(DATA_WIDTH+3)-1:0] out_cntx_l [CNTX_SIZE][CNTX_SIZE][MAX_DISP+3];
+	logic [(DATA_WIDTH+(MAX_SAMPLES_PER_CLOCK-1))-1:0] out_cntx_l [CNTX_SIZE][CNTX_SIZE][MAX_DISP+(MAX_SAMPLES_PER_CLOCK-1)];
 	logic buf_l_tvalid, buf_l_tuser, buf_l_tlast;
 	
     Ncntx_Xppc
@@ -60,7 +60,7 @@
         .C_S00_PIXELS_PER_LINE(WIDTH), // Pixels per one line
         .C_S00_LINES_IN_FRAME(HEIGHT), // Lines in one frame of video
     
-        .C_M01_N_OUTPUT_CNTX(MAX_DISP+3)
+        .C_M01_N_OUTPUT_CNTX(MAX_DISP+(MAX_SAMPLES_PER_CLOCK-1))
     ) NXL
     (
         // Clock signals
@@ -95,7 +95,7 @@
         .C_S00_PIXELS_PER_LINE(WIDTH), // Pixels per one line
         .C_S00_LINES_IN_FRAME(HEIGHT), // Lines in one frame of video
     
-        .C_M01_N_OUTPUT_CNTX(MAX_DISP+3)
+        .C_M01_N_OUTPUT_CNTX(MAX_DISP+(MAX_SAMPLES_PER_CLOCK-1))
     ) NXR
     (
         // Clock signals
@@ -123,8 +123,8 @@
     // decoding out_cntx_r_valid_int
     always @* begin
         out_cntx_r_valid = '{default:1};
-        for(integer i = 0; i < (MAX_DISP+3); i = i + 1) begin
-            for(integer j = i; j < (MAX_DISP+3); j = j + 1) begin
+        for(integer i = 0; i < (MAX_DISP+(MAX_SAMPLES_PER_CLOCK-1)); i = i + 1) begin
+            for(integer j = i; j < (MAX_DISP+(MAX_SAMPLES_PER_CLOCK-1)); j = j + 1) begin
                 out_cntx_r_valid[j] = out_cntx_r_valid_int[i]&out_cntx_r_valid[j];
             end
         end
@@ -134,11 +134,11 @@
 // --------------------------------------
 //  SAD Calculation
 // --------------------------------------       
-	logic [(MAX_DISP+3)-1:0][CNTX_SIZE-1:0][CNTX_SIZE-1:0][DATA_WIDTH-1:0] cntx_r ;
+	logic [(MAX_DISP+(MAX_SAMPLES_PER_CLOCK-1))-1:0][CNTX_SIZE-1:0][CNTX_SIZE-1:0][DATA_WIDTH-1:0] cntx_r ;
 	logic [MAX_SAMPLES_PER_CLOCK-1:0][CNTX_SIZE-1:0][CNTX_SIZE-1:0][DATA_WIDTH-1:0] cntx_l ;
     
     always @(*) begin
-        for(integer p = (MAX_DISP+3)-1; p >= 0; p = p - 1) begin
+        for(integer p = (MAX_DISP+(MAX_SAMPLES_PER_CLOCK-1))-1; p >= 0; p = p - 1) begin
           for (integer i = 0; i < CNTX_SIZE; i = i + 1) begin
              for (integer j = 0; j < CNTX_SIZE; j = j + 1)
                 cntx_r[p][i][j]= out_cntx_r[i][j][p][DATA_WIDTH-1:0];
@@ -195,49 +195,65 @@
     always @(posedge aclk) 
     begin
         SAD_valid[0] <= buf_r_tvalid && buf_l_tvalid;
-        SAD_valid[1:1] <= SAD_valid[0:0];
+        SAD_valid[1] <= SAD_valid[0];
         SAD_last[0] <= buf_r_tlast && buf_l_tlast;
-        SAD_last[1:1] <= SAD_last[0:0];
+        SAD_last[1] <= SAD_last[0];
         SAD_user[0] <= buf_r_tuser && buf_l_tuser;
-        SAD_user[1:1] <= SAD_user[0:0];
+        SAD_user[1] <= SAD_user[0];
     end
-    assign m_axis_l_tdata = sad;
-    assign m_axis_l_tvalid = SAD_valid;
-    assign m_axis_l_tlast = SAD_last;
-    assign m_axis_l_tuser = SAD_user;
     
+	logic [MAX_DISP-1:0][DATA_WIDTH-1:0] sad_buf [MAX_DISP+MAX_SAMPLES_PER_CLOCK-1:0] = '{default:1};
+	
+	always @(*) begin
+        for(integer p = MAX_SAMPLES_PER_CLOCK-1; p >= 0; p = p - 1)
+                sad_buf[p]<=sad[p];  
+    end
     
-    // TO DO: Generating R cost calculation
+	always @(posedge aclk) begin
+       // if(SAD_valid[1]) begin
+            for(integer p = MAX_SAMPLES_PER_CLOCK-1; p >= 0; p = p - 1) begin
+                for (integer i = 0; i < (MAX_DISP/MAX_SAMPLES_PER_CLOCK); i = i + 1)
+                    sad_buf[MAX_SAMPLES_PER_CLOCK*i+p+MAX_SAMPLES_PER_CLOCK]<= sad_buf[MAX_SAMPLES_PER_CLOCK*i+p];
+            end
+        //end
+    end
+    
+    // buf sads pipelining
+    logic [(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1:0] buf_SAD_valid='{default:0};
+    logic [(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1:0] buf_SAD_last='{default:0};
+	logic [(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1:0] buf_SAD_user='{default:0};
+    always @(posedge aclk) 
+    begin
+        buf_SAD_valid[0] <= SAD_valid[1];
+        buf_SAD_valid[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1:1] <= buf_SAD_valid[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-2:0];
+        buf_SAD_last[0] <= SAD_last[1];
+        buf_SAD_last[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1:1] <= buf_SAD_last[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-2:0];
+        buf_SAD_user[0] <= SAD_user[1];
+        buf_SAD_user[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1:1] <= buf_SAD_user[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-2:0];
+    end
+    
+    always @(*) begin
+        for(integer p = MAX_SAMPLES_PER_CLOCK-1; p >= 0; p = p - 1)
+                m_axis_l_tdata[p] <= sad_buf[MAX_DISP+p]; 
+    end
+    assign m_axis_l_tvalid = buf_SAD_valid[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1];
+    assign m_axis_l_tlast = buf_SAD_last[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1];
+    assign m_axis_l_tuser = buf_SAD_user[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1];
+    
+    always @(*) begin
+        for(integer p = MAX_SAMPLES_PER_CLOCK-1; p >= 0; p = p - 1) begin
+            for (integer i = 0; i < MAX_DISP; i = i + 1)
+                m_axis_r_tdata[p][i] = sad_buf[MAX_DISP+p-i][i];
+        end
+    end
+    assign m_axis_r_tvalid = buf_SAD_valid[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1];
+    assign m_axis_r_tlast = buf_SAD_last[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1];
+    assign m_axis_r_tuser = buf_SAD_user[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1];
+    
     /*
-	logic [63:0][7:0] sadL [3:0];
-	logic [63:0][7:0] sadL_buf [3:0];
-	logic [63:0][7:0] sadR [3:0];
-	logic [63:0][7:0] sadR_buf [67:0];
-	
-	
-	always @(posedge aclk) 
-        if(SAD_valid[1])
-            sadL_buf <= sad;
     always @(posedge aclk) 
         sadL <= sadL_buf;
     
-    initial begin
-        for (integer i = 0; i < 68; i = i + 1) begin
-             for (integer j = 0; j < 64; j = j + 1)
-                sadR_buf[i][j] = 255;
-        end
-    end
-    
-    always @(posedge aclk) 
-    begin
-        if(SAD_valid[1])begin
-            for(integer p = 3; p >= 0; p = p - 1) begin
-                sadR_buf[67-3+p]<=sad[p];
-                for (integer i = 0; i < 16; i = i + 1) // 64/4
-                    sadR_buf[4*i+p]<= sadR_buf[4*i+4+p];
-            end
-        end
-    end
     
     always @(posedge aclk) 
     begin
@@ -247,5 +263,9 @@
         end
     end
 	*/
+	
+	/*
+    
+    */
 	
 	endmodule

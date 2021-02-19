@@ -171,13 +171,12 @@ module Stereovision
     wire        c_l_tuser;
     wire        c_l_tvalid;
     wire  [MAX_DISP-1:0][DATA_WIDTH-1:0] c_l_tdata [MAX_SAMPLES_PER_CLOCK-1:0]; 
-    /*
     wire        c_r_tlast;
     wire        c_r_tready;
     wire        c_r_tuser;
     wire        c_r_tvalid;
-    wire [AXIS_TDATA_WIDTH-1:0] c_r_tdata; 
-    */
+    wire  [MAX_DISP-1:0][DATA_WIDTH-1:0] c_r_tdata [MAX_SAMPLES_PER_CLOCK-1:0]; 
+  
     SAD_v1_0 #(
     .MAX_DISP(MAX_DISP),
     .CNTX_SIZE(CNTX_SIZE),
@@ -199,13 +198,12 @@ module Stereovision
     .m_axis_l_tvalid(c_l_tvalid),
     .m_axis_l_tdata(c_l_tdata),
     .m_axis_l_tlast(c_l_tlast),
-    .m_axis_l_tuser(c_l_tuser)
-    /*
+    .m_axis_l_tuser(c_l_tuser),
     .m_axis_r_tvalid(c_r_tvalid),
     .m_axis_r_tdata(c_r_tdata),
     .m_axis_r_tlast(c_r_tlast),
     .m_axis_r_tuser(c_r_tuser)
-    */
+    
   );
   
   wire        d_l_tlast;
@@ -219,7 +217,7 @@ module Stereovision
         .MAX_SAMPLES_PER_CLOCK(MAX_SAMPLES_PER_CLOCK),
 	    .AXIS_TDATA_WIDTH(AXIS_TDATA_WIDTH),
 		.DATA_WIDTH(DATA_WIDTH)
-	)min(
+	)minL(
 	    .aclk(aclk),
 		.s_axis_costs_tdata(c_l_tdata),
 		.s_axis_costs_tlast(c_l_tlast),
@@ -229,6 +227,29 @@ module Stereovision
 		.m_axis_min_tdata(d_l_tdata) ,
 		.m_axis_min_tlast(d_l_tlast),
 		.m_axis_min_tuser(d_l_tuser)
+    );
+    
+  wire        d_r_tlast;
+  wire        d_r_tready;
+  wire        d_r_tuser;
+  wire        d_r_tvalid;
+  wire  [AXIS_TDATA_WIDTH-1:0] d_r_tdata;
+  
+  Min_disp#(
+        .MAX_DISP(MAX_DISP),
+        .MAX_SAMPLES_PER_CLOCK(MAX_SAMPLES_PER_CLOCK),
+	    .AXIS_TDATA_WIDTH(AXIS_TDATA_WIDTH),
+		.DATA_WIDTH(DATA_WIDTH)
+	)minR(
+	    .aclk(aclk),
+		.s_axis_costs_tdata(c_r_tdata),
+		.s_axis_costs_tlast(c_r_tlast),
+		.s_axis_costs_tuser(c_r_tuser),
+		.s_axis_costs_tvalid(c_r_tvalid),
+		.m_axis_min_tvalid(d_r_tvalid),
+		.m_axis_min_tdata(d_r_tdata) ,
+		.m_axis_min_tlast(d_r_tlast),
+		.m_axis_min_tuser(d_r_tuser)
     );
   
  
@@ -247,7 +268,7 @@ module Stereovision
         .VIDEO_OUT_tready(d_l_tready         ),
         .VIDEO_OUT_tuser(d_l_tuser           ),
         .VIDEO_OUT_tvalid(d_l_tvalid         ));
-    /*
+    
     
     hdmi_out_uhd #(
         .name("dispR"),
@@ -258,10 +279,10 @@ module Stereovision
         )
     dispR
        (.s_axis_video_aclk(aclk),
-        .VIDEO_OUT_tdata(c_r_tdata           ), 
-        .VIDEO_OUT_tlast(c_r_tlast           ),
-        .VIDEO_OUT_tready(c_r_tready         ),
-        .VIDEO_OUT_tuser(c_r_tuser           ),
-        .VIDEO_OUT_tvalid(c_r_tvalid         ));
-    */
+        .VIDEO_OUT_tdata(d_r_tdata           ), 
+        .VIDEO_OUT_tlast(d_r_tlast           ),
+        .VIDEO_OUT_tready(d_r_tready         ),
+        .VIDEO_OUT_tuser(d_r_tuser           ),
+        .VIDEO_OUT_tvalid(d_r_tvalid         ));
+    
 endmodule

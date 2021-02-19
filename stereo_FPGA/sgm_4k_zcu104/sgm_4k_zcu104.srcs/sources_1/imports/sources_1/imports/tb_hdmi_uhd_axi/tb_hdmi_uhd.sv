@@ -51,7 +51,7 @@ wire        tx_tready;
 wire        tx_tuser;
 wire        tx_tvalid;
 
-wire [32-1:0] tx_tdata;
+wire [AXIS_TDATA_WIDTH-1:0] tx_tdata;
 
 
 
