@@ -46,7 +46,7 @@
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
     <Option Name="DSABoardId" Val="zcu104"/>
-    <Option Name="WTXSimLaunchSim" Val="80"/>
+    <Option Name="WTXSimLaunchSim" Val="97"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -93,16 +93,14 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/sources_1/new/SAD/Min_SAD.sv">
+      <File Path="$PSRCDIR/sources_1/new/Min_disp.sv">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PSRCDIR/sources_1/new/SAD/Min_SAD.sv"/>
-          <Attr Name="ImportTime" Val="1607876704"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/new/Min_disp.sv">
+      <File Path="$PSRCDIR/sources_1/new/Min_disp_pxl.sv">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>

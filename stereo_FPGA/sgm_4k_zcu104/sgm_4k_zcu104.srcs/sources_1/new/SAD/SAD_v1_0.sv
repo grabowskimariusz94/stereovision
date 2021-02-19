@@ -210,12 +210,12 @@
     end
     
 	always @(posedge aclk) begin
-       // if(SAD_valid[1]) begin
+        if(SAD_valid[1]) begin
             for(integer p = MAX_SAMPLES_PER_CLOCK-1; p >= 0; p = p - 1) begin
                 for (integer i = 0; i < (MAX_DISP/MAX_SAMPLES_PER_CLOCK); i = i + 1)
                     sad_buf[MAX_SAMPLES_PER_CLOCK*i+p+MAX_SAMPLES_PER_CLOCK]<= sad_buf[MAX_SAMPLES_PER_CLOCK*i+p];
             end
-        //end
+        end
     end
     
     // buf sads pipelining
@@ -224,21 +224,23 @@
 	logic [(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1:0] buf_SAD_user='{default:0};
     always @(posedge aclk) 
     begin
-        buf_SAD_valid[0] <= SAD_valid[1];
-        buf_SAD_valid[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1:1] <= buf_SAD_valid[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-2:0];
-        buf_SAD_last[0] <= SAD_last[1];
-        buf_SAD_last[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1:1] <= buf_SAD_last[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-2:0];
-        buf_SAD_user[0] <= SAD_user[1];
-        buf_SAD_user[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1:1] <= buf_SAD_user[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-2:0];
+        if(SAD_valid[1]) begin
+            buf_SAD_valid[0] <= SAD_valid[1];
+            buf_SAD_valid[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1:1] <= buf_SAD_valid[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-2:0];
+            buf_SAD_last[0] <= SAD_last[1];
+            buf_SAD_last[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1:1] <= buf_SAD_last[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-2:0];
+            buf_SAD_user[0] <= SAD_user[1];
+            buf_SAD_user[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1:1] <= buf_SAD_user[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-2:0];
+        end 
     end
     
     always @(*) begin
         for(integer p = MAX_SAMPLES_PER_CLOCK-1; p >= 0; p = p - 1)
                 m_axis_l_tdata[p] <= sad_buf[MAX_DISP+p]; 
     end
-    assign m_axis_l_tvalid = buf_SAD_valid[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1];
-    assign m_axis_l_tlast = buf_SAD_last[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1];
-    assign m_axis_l_tuser = buf_SAD_user[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1];
+    assign m_axis_l_tvalid = SAD_valid[1] ? buf_SAD_valid[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1] : 1'b0;
+    assign m_axis_l_tlast = SAD_valid[1] ? buf_SAD_last[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1] : 1'b0;
+    assign m_axis_l_tuser = SAD_valid[1] ? buf_SAD_user[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1] : 1'b0;
     
     always @(*) begin
         for(integer p = MAX_SAMPLES_PER_CLOCK-1; p >= 0; p = p - 1) begin
@@ -246,26 +248,8 @@
                 m_axis_r_tdata[p][i] = sad_buf[MAX_DISP+p-i][i];
         end
     end
-    assign m_axis_r_tvalid = buf_SAD_valid[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1];
-    assign m_axis_r_tlast = buf_SAD_last[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1];
-    assign m_axis_r_tuser = buf_SAD_user[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1];
-    
-    /*
-    always @(posedge aclk) 
-        sadL <= sadL_buf;
-    
-    
-    always @(posedge aclk) 
-    begin
-        for(integer p = 3; p >= 0; p = p - 1) begin
-            for (integer i = 0; i < 64; i = i + 1)
-                sadR[p][i]<=sadR_buf[i+1+p][i];//[64-i+p][i];
-        end
-    end
-	*/
-	
-	/*
-    
-    */
+    assign m_axis_r_tvalid = SAD_valid[1] ? buf_SAD_valid[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1] : 1'b0;
+    assign m_axis_r_tlast = SAD_valid[1] ? buf_SAD_last[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1] : 1'b0;
+    assign m_axis_r_tuser = SAD_valid[1] ? buf_SAD_user[(MAX_DISP/MAX_SAMPLES_PER_CLOCK)-1] : 1'b0;
 	
 	endmodule
