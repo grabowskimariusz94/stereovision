@@ -3,11 +3,13 @@
 
 	module Inter_col_v1_0 #
 	(
+		// Parameters of Axi Slave Bus Interface AXIS_LR
 		parameter integer C_AXIS_LR_TDATA_WIDTH	= 32
 	)
 	(
 		
         input wire  aclk,
+		input wire  aresetn,
 
 		// Ports of Axi Slave Bus Interface S_AXIS_LR
 		output wire  s_axis_lr_tready,
@@ -73,19 +75,19 @@
         begin
            if(tvalid[0])
            begin
-               {tdataL[31-:8],tdataR[23-:8],tdataL[15-:8],tdataR[7-:8]} <= lastLR[1];
-               tdataR[31-:8] <= {1'b0,lastLR[2][7-:7]}+{1'b0,lastLR[1][23-:7]}; //arithmetic average
-               tdataL[23-:8] <= {1'b0,lastLR[1][31-:7]}+{1'b0,lastLR[1][15-:7]}; 
-               tdataR[15-:8] <= {1'b0,lastLR[1][23-:7]}+{1'b0,lastLR[1][7-:7]}; 
-               tdataL[7-:8] <= {1'b0,lastLR[1][15-:7]}+{1'b0,lastLR[0][31-:7]}; 
+               {tdataR[31-:8],tdataL[23-:8],tdataR[15-:8],tdataL[7-:8]} <= lastLR[1];
+               tdataL[31-:8] <= {1'b0,lastLR[0][7-:7]}+{1'b0,lastLR[1][23-:7]}; //arithmetic average
+               tdataR[23-:8] <= {1'b0,lastLR[1][31-:7]}+{1'b0,lastLR[1][15-:7]}; 
+               tdataL[15-:8] <= {1'b0,lastLR[1][23-:7]}+{1'b0,lastLR[1][7-:7]}; 
+               tdataR[7-:8] <= {1'b0,lastLR[1][15-:7]}+{1'b0,lastLR[2][31-:7]}; 
            end
            else
            begin
-               {tdataL[31-:8],tdataR[23-:8],tdataL[15-:8],tdataR[7-:8]} <= lastLR[0];
-               tdataR[31-:8] <= {1'b0,lastLR[2][7-:7]}+{1'b0,lastLR[0][23-:7]}; //arithmetic average
-               tdataL[23-:8] <= {1'b0,lastLR[0][31-:7]}+{1'b0,lastLR[0][15-:7]}; 
-               tdataR[15-:8] <= {1'b0,lastLR[0][23-:7]}+{1'b0,lastLR[0][7-:7]}; 
-               tdataL[7-:8] <= {1'b0,lastLR[0][15-:7]}+{1'b0,s_axis_lr_tdata[31-:7]}; 
+               {tdataR[31-:8],tdataL[23-:8],tdataR[15-:8],tdataL[7-:8]} <= lastLR[0];
+               tdataL[31-:8] <= {1'b0,s_axis_lr_tdata[7-:7]}+{1'b0,lastLR[0][23-:7]}; //arithmetic average
+               tdataR[23-:8] <= {1'b0,lastLR[0][31-:7]}+{1'b0,lastLR[0][15-:7]}; 
+               tdataL[15-:8] <= {1'b0,lastLR[0][23-:7]}+{1'b0,lastLR[0][7-:7]}; 
+               tdataR[7-:8] <= {1'b0,lastLR[0][15-:7]}+{1'b0,lastLR[2][31-:7]}; 
            end
 	   end
 	   

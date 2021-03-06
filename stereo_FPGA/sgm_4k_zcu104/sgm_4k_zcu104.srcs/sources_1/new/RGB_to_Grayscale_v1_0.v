@@ -11,6 +11,7 @@
 	)
 	(
         input wire  aclk,
+		input wire  aresetn,
 
 		// Ports of Axi Slave Bus Interface S00_AXIS
 		output wire  s_axis_rgb_tready,

@@ -42,56 +42,20 @@ module Min_disp#(
 		output reg  m_axis_min_tuser
     );
     
-    
-    Min_disp_pxl Disp0(
-        .clk(aclk),
-        .i_sads_data(s_axis_costs_tdata[0]), 
-        //.i_sads_valid(SADR_valid[1]),
-        .o_disp_data(m_axis_min_tdata[7-:8])
-        //.o_disp_valid(disp_valid[0])
+    generate 
+        for(genvar i=0; i < MAX_SAMPLES_PER_CLOCK; i++) 
+            Min_disp_pxl #(
+            .MAX_DISP(MAX_DISP),
+            .DATA_WIDTH(DATA_WIDTH)
+            )Disp(
+            .clk(aclk),
+            .i_sads_data(s_axis_costs_tdata[i]), 
+            .o_disp_data(m_axis_min_tdata[(DATA_WIDTH*i-1+DATA_WIDTH)-:DATA_WIDTH])
     );
-    
-    Min_disp_pxl Disp1(
-        .clk(aclk),
-        .i_sads_data(s_axis_costs_tdata[1]), 
-        //.i_sads_valid(SADR_valid[1]),
-        .o_disp_data(m_axis_min_tdata[15-:8])
-        //.o_disp_valid(disp_valid[1])
-    );
-    
-    Min_disp_pxl Disp2(
-        .clk(aclk),
-        .i_sads_data(s_axis_costs_tdata[2]), 
-        //.i_sads_valid(SADR_valid[1]),
-        .o_disp_data(m_axis_min_tdata[23-:8])
-        //.o_disp_valid(disp_valid[2])
-    );
-    
-    Min_disp_pxl Disp3(
-        .clk(aclk),
-        .i_sads_data(s_axis_costs_tdata[3]), 
-        //.i_sads_valid(SADR_valid[1]),
-        .o_disp_data(m_axis_min_tdata[31-:8])
-        //.o_disp_valid(disp_valid[3])
-    );
-    
-    
-    logic [5:0] Min_SAD_valid=6'b000000;
-	logic [5:0] Min_SAD_last=6'b000000;
-	logic [5:0] Min_SAD_user=6'b000000;
-	
-    always @(posedge aclk) 
-    begin
-        Min_SAD_valid[0] <= s_axis_costs_tvalid;
-        Min_SAD_valid[5:1] <= Min_SAD_valid[4:0];
-        Min_SAD_last[0] <= s_axis_costs_tlast;
-        Min_SAD_last[5:1] <= Min_SAD_last[4:0];
-        Min_SAD_user[0] <= s_axis_costs_tuser;
-        Min_SAD_user[5:1] <= Min_SAD_user[4:0];
-    end
+    endgenerate
    
-    assign m_axis_min_tvalid = Min_SAD_valid[5];
-    assign m_axis_min_tlast = Min_SAD_last[5];
-    assign m_axis_min_tuser = Min_SAD_user[5];
+    assign m_axis_min_tvalid = s_axis_costs_tvalid;
+    assign m_axis_min_tlast = s_axis_costs_tlast;
+    assign m_axis_min_tuser = s_axis_costs_tuser;
     
 endmodule
