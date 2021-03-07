@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 05.12.2020 17:21:19
+// Create Date: 06.03.2021 19:33:36
 // Design Name: 
-// Module Name: Min_SAD
+// Module Name: Min_Val
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,41 +20,31 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Min_disp_pxl#(
-        parameter MAX_DISP = 64,
+module Min_Val#(
+        parameter ELEM = 64, // number of elements
         parameter DATA_WIDTH = 8
     )
     (
         input clk,
-        input [MAX_DISP-1:0][DATA_WIDTH-1:0]  i_sads_data, 
+        input [ELEM-1:0][DATA_WIDTH-1:0]  i_sads_data, 
         output [DATA_WIDTH-1:0] o_disp_data
     );
     
     generate
-        for (genvar i = $clog2(MAX_DISP); i >= 0; i--) begin: regs
+        for (genvar i = $clog2(ELEM); i >= 0; i--) begin: regs
             reg [2**i-1:0][DATA_WIDTH-1:0] min;
-            reg [2**i-1:0][DATA_WIDTH-1:0] disp;
-        end
-    endgenerate
-    
-    assign regs[$clog2(MAX_DISP)].min = i_sads_data;
-    generate
-        for (genvar i = MAX_DISP; i >= 0; i--) begin
-            assign regs[$clog2(MAX_DISP)].disp[i] = i;
         end
     endgenerate
     
     generate
-        for (genvar i = $clog2(MAX_DISP)-1; i >= 0; i--) begin 
+        for (genvar i = $clog2(ELEM)-1; i >= 0; i--) begin 
             always @(*)
             begin
                 for (integer j=0;j<2**i;j=j+1) begin
                     if(regs[i+1].min[2*j] <= regs[i+1].min[2*j+1]) begin
                         regs[i].min[j] <= regs[i+1].min[2*j];
-                        regs[i].disp[j] <= regs[i+1].disp[2*j];
                     end else begin
                         regs[i].min[j] <= regs[i+1].min[2*j+1];
-                        regs[i].disp[j] <= regs[i+1].disp[2*j+1];
                     end
                 end
                 
@@ -62,6 +52,6 @@ module Min_disp_pxl#(
         end
     endgenerate
     
-    assign o_disp_data = regs[0].disp*(2**DATA_WIDTH/MAX_DISP);
+    assign o_disp_data = regs[0].min;
     
 endmodule

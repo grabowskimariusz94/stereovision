@@ -44,8 +44,8 @@ module Min_disp#(
     
     generate 
         for(genvar i=0; i < MAX_SAMPLES_PER_CLOCK; i++) 
-            Min_disp_pxl #(
-            .MAX_DISP(MAX_DISP),
+            Min_Arg #(
+            .ELEM(MAX_DISP),
             .DATA_WIDTH(DATA_WIDTH)
             )Disp(
             .clk(aclk),
