@@ -196,126 +196,109 @@ std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::disp_e
     return c;
 }
 
-std::vector<std::vector<std::vector<std::vector<int>>>> Stereovision::cost_agregation(std::vector<std::vector<std::vector<int>>> c, int h, int w) {
+std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::cost_agregation(std::vector<std::vector<std::vector<uint8_t>>> c, int h, int w) {
     
-    std::vector<std::vector<int>> width(w);
-    std::vector<std::vector<std::vector<int>>> height(h, width);
-    std::vector<std::vector<std::vector<std::vector<int>>>> l(4, height);
+    std::vector<std::vector<uint8_t>> width(w);
+    std::vector<std::vector<std::vector<uint8_t>>> height(h, width);
+    std::vector<std::vector<std::vector<std::vector<uint8_t>>>> l(4, height);
 
     for (int y = 0; y < h; ++y) {
         int y_b = h - y - 1;
         for (int x = 0; x < w; ++x) {
             int x_b = w - x - 1;
             int d_len = c[y][x].size();
+            
+            uint8_t min_prev_0;
+            uint8_t min_prev_45;
+            uint8_t min_prev_90;
+            uint8_t min_prev_135;
+            
+            if (x != 0)
+                min_prev_0 = *std::min_element(l[0][y][x - 1].begin(), l[0][y][x - 1].end());
+            if (y != 0 && x != 0)
+                min_prev_45 = *std::min_element(l[0][y - 1][x - 1].begin(), l[0][y - 1][x - 1].end());
+            if (y != 0) 
+                min_prev_90 = *std::min_element(l[0][y - 1][x].begin(), l[0][y - 1][x].end());
+            if (y != 0 && x != (w-1))
+                min_prev_135 = *std::min_element(l[0][y - 1][x + 1].begin(), l[0][y - 1][x + 1].end());
 
             for (int d = 0; d < d_len; ++d) {
-                //down
-                if (y == 0) l[0][y][x].push_back(c[y][x][d]);
-                else {
-                    if (d == 0 && d_len == 1) {
-                        l[0][y][x].push_back(c[y][x][d]
-                            + l[0][y - 1][x][d]
-                            - *std::min_element(l[0][y - 1][x].begin(), l[0][y - 1][x].end()));
-                    }
-                    else if (d == 0) {
-                        l[0][y][x].push_back(c[y][x][d]
-                            + std::min({ l[0][y - 1][x][d], l[0][y - 1][x][d + 1] + P1, *std::min_element(l[0][y - 1][x].begin(), l[0][y - 1][x].end()) + P2 })
-                            - *std::min_element(l[0][y - 1][x].begin(), l[0][y - 1][x].end()));
-                    }
-                    else if (d == (d_len - 1)) {
-                        l[0][y][x].push_back(c[y][x][d]
-                            + std::min({ l[0][y - 1][x][d], l[0][y - 1][x][d - 1] + P1, *std::min_element(l[0][y - 1][x].begin(), l[0][y - 1][x].end()) + P2 })
-                            - *std::min_element(l[0][y - 1][x].begin(), l[0][y - 1][x].end()));
-                    }
-                    else {
-                        l[0][y][x].push_back(c[y][x][d]
-                            + std::min({ l[0][y - 1][x][d], l[0][y - 1][x][d - 1] + P1, l[0][y - 1][x][d + 1] + P1, *std::min_element(l[0][y - 1][x].begin(), l[0][y - 1][x].end()) + P2 })
-                            - *std::min_element(l[0][y - 1][x].begin(), l[0][y - 1][x].end()));
-                    }
-                }
-                //right
-                if (x == 0) l[2][y][x].push_back(c[y][x][d]);
-                else {
-                    int d_prev_len = c[y][x - 1].size();
-                    if (d == d_prev_len) {
-                        l[2][y][x].push_back(c[y][x][d]);
-                    }
-                    else if (d == 0 && d_prev_len == 1) {
-                        l[2][y][x].push_back(c[y][x][d]
-                            + l[2][y][x - 1][d]
-                            - *std::min_element(l[2][y][x - 1].begin(), l[2][y][x - 1].end()));
-                    }
-                    else if (d == 0) {
-                        l[2][y][x].push_back(c[y][x][d]
-                            + std::min({ l[2][y][x - 1][d], l[2][y][x - 1][d + 1] + P1, *std::min_element(l[2][y][x - 1].begin(), l[2][y][x - 1].end()) + P2 })
-                            - *std::min_element(l[2][y][x - 1].begin(), l[2][y][x - 1].end()));
-                    }
-                    else if (d == (d_prev_len - 1)) {
-                        l[2][y][x].push_back(c[y][x][d]
-                            + std::min({ l[2][y][x - 1][d], l[2][y][x - 1][d - 1] + P1, *std::min_element(l[2][y][x - 1].begin(), l[2][y][x - 1].end()) + P2 })
-                            - *std::min_element(l[2][y][x - 1].begin(), l[2][y][x - 1].end()));
-                    }
-                    else {
-                        l[2][y][x].push_back(c[y][x][d]
-                            + std::min({ l[2][y][x - 1][d], l[2][y][x - 1][d - 1] + P1, l[2][y][x - 1][d + 1] + P1, *std::min_element(l[2][y][x - 1].begin(), l[2][y][x - 1].end()) + P2 })
-                            - *std::min_element(l[2][y][x - 1].begin(), l[2][y][x - 1].end()));
-                    }
-                }
-            }
 
-            d_len = c[y_b][x_b].size();
-            for (int d = 0; d < d_len; ++d) {
-                // up
-                if (y == 0) l[1][y_b][x_b].push_back(c[y_b][x_b][d]);
-                else {
-                    if (d == 0 && d_len == 1) {
-                        l[1][y_b][x_b].push_back(c[y_b][x_b][d]
-                            + l[1][y_b + 1][x_b][d]
-                            - *std::min_element(l[1][y_b + 1][x_b].begin(), l[1][y_b + 1][x_b].end()));
-                    }
-                    else if (d == 0) {
-                        l[1][y_b][x_b].push_back(c[y_b][x_b][d]
-                            + std::min({ l[1][y_b + 1][x_b][d], l[1][y_b + 1][x_b][d + 1] + P1, *std::min_element(l[1][y_b + 1][x_b].begin(), l[1][y_b + 1][x_b].end()) + P2 })
-                            - *std::min_element(l[1][y_b + 1][x_b].begin(), l[1][y_b + 1][x_b].end()));
-                    }
-                    else if (d == (d_len - 1)) {
-                        l[1][y_b][x_b].push_back(c[y_b][x_b][d]
-                            + std::min({ l[1][y_b + 1][x_b][d], l[1][y_b + 1][x_b][d - 1] + P1, *std::min_element(l[1][y_b + 1][x_b].begin(), l[1][y_b + 1][x_b].end()) + P2 })
-                            - *std::min_element(l[1][y_b + 1][x_b].begin(), l[1][y_b + 1][x_b].end()));
-                    }
-                    else {
-                        l[1][y_b][x_b].push_back(c[y_b][x_b][d]
-                            + std::min({ l[1][y_b + 1][x_b][d], l[1][y_b + 1][x_b][d - 1] + P1, l[1][y_b + 1][x_b][d + 1] + P1, *std::min_element(l[1][y_b + 1][x_b].begin(), l[1][y_b + 1][x_b].end()) + P2 })
-                            - *std::min_element(l[1][y_b + 1][x_b].begin(), l[1][y_b + 1][x_b].end()));
-                    }
+                //0
+                if (x == 0) {
+                    l[0][y][x].push_back(c[y][x][d]);
                 }
-                // left
-                if (x == 0) l[3][y_b][x_b].push_back(c[y_b][x_b][d]);
                 else {
-                    int d_prev_len = c[y_b][x_b + 1].size();
-                    if (d == d_prev_len) {
-                        l[3][y_b][x_b].push_back(c[y_b][x_b][d]);
-                    }
-                    else if (d == 0 && d_prev_len == 1) {
-                        l[3][y_b][x_b].push_back(c[y_b][x_b][d]
-                            + l[3][y_b][x_b + 1][d]
-                            - *std::min_element(l[3][y_b][x_b + 1].begin(), l[3][y_b][x_b + 1].end()));
-                    }
-                    else if (d == 0) {
-                        l[3][y_b][x_b].push_back(c[y_b][x_b][d]
-                            + std::min({ l[3][y_b][x_b + 1][d], l[3][y_b][x_b + 1][d + 1] + P1, *std::min_element(l[3][y_b][x_b + 1].begin(), l[3][y_b][x_b + 1].end()) + P2 })
-                            - *std::min_element(l[3][y_b][x_b + 1].begin(), l[3][y_b][x_b + 1].end()));
-                    }
-                    else if (d == (d_prev_len - 1)) {
-                        l[3][y_b][x_b].push_back(c[y_b][x_b][d]
-                            + std::min({ l[3][y_b][x_b + 1][d], l[3][y_b][x_b + 1][d - 1] + P1, *std::min_element(l[3][y_b][x_b + 1].begin(), l[3][y_b][x_b + 1].end()) + P2 })
-                            - *std::min_element(l[3][y_b][x_b + 1].begin(), l[3][y_b][x_b + 1].end()));
-                    }
-                    else {
-                        l[3][y_b][x_b].push_back(c[y_b][x_b][d]
-                            + std::min({ l[3][y_b][x_b + 1][d], l[3][y_b][x_b + 1][d - 1] + P1, l[3][y_b][x_b + 1][d + 1] + P1, *std::min_element(l[3][y_b][x_b + 1].begin(), l[3][y_b][x_b + 1].end()) + P2 })
-                            - *std::min_element(l[3][y_b][x_b + 1].begin(), l[3][y_b][x_b + 1].end()));
-                    }
+                    std::vector<uint16_t> data_with_penalty;
+                    // 0 - disp
+                    // 1 - disp - 1
+                    // 2 - disp + 1
+                    // 3 - disp min
+                    data_with_penalty.push_back(uint16_t(l[0][y][x - 1][d]));
+                    data_with_penalty.push_back((d != 0) ? uint16_t(l[0][y][x - 1][d - 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(l[0][y][x - 1][d + 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back(uint16_t(min_prev_0 + P2));
+                    uint16_t l_0 = uint16_t(c[y][x][d]) + *std::min_element(data_with_penalty.begin(), data_with_penalty.end()) - uint16_t(min_prev_0);
+
+                    l[0][y][x].push_back((l_0 < 255) ? uint8_t(l_0) : 255);
+                }
+
+                //45
+                if (y == 0 || x == 0) {
+                    l[1][y][x].push_back(c[y][x][d]);
+                }
+                else {
+                    std::vector<uint16_t> data_with_penalty;
+                    // 0 - disp
+                    // 1 - disp - 1
+                    // 2 - disp + 1
+                    // 3 - disp min
+                    data_with_penalty.push_back(uint16_t(l[1][y - 1][x - 1][d]));
+                    data_with_penalty.push_back((d != 0) ? uint16_t(l[1][y - 1][x - 1][d - 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(l[1][y - 1][x - 1][d + 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back(uint16_t(min_prev_45 + P2));
+                    uint16_t l_45 = uint16_t(c[y][x][d]) + *std::min_element(data_with_penalty.begin(), data_with_penalty.end()) - uint16_t(min_prev_45);
+
+                    l[1][y][x].push_back((l_45 < 255) ? uint8_t(l_45) : 255);
+                }
+
+
+                //90
+                if (y == 0) {
+                    l[2][y][x].push_back(c[y][x][d]);
+                }
+                else {
+                    std::vector<uint16_t> data_with_penalty;
+                    // 0 - disp
+                    // 1 - disp - 1
+                    // 2 - disp + 1
+                    // 3 - disp min
+                    data_with_penalty.push_back(uint16_t(l[2][y - 1][x][d]));
+                    data_with_penalty.push_back((d != 0) ? uint16_t(l[2][y - 1][x][d - 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(l[2][y - 1][x][d + 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back(uint16_t(min_prev_90 + P2));
+                    uint16_t l_90 = uint16_t(c[y][x][d]) + *std::min_element(data_with_penalty.begin(), data_with_penalty.end()) - uint16_t(min_prev_90);
+
+                    l[2][y][x].push_back((l_90 < 255) ? uint8_t(l_90) : 255);
+                }
+
+                //135
+                if (y == 0 || x == (w - 1)) {
+                    l[3][y][x].push_back(c[y][x][d]);
+                }
+                else {
+                    std::vector<uint16_t> data_with_penalty;
+                    // 0 - disp
+                    // 1 - disp - 1
+                    // 2 - disp + 1
+                    // 3 - disp min
+                    data_with_penalty.push_back(uint16_t(l[3][y - 1][x + 1][d]));
+                    data_with_penalty.push_back((d != 0) ? uint16_t(l[3][y - 1][x + 1][d - 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(l[3][y - 1][x + 1][d + 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back(uint16_t(min_prev_135 + P2));
+                    uint16_t l_135 = uint16_t(c[y][x][d]) + *std::min_element(data_with_penalty.begin(), data_with_penalty.end()) - uint16_t(min_prev_135);
+
+                    l[3][y][x].push_back((l_135 < 255) ? uint8_t(l_135) : 255);
                 }
             }
         }
@@ -323,7 +306,7 @@ std::vector<std::vector<std::vector<std::vector<int>>>> Stereovision::cost_agreg
     return l;
 }
 
-std::vector<cv::Mat> Stereovision::semi_global(std::vector<std::vector<std::vector<std::vector<int>>>> c){
+std::vector<cv::Mat> Stereovision::semi_global(std::vector<std::vector<std::vector<std::vector<uint8_t>>>> c){
     
     auto cl = c[0];
     auto cr = c[1];
@@ -347,16 +330,16 @@ std::vector<cv::Mat> Stereovision::semi_global(std::vector<std::vector<std::vect
         for (int x = 0; x < w; ++x) {
             int dl_len = cl[y][x].size();
             int dr_len = cr[y][x].size();
-            std::vector<int>sl(dl_len);
-            std::vector<int>sr(dr_len);
+            std::vector<uint8_t>sl(dl_len);
+            std::vector<uint8_t>sr(dr_len);
             for (int d = 0; d < dl_len; ++d) {
-                sl[d] = ll[0][y][x][d] + ll[1][y][x][d] + ll[2][y][x][d] + ll[3][y][x][d];
+                sl[d] = uint8_t(uint16_t(ll[0][y][x][d] + ll[1][y][x][d] + ll[2][y][x][d] + ll[3][y][x][d]) / 4);
             }
             for (int d = 0; d < dr_len; ++d) {
-                sr[d] = lr[0][y][x][d] + lr[1][y][x][d] + lr[2][y][x][d] + lr[3][y][x][d];
+                sr[d] = uint8_t(uint16_t(lr[0][y][x][d] + lr[1][y][x][d] + lr[2][y][x][d] + lr[3][y][x][d]) / 4);
             }
-            std::vector<int>::iterator resultl = (std::min_element(sl.begin(), sl.end()));
-            std::vector<int>::iterator resultr = (std::min_element(sr.begin(), sr.end()));
+            std::vector<uint8_t>::iterator resultl = (std::min_element(sl.begin(), sl.end()));
+            std::vector<uint8_t>::iterator resultr = (std::min_element(sr.begin(), sr.end()));
             pdl[dispL.step * y + x] = (unsigned char)(std::distance(sl.begin(), resultl));
             pdr[dispR.step * y + x] = (unsigned char)(std::distance(sr.begin(), resultr));
         }
