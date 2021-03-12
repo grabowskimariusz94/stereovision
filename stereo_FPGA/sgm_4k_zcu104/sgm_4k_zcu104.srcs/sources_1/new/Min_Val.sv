@@ -25,7 +25,6 @@ module Min_Val#(
         parameter DATA_WIDTH = 8
     )
     (
-        input clk,
         input [ELEM-1:0][DATA_WIDTH-1:0]  i_sads_data, 
         output [DATA_WIDTH-1:0] o_disp_data
     );
@@ -35,6 +34,7 @@ module Min_Val#(
             reg [2**i-1:0][DATA_WIDTH-1:0] min;
         end
     endgenerate
+    assign regs[$clog2(ELEM)].min = i_sads_data;
     
     generate
         for (genvar i = $clog2(ELEM)-1; i >= 0; i--) begin 

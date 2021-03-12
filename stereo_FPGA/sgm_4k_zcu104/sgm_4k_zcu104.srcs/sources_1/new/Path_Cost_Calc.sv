@@ -45,7 +45,6 @@ module Path_Cost_Calc#(
         .DATA_WIDTH(DATA_WIDTH)
     ) min1
     (
-        .clk(aclk),
         .i_sads_data(prev_path_cost), 
         .o_disp_data(min_path)
     );
@@ -58,7 +57,7 @@ module Path_Cost_Calc#(
     // 3 - disp min
     
     for (genvar disp = 0 ; disp < MAX_DISP; disp++) begin
-        assign data_with_penalty[disp][0] = {1'b0,prev_path_cost};
+        assign data_with_penalty[disp][0] = {1'b0,prev_path_cost[disp]};
         if (disp != 0)
             assign data_with_penalty[disp][1] = prev_path_cost[disp-1]+P1;
         else
@@ -71,24 +70,25 @@ module Path_Cost_Calc#(
     end
     
     /* Min with penalties */
-    wire [(MAX_DISP+1)-1:0][DATA_WIDTH-1:0]  min_with_penalty;
+    wire [MAX_DISP-1:0][(DATA_WIDTH+1)-1:0]  min_with_penalty;
     for (genvar disp = 0 ; disp < MAX_DISP; disp++) begin : mins2
         Min_Val#(
             .ELEM(4), // number of elements
             .DATA_WIDTH(DATA_WIDTH+1)
         ) min
         (
-            .clk(aclk),
             .i_sads_data(data_with_penalty[disp]), 
             .o_disp_data(min_with_penalty[disp])
         );
     end
     
     /* Sum with Cost and Subtract Min Path Cost*/
-    wire [(MAX_DISP+2)-1:0][DATA_WIDTH-1:0]  sum_with_cost;
+    wire [MAX_DISP-1:0][(DATA_WIDTH+2)-1:0]  sum_with_cost;
+    wire [MAX_DISP-1:0][(DATA_WIDTH+2)-1:0]  diff_with_min;
     for (genvar disp = 0 ; disp < MAX_DISP; disp++) begin
         assign sum_with_cost[disp] = min_with_penalty[disp] + cost[disp];
-        assign path_cost[disp] =  sum_with_cost[disp] - min_path[disp];
+        assign diff_with_min[disp] =  sum_with_cost[disp] - min_path;
+        assign path_cost[disp] = (diff_with_min[disp][(DATA_WIDTH+2)-1-:2]==2'b00) ? diff_with_min[disp][(DATA_WIDTH-1)-:8] : 8'hFF; 
     end
     
 endmodule

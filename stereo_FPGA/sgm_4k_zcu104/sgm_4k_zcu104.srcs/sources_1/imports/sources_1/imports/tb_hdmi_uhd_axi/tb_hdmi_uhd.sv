@@ -99,7 +99,7 @@ Stereovision
 ) stereo
 (
         .aclk(s_axis_video_aclk),
-
+	    .aresetn(1'b1),
 		// Ports of Axi Slave Bus Interface S00_AXIS
 		.s_axis_img_tready(rx_tready),
 		.s_axis_img_tdata(rx_tdata),

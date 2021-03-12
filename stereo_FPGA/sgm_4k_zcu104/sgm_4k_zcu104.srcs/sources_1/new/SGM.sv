@@ -41,7 +41,12 @@ module SGM#(
 		input wire  s_axis_tvalid,
 		input [MAX_DISP-1:0][DATA_WIDTH-1:0]  s_axis_tdata [MAX_SAMPLES_PER_CLOCK-1:0],
 		input wire  s_axis_tlast,
-		input wire  s_axis_tuser
+		input wire  s_axis_tuser, 
+		
+		input wire  m_axis_tvalid,
+		input [AXIS_TDATA_WIDTH-1:0]  m_axis_tdata,
+		input wire  m_axis_tlast,
+		input wire  m_axis_tuser
     );
     
 
@@ -49,7 +54,6 @@ module SGM#(
     wire [MAX_DISP-1:0][DATA_WIDTH-1:0] path_cost_90 [MAX_SAMPLES_PER_CLOCK-1:0];
     wire [MAX_DISP-1:0][AXIS_TDATA_WIDTH-1:0] prev_path_cost_90_from_buf;
     wire [MAX_DISP-1:0][AXIS_TDATA_WIDTH-1:0] path_cost_90_to_buf;
-    
     
     
     for (genvar disp = 0; disp < MAX_DISP; disp++) begin : BRAM_GEN
@@ -83,7 +87,7 @@ module SGM#(
             .clk    ( aclk ),
             .ce     ( s_axis_tvalid ), 
             .rst    ( !aresetn ),
-            .tlast  ( s_axis_tvalid ),     
+            .tlast  ( s_axis_tlast ),     
             .din    ( path_cost_90_to_buf[disp] ), 
             .dout   ( prev_path_cost_90_from_buf[disp] )
         );
@@ -106,7 +110,7 @@ module SGM#(
     end
     
     
-    for (genvar i = 0; i < MAX_SAMPLES_PER_CLOCK - 1; i++) begin : PATH_CALC
+    for (genvar i = 0; i < MAX_SAMPLES_PER_CLOCK; i++) begin : PATH_CALC
         Path_Cost_Calc#(
             .MAX_DISP(MAX_DISP),
             .DATA_WIDTH(DATA_WIDTH),
@@ -135,24 +139,18 @@ module SGM#(
     end
     
     // Sum Path Costs
-    reg [MAX_DISP-1:0][(DATA_WIDTH+2)-1:0] sum_path_costs_tdata [MAX_SAMPLES_PER_CLOCK-1:0];
+    reg [MAX_DISP-1:0][DATA_WIDTH-1:0] sum_path_costs_tdata [MAX_SAMPLES_PER_CLOCK-1:0];
     reg sum_path_costs_tvalid;
     reg sum_path_costs_tlast;
     reg sum_path_costs_tuser;
     always @(aclk) begin
         for (integer disp = 0; disp < MAX_DISP; disp++)
             for (integer i = 0; i < MAX_SAMPLES_PER_CLOCK; i++)
-                sum_path_costs_tdata[i][disp] <= path_cost_90[i][disp]; //+...
+                sum_path_costs_tdata[i][disp] <= path_cost_90[i][disp]; //(+... )/4
         sum_path_costs_tvalid <= path_cost_tvalid;
         sum_path_costs_tlast <= path_cost_tlast;
         sum_path_costs_tuser <= path_cost_tuser;
     end
-    
-    wire        d_tlast;
-    wire        d_tready;
-    wire        d_tuser;
-    wire        d_tvalid;
-    wire  [AXIS_TDATA_WIDTH-1:0] d_r_tdata;
     
     Min_disp#(
         .MAX_DISP(MAX_DISP),
@@ -165,25 +163,12 @@ module SGM#(
 		.s_axis_costs_tlast(sum_path_costs_tlast),
 		.s_axis_costs_tuser(sum_path_costs_tuser),
 		.s_axis_costs_tvalid(sum_path_costs_tvalid),
-		.m_axis_min_tvalid(d_tvalid),
-		.m_axis_min_tdata(d_tdata) ,
-		.m_axis_min_tlast(d_tlast),
-		.m_axis_min_tuser(d_tuser)
+		.m_axis_min_tvalid(m_axis_tvalid),
+		.m_axis_min_tdata(m_axis_tdata) ,
+		.m_axis_min_tlast(m_axis_tlast),
+		.m_axis_min_tuser(m_axis_tuser)
     );
     
-    hdmi_out_uhd #(
-        .name("sgm"),
-        .NEW_WIDTH(WIDTH),
-        .NEW_HEIGHT(HEIGHT),
-        .CHANNELS(1),
-        .MAX_SAMPLES_PER_CLOCK(MAX_SAMPLES_PER_CLOCK)
-        )
-    sgm
-       (.s_axis_video_aclk(aclk),
-        .VIDEO_OUT_tdata(d_tdata           ), 
-        .VIDEO_OUT_tlast(d_tlast           ),
-        .VIDEO_OUT_tready(d_tready         ),
-        .VIDEO_OUT_tuser(d_tuser           ),
-        .VIDEO_OUT_tvalid(d_tvalid         ));
+    
     
 endmodule
