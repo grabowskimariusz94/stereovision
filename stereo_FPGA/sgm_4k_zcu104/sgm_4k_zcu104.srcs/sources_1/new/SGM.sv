@@ -50,19 +50,30 @@ module SGM#(
     );
     
 
+    //wire [MAX_DISP-1:0][DATA_WIDTH-1:0] prev_path_cost_45 [MAX_SAMPLES_PER_CLOCK-1:0];
+    //wire [MAX_DISP-1:0][DATA_WIDTH-1:0] path_cost_45 [MAX_SAMPLES_PER_CLOCK-1:0];
+    //wire [MAX_DISP-1:0][AXIS_TDATA_WIDTH-1:0] prev_path_cost_45_from_buf;
+    //wire [MAX_DISP-1:0][AXIS_TDATA_WIDTH-1:0] path_cost_45_to_buf;
     wire [MAX_DISP-1:0][DATA_WIDTH-1:0] prev_path_cost_90 [MAX_SAMPLES_PER_CLOCK-1:0];
     wire [MAX_DISP-1:0][DATA_WIDTH-1:0] path_cost_90 [MAX_SAMPLES_PER_CLOCK-1:0];
     wire [MAX_DISP-1:0][AXIS_TDATA_WIDTH-1:0] prev_path_cost_90_from_buf;
     wire [MAX_DISP-1:0][AXIS_TDATA_WIDTH-1:0] path_cost_90_to_buf;
-    
+    //wire [MAX_DISP-1:0][DATA_WIDTH-1:0] prev_path_cost_135 [MAX_SAMPLES_PER_CLOCK-1:0];
+    //wire [MAX_DISP-1:0][DATA_WIDTH-1:0] path_cost_135 [MAX_SAMPLES_PER_CLOCK-1:0];
+    //wire [MAX_DISP-1:0][AXIS_TDATA_WIDTH-1:0] prev_path_cost_135_from_buf;
+    //wire [MAX_DISP-1:0][AXIS_TDATA_WIDTH-1:0] path_cost_135_to_buf;
     
     for (genvar disp = 0; disp < MAX_DISP; disp++) begin : BRAM_GEN
         for (genvar i = 0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
+            //assign prev_path_cost_45[i][disp] = prev_path_cost_45_from_buf[disp][DATA_WIDTH*i+DATA_WIDTH-1-:8];
+            //assign path_cost_45_to_buf[disp][DATA_WIDTH*i+DATA_WIDTH-1-:8] = path_cost_45[i][disp];
             assign prev_path_cost_90[i][disp] = prev_path_cost_90_from_buf[disp][DATA_WIDTH*i+DATA_WIDTH-1-:8];
             assign path_cost_90_to_buf[disp][DATA_WIDTH*i+DATA_WIDTH-1-:8] = path_cost_90[i][disp];
+            //assign prev_path_cost_135[i][disp] = prev_path_cost_135_from_buf[disp][DATA_WIDTH*i+DATA_WIDTH-1-:8];
+            //assign path_cost_135_to_buf[disp][DATA_WIDTH*i+DATA_WIDTH-1-:8] = path_cost_135[i][disp];
         end
        /*
-        delayLineBRAM_Xppc
+        delayLineDualBRAM_Xppc
         #(
             .DATA_WIDTH           (AXIS_TDATA_WIDTH),
             .MAX_SAMPLES_PER_CLOCK(MAX_SAMPLES_PER_CLOCK),
@@ -74,14 +85,15 @@ module SGM#(
             .rst    (!aresetn                                   ),
             .tlast  (axi_sync_signals_delayed[cntx_line].tlast  ),     
             .din    (  ), 
-            .dout   (  path_tdata_45[0] )
+            .dout   ()
         );
-       */ 
-        delayLineBRAM_Xppc
+       */
+        delayLineDualBRAM_Xppc
         #(
             .DATA_WIDTH           (AXIS_TDATA_WIDTH),
             .MAX_SAMPLES_PER_CLOCK(MAX_SAMPLES_PER_CLOCK),
-            .PIXELS_PER_LINE      (WIDTH)
+            .PIXELS_PER_LINE      (WIDTH),
+            .READ_POS_SHIFT       (1)
         ) delay_90
         (
             .clk    ( aclk ),
@@ -143,10 +155,10 @@ module SGM#(
     reg sum_path_costs_tvalid;
     reg sum_path_costs_tlast;
     reg sum_path_costs_tuser;
-    always @(aclk) begin
+    always @(posedge aclk) begin
         for (integer disp = 0; disp < MAX_DISP; disp++)
             for (integer i = 0; i < MAX_SAMPLES_PER_CLOCK; i++)
-                sum_path_costs_tdata[i][disp] <= path_cost_90[i][disp]; //(+... )/4
+                sum_path_costs_tdata[i][disp] <= path_cost_90_tdata[i][disp]; //(+... )/4
         sum_path_costs_tvalid <= path_cost_tvalid;
         sum_path_costs_tlast <= path_cost_tlast;
         sum_path_costs_tuser <= path_cost_tuser;
@@ -158,7 +170,6 @@ module SGM#(
 	    .AXIS_TDATA_WIDTH(AXIS_TDATA_WIDTH),
 		.DATA_WIDTH(DATA_WIDTH)
 	)min(
-	    .aclk(aclk),
 		.s_axis_costs_tdata(sum_path_costs_tdata),
 		.s_axis_costs_tlast(sum_path_costs_tlast),
 		.s_axis_costs_tuser(sum_path_costs_tuser),

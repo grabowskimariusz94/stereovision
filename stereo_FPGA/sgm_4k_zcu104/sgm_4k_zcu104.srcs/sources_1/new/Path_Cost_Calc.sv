@@ -63,7 +63,7 @@ module Path_Cost_Calc#(
         else
             assign data_with_penalty[disp][1] = '1;
         if (disp != MAX_DISP-1)
-            assign data_with_penalty[disp][2] = prev_path_cost[disp-1]+P1;
+            assign data_with_penalty[disp][2] = prev_path_cost[disp+1]+P1;
         else
             assign data_with_penalty[disp][2] = '1;  
         assign data_with_penalty[disp][3] = min_path+P2;

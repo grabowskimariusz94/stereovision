@@ -25,7 +25,6 @@ module Min_Arg#(
         parameter DATA_WIDTH = 8
     )
     (
-        input clk,
         input [ELEM-1:0][DATA_WIDTH-1:0]  i_sads_data, 
         output [DATA_WIDTH-1:0] o_disp_data
     );

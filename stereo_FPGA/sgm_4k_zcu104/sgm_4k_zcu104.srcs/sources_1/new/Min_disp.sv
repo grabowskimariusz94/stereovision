@@ -28,8 +28,6 @@ module Min_disp#(
 		parameter DATA_WIDTH = 8
 
 	)(
-	    input  aclk,
-		
 		input [MAX_DISP-1:0][DATA_WIDTH-1:0] s_axis_costs_tdata [MAX_SAMPLES_PER_CLOCK-1:0],
 		input  s_axis_costs_tlast,
 		input  s_axis_costs_tuser,
@@ -48,7 +46,6 @@ module Min_disp#(
             .ELEM(MAX_DISP),
             .DATA_WIDTH(DATA_WIDTH)
             )Disp(
-            .clk(aclk),
             .i_sads_data(s_axis_costs_tdata[i]), 
             .o_disp_data(m_axis_min_tdata[(DATA_WIDTH*i-1+DATA_WIDTH)-:DATA_WIDTH])
     );
