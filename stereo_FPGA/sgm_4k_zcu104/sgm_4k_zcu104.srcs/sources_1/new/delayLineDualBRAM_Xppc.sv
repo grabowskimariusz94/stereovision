@@ -16,10 +16,10 @@
 
 module delayLineDualBRAM_Xppc
 #(
-    parameter integer DATA_WIDTH            = 96+1,     //AXI_WIDTH + AXI_SYNC_SIGNAL
+    parameter integer DATA_WIDTH            = 32,       //AXI_WIDTH 
     parameter integer MAX_SAMPLES_PER_CLOCK = 4,        //ppc
     parameter integer PIXELS_PER_LINE       = 64,       //image width
-    parameter integer READ_POS_SHIFT        = 0         //shift read pos from write pos
+    parameter integer READ_POS_SHIFT        = 0        //shift read pos from write pos
 )
 (
     input  wire                   clk,
@@ -37,8 +37,8 @@ localparam integer MEMORY_SIZE  = DATA_WIDTH * PIXELS_PER_LINE / MAX_SAMPLES_PER
 logic  [BRAM_SIZE_W-1:0]  write_position = '0;
 logic  [BRAM_SIZE_W-1:0]  shifted_write_position;
 logic  [BRAM_SIZE_W-1:0]  read_position;
-wire [DATA_WIDTH-1:0]   dina;
-wire [DATA_WIDTH-1:0]   doutb;
+logic [DATA_WIDTH-1:0]   dina;
+logic [2*DATA_WIDTH-1:0] doutb = '0;
 
 
 
@@ -58,11 +58,9 @@ begin
     end
 end
 
-assign shifted_write_position = write_position + READ_POS_SHIFT;
+assign shifted_write_position = write_position + READ_POS_SHIFT/MAX_SAMPLES_PER_CLOCK + 1;
 assign read_position = (shifted_write_position<PIXELS_PER_LINE/MAX_SAMPLES_PER_CLOCK) ? shifted_write_position :  (shifted_write_position - MEMORY_SIZE);
 
-
-wire sbiterra;
 
 xpm_memory_sdpram #(    
   .MEMORY_SIZE(MEMORY_SIZE),    
@@ -82,7 +80,7 @@ xpm_memory_sdpram #(
    
    // Port B module parameters
   .READ_DATA_WIDTH_B(DATA_WIDTH),  
-  .ADDR_WIDTH_B(BRAM_SIZE_W),             
+  .ADDR_WIDTH_B(DATA_WIDTH),             
   .READ_RESET_VALUE_B("0"),    
   .READ_LATENCY_B(1),     
   .WRITE_MODE_B ("read_first")      
@@ -106,14 +104,25 @@ xpm_memory_sdpram #(
     .rstb(1'b0),  
     .regceb(1'b0),
     .addrb(read_position),          
-    .doutb(doutb),  
+    .doutb(doutb[DATA_WIDTH-1:0]),  
     .dbiterrb(),
     .sbiterrb()
      
 );
 // End of xpm_memory_spram_inst instantiation
 
+always_ff @(posedge clk) 
+begin
+    if (rst == 1'b1) begin 
+        doutb[2*DATA_WIDTH-1-:DATA_WIDTH] <= 0; 
+
+    end
+    else if (ce == 1'b1) begin
+        doutb[2*DATA_WIDTH-1-:DATA_WIDTH] <= doutb[DATA_WIDTH-1:0];
+    end
+end
+
 assign dina[DATA_WIDTH-1:0] = din;
-assign dout                 = doutb[DATA_WIDTH-1:0];
+assign dout                 = doutb[2*DATA_WIDTH-(DATA_WIDTH/MAX_SAMPLES_PER_CLOCK)*(READ_POS_SHIFT-MAX_SAMPLES_PER_CLOCK*(READ_POS_SHIFT/MAX_SAMPLES_PER_CLOCK))-1-:DATA_WIDTH];
 
 endmodule

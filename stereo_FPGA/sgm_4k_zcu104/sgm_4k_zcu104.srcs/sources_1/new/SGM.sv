@@ -93,7 +93,7 @@ module SGM#(
             .DATA_WIDTH           (AXIS_TDATA_WIDTH),
             .MAX_SAMPLES_PER_CLOCK(MAX_SAMPLES_PER_CLOCK),
             .PIXELS_PER_LINE      (WIDTH),
-            .READ_POS_SHIFT       (1)
+            .READ_POS_SHIFT       (4)
         ) delay_90
         (
             .clk    ( aclk ),
