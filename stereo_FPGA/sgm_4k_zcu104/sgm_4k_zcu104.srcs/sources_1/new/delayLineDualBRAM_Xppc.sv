@@ -59,7 +59,7 @@ begin
 end
 
 assign shifted_write_position = write_position + READ_POS_SHIFT/MAX_SAMPLES_PER_CLOCK + 1;
-assign read_position = (shifted_write_position<PIXELS_PER_LINE/MAX_SAMPLES_PER_CLOCK) ? shifted_write_position :  (shifted_write_position - MEMORY_SIZE);
+assign read_position = (shifted_write_position<PIXELS_PER_LINE/MAX_SAMPLES_PER_CLOCK) ? shifted_write_position :  (shifted_write_position - PIXELS_PER_LINE/MAX_SAMPLES_PER_CLOCK);
 
 
 xpm_memory_sdpram #(    

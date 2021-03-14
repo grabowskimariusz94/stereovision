@@ -35,6 +35,9 @@ localparam CONTEXT_SIZE              = 3;
 localparam DATA_WIDTH                = 8; //(gray)
 localparam AXIS_TDATA_WIDTH          = MAX_SAMPLES_PER_CLOCK*DATA_WIDTH;
 
+localparam P1 = 16;
+localparam P2 = 64;
+
 
 wire s_axis_video_aclk;
 
@@ -95,7 +98,9 @@ Stereovision
     .CNTX_SIZE(CONTEXT_SIZE),
     .MAX_SAMPLES_PER_CLOCK(MAX_SAMPLES_PER_CLOCK),
     .AXIS_TDATA_WIDTH(AXIS_TDATA_WIDTH),
-    .DATA_WIDTH(DATA_WIDTH)
+    .DATA_WIDTH(DATA_WIDTH),
+	.P1(P1),
+    .P2(P2)
 ) stereo
 (
         .aclk(s_axis_video_aclk),

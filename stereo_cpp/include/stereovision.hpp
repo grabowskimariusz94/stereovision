@@ -20,8 +20,8 @@
 class Stereovision{
 public:
 
-	const uint8_t P1 = 4;
-	const uint8_t P2 = 16;
+	const uint8_t P1 = 16;
+	const uint8_t P2 = 64;
 
 	cv::Mat read(const std::string file_name, bool is_gray=false);
 	void write(cv::Mat img, const std::string file_name, bool with_normalizing=false, const uint8_t d_range = 0);

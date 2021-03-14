@@ -33,8 +33,8 @@ int main() {
     duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
     //stereo.save_after_disp_est(c, "Qk/dispSADL.pgm","Qk/dispSADR.pgm", 64);
     disp = stereo.semi_global(c);
-    stereo.write(disp[0], "Qk/dispL_4paths.pgm", true, 64);
-    stereo.write(disp[1], "Qk/dispR_4paths.pgm", true, 64);
+    stereo.write(disp[0], "Qk/dispL_3paths.pgm", true, 64);
+    stereo.write(disp[1], "Qk/dispR_3paths.pgm", true, 64);
     duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
     std::cout << "printf: " << duration << '\n';
     /*

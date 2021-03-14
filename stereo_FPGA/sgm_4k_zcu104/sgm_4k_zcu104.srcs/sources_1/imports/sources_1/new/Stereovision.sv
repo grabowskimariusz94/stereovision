@@ -31,8 +31,8 @@ module Stereovision
     parameter AXIS_TDATA_WIDTH = 32,
     parameter DATA_WIDTH = 8,
     
-    parameter P1 = 4,
-    parameter P2 = 16
+    parameter P1 = 16,
+    parameter P2 = 64
 )
 (
         input wire  aclk,

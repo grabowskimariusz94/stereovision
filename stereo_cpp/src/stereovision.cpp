@@ -216,14 +216,14 @@ std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::cost_a
             if (x != 0)
                 min_prev_0 = *std::min_element(l[0][y][x - 1].begin(), l[0][y][x - 1].end());
             if (y != 0 && x != 0)
-                min_prev_45 = *std::min_element(l[0][y - 1][x - 1].begin(), l[0][y - 1][x - 1].end());
+                min_prev_45 = *std::min_element(l[1][y - 1][x - 1].begin(), l[1][y - 1][x - 1].end());
             if (y != 0) 
-                min_prev_90 = *std::min_element(l[0][y - 1][x].begin(), l[0][y - 1][x].end());
+                min_prev_90 = *std::min_element(l[2][y - 1][x].begin(), l[2][y - 1][x].end());
             if (y != 0 && x != (w-1))
-                min_prev_135 = *std::min_element(l[0][y - 1][x + 1].begin(), l[0][y - 1][x + 1].end());
+                min_prev_135 = *std::min_element(l[3][y - 1][x + 1].begin(), l[3][y - 1][x + 1].end());
 
             for (int d = 0; d < d_len; ++d) {
-
+                
                 //0
                 if (x == 0) {
                     l[0][y][x].push_back(c[y][x][d]);
@@ -242,6 +242,7 @@ std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::cost_a
 
                     l[0][y][x].push_back((l_0 < 255) ? uint8_t(l_0) : 255);
                 }
+                
 
                 //45
                 if (y == 0 || x == 0) {
@@ -333,10 +334,10 @@ std::vector<cv::Mat> Stereovision::semi_global(std::vector<std::vector<std::vect
             std::vector<uint8_t>sl(dl_len);
             std::vector<uint8_t>sr(dr_len);
             for (int d = 0; d < dl_len; ++d) {
-                sl[d] = uint8_t(uint16_t(ll[0][y][x][d] + ll[1][y][x][d] + ll[2][y][x][d] + ll[3][y][x][d]) / 4);
+                sl[d] = uint8_t(uint16_t( ll[1][y][x][d] + ll[2][y][x][d] + ll[3][y][x][d]) / 4);
             }
             for (int d = 0; d < dr_len; ++d) {
-                sr[d] = uint8_t(uint16_t(lr[0][y][x][d] + lr[1][y][x][d] + lr[2][y][x][d] + lr[3][y][x][d]) / 4);
+                sr[d] = uint8_t(uint16_t( lr[1][y][x][d] + lr[2][y][x][d] + lr[3][y][x][d]) / 4);
             }
             std::vector<uint8_t>::iterator resultl = (std::min_element(sl.begin(), sl.end()));
             std::vector<uint8_t>::iterator resultr = (std::min_element(sr.begin(), sr.end()));
