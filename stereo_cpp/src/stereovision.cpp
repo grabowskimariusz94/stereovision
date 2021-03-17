@@ -213,18 +213,76 @@ std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::cost_a
             uint8_t min_prev_90;
             uint8_t min_prev_135;
             
+            
+            
+            std::vector<uint8_t> prev_path_calc_0;
+            for (int d = 0; d < d_len; ++d) {
+                if (x < 4) {
+                    switch (x % 4) {
+                    case 0:
+                        prev_path_calc_0.push_back(0);
+                        break;
+                    case 1:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(0 + c[y][x - 1][d]) / 2));
+                        break;
+                    case 2:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(0 + c[y][x - 2][d] + 2 * c[y][x - 1][d]) / 4));
+                        break;
+                    case 3:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(0 + c[y][x - 3][d] + c[y][x - 2][d] + c[y][x - 1][d]) / 4));
+                        break;
+                    default:
+                        prev_path_calc_0.push_back(0);
+                        break;
+                    }
+                } 
+                else {
+                    switch (x % 4) {
+                    case 0:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    case 1:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(l[0][y][x - 2][d] + c[y][x - 1][d]) / 2));
+                        break;
+                    case 2:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(l[0][y][x - 3][d] + c[y][x - 2][d] + 2 * c[y][x - 1][d]) / 4));
+                        break;
+                    case 3:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(l[0][y][x - 4][d] + c[y][x - 3][d] + c[y][x - 2][d] + c[y][x - 1][d]) / 4));
+                        break;
+                    default:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    }
+                }
+            }
+            
             if (x != 0)
-                min_prev_0 = *std::min_element(l[0][y][x - 1].begin(), l[0][y][x - 1].end());
+                min_prev_0 = *std::min_element(prev_path_calc_0.begin(), prev_path_calc_0.end());//l[0][y][x - 1].begin(), l[0][y][x - 1].end());
             if (y != 0 && x != 0)
                 min_prev_45 = *std::min_element(l[1][y - 1][x - 1].begin(), l[1][y - 1][x - 1].end());
-            if (y != 0) 
+            if (y != 0)
                 min_prev_90 = *std::min_element(l[2][y - 1][x].begin(), l[2][y - 1][x].end());
-            if (y != 0 && x != (w-1))
+            if (y != 0 && x != (w - 1))
                 min_prev_135 = *std::min_element(l[3][y - 1][x + 1].begin(), l[3][y - 1][x + 1].end());
 
             for (int d = 0; d < d_len; ++d) {
                 
                 //0
+                /*
+                std::vector<uint16_t> data_with_penalty;
+                // 0 - disp
+                // 1 - disp - 1
+                // 2 - disp + 1
+                // 3 - disp min
+                data_with_penalty.push_back(prev_path_calc_0[d]);
+                data_with_penalty.push_back((d != 0) ? uint16_t(prev_path_calc_0[d - 1] + P1) : uint16_t(255 + P1));
+                data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(prev_path_calc_0[d + 1] + P1) : uint16_t(255 + P1));
+                data_with_penalty.push_back(uint16_t(min_prev_0 + P2));
+                uint16_t l_0 = uint16_t(c[y][x][d]) + *std::min_element(data_with_penalty.begin(), data_with_penalty.end()) - uint16_t(min_prev_0);
+
+                l[0][y][x].push_back((l_0 < 255) ? uint8_t(l_0) : 255);
+               */
                 if (x == 0) {
                     l[0][y][x].push_back(c[y][x][d]);
                 }
@@ -234,15 +292,14 @@ std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::cost_a
                     // 1 - disp - 1
                     // 2 - disp + 1
                     // 3 - disp min
-                    data_with_penalty.push_back(uint16_t(l[0][y][x - 1][d]));
-                    data_with_penalty.push_back((d != 0) ? uint16_t(l[0][y][x - 1][d - 1] + P1) : uint16_t(255 + P1));
-                    data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(l[0][y][x - 1][d + 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back(uint16_t(prev_path_calc_0[d]));
+                    data_with_penalty.push_back((d != 0) ? uint16_t(prev_path_calc_0[d - 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(prev_path_calc_0[d + 1] + P1) : uint16_t(255 + P1));
                     data_with_penalty.push_back(uint16_t(min_prev_0 + P2));
                     uint16_t l_0 = uint16_t(c[y][x][d]) + *std::min_element(data_with_penalty.begin(), data_with_penalty.end()) - uint16_t(min_prev_0);
 
                     l[0][y][x].push_back((l_0 < 255) ? uint8_t(l_0) : 255);
                 }
-                
 
                 //45
                 if (y == 0 || x == 0) {
@@ -334,10 +391,10 @@ std::vector<cv::Mat> Stereovision::semi_global(std::vector<std::vector<std::vect
             std::vector<uint8_t>sl(dl_len);
             std::vector<uint8_t>sr(dr_len);
             for (int d = 0; d < dl_len; ++d) {
-                sl[d] = uint8_t(uint16_t( ll[1][y][x][d] + ll[2][y][x][d] + ll[3][y][x][d]) / 4);
+                sl[d] = uint8_t(uint16_t(ll[0][y][x][d]));// + ll[1][y][x][d] + ll[2][y][x][d] + ll[3][y][x][d]) / 4);
             }
             for (int d = 0; d < dr_len; ++d) {
-                sr[d] = uint8_t(uint16_t( lr[1][y][x][d] + lr[2][y][x][d] + lr[3][y][x][d]) / 4);
+                sr[d] = uint8_t(uint16_t(lr[0][y][x][d]));// + lr[1][y][x][d] + lr[2][y][x][d] + lr[3][y][x][d]) / 4);
             }
             std::vector<uint8_t>::iterator resultl = (std::min_element(sl.begin(), sl.end()));
             std::vector<uint8_t>::iterator resultr = (std::min_element(sr.begin(), sr.end()));

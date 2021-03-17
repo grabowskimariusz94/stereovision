@@ -1,6 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+"""
+
+@author: Mariusz Grabowski
+"""
+
 import numpy as np
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
