@@ -1,22 +1,14 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
+// Company: AGH
+// Engineer: Mariusz Grabowski
+//
 // Create Date: 13.02.2021 21:15:12
-// Design Name: 
-// Module Name: stereo
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
+// Module Name: Stereovision
+// Target Devices: zcu104, zc702
+// Tool Versions: 2020.2
 // Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
+//
 //////////////////////////////////////////////////////////////////////////////////
 
 
@@ -280,7 +272,7 @@ module Stereovision
   
   
   hdmi_out_uhd #(
-        .name("sgmL"),
+        .name("sgmL_0p"),
         .NEW_WIDTH(WIDTH),
         .NEW_HEIGHT(HEIGHT),
         .CHANNELS(1),
@@ -295,7 +287,7 @@ module Stereovision
         .VIDEO_OUT_tvalid(d_l_tvalid         ));
      
     hdmi_out_uhd #(
-        .name("sgmR"),
+        .name("sgmR_0p"),
         .NEW_WIDTH(WIDTH),
         .NEW_HEIGHT(HEIGHT),
         .CHANNELS(1),

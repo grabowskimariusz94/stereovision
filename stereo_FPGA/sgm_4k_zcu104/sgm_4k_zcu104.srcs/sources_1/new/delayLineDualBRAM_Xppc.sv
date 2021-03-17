@@ -5,11 +5,9 @@
 // 
 // Create Date: 12.03.2021 21:48:36
 // Module Name: delayLineDualBRAM_Xppc
-// Target Devices: zcu104 zc702
+// Target Devices: zcu104, zc702
 // Tool Versions: Vivado 2020.2
 // Description: 
-// 
-// Dependencies: 
 // 
 //////////////////////////////////////////////////////////////////////////////////
 

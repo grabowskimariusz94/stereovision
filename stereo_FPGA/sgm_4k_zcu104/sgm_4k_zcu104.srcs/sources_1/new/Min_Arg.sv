@@ -1,22 +1,13 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
+// Company: AGH
+// Engineer: Mariusz Grabowski
+//
 // Create Date: 05.12.2020 17:21:19
-// Design Name: 
 // Module Name: Min_SAD
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
+// Target Devices: zcu104, zc702
 // Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
+//
 //////////////////////////////////////////////////////////////////////////////////
 
 

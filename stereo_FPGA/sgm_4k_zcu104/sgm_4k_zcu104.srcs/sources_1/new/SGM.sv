@@ -1,22 +1,13 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
+// Company: AGH
+// Engineer: Mariusz Grabowski
+//
 // Create Date: 06.03.2021 13:44:16
-// Design Name: 
 // Module Name: SGM
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
+// Target Devices: zcu104, zc702
 // Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
+//
 //////////////////////////////////////////////////////////////////////////////////
 
 
@@ -66,6 +57,10 @@ module SGM#(
     wire [MAX_DISP-1:0][AXIS_TDATA_WIDTH-1:0] prev_path_cost_135_from_buf;
     wire [MAX_DISP-1:0][AXIS_TDATA_WIDTH-1:0] path_cost_135_to_buf;
     
+    
+    
+    
+    
     for (genvar disp = 0; disp < MAX_DISP; disp++) begin : BRAM_GEN
         for (genvar i = 0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
             assign prev_path_cost_45[i][disp] = prev_path_cost_45_from_buf[disp][DATA_WIDTH*i+DATA_WIDTH-1-:8];
@@ -75,7 +70,16 @@ module SGM#(
             assign prev_path_cost_135[i][disp] = prev_path_cost_135_from_buf[disp][DATA_WIDTH*i+DATA_WIDTH-1-:8];
             assign path_cost_135_to_buf[disp][DATA_WIDTH*i+DATA_WIDTH-1-:8] = path_cost_135[i][disp];
         end
-       
+        
+        always @(posedge aclk) begin
+            if(s_axis_tvalid) begin
+                prev_path_cost_0[3][disp] <= path_cost_0[0][disp];
+                prev_path_cost_0[2][disp] <= (path_cost_0[0][disp]+s_axis_tdata[3][disp])/2;
+                prev_path_cost_0[1][disp] <= ((path_cost_0[0][disp]+s_axis_tdata[3][disp])+2*s_axis_tdata[2][disp])/4;
+                prev_path_cost_0[0][disp] <= ((path_cost_0[0][disp]+s_axis_tdata[3][disp])+(s_axis_tdata[2][disp]+s_axis_tdata[1][disp]))/4;
+            end
+        end
+        
         delayLineDualBRAM_Xppc
         #(
             .DATA_WIDTH           (AXIS_TDATA_WIDTH),
@@ -132,6 +136,16 @@ module SGM#(
             .DATA_WIDTH(DATA_WIDTH),
             .P1(P1),
             .P2(P2)
+        ) L_0 (
+            .prev_path_cost(prev_path_cost_0[i]),
+            .cost(s_axis_tdata[i]),
+            .path_cost(path_cost_0[i])
+        );
+        Path_Cost_Calc#(
+            .MAX_DISP(MAX_DISP),
+            .DATA_WIDTH(DATA_WIDTH),
+            .P1(P1),
+            .P2(P2)
         ) L_45 (
             .prev_path_cost(prev_path_cost_45[i]),
             .cost(s_axis_tdata[i]),
@@ -159,6 +173,7 @@ module SGM#(
         );
     end
     
+    reg [MAX_DISP-1:0][DATA_WIDTH-1:0] path_cost_0_tdata [MAX_SAMPLES_PER_CLOCK-1:0];
     reg [MAX_DISP-1:0][DATA_WIDTH-1:0] path_cost_45_tdata [MAX_SAMPLES_PER_CLOCK-1:0];
     reg [MAX_DISP-1:0][DATA_WIDTH-1:0] path_cost_90_tdata [MAX_SAMPLES_PER_CLOCK-1:0];
     reg [MAX_DISP-1:0][DATA_WIDTH-1:0] path_cost_135_tdata [MAX_SAMPLES_PER_CLOCK-1:0];
@@ -167,6 +182,7 @@ module SGM#(
     reg path_cost_tuser;
     
     always @(posedge aclk) begin
+        path_cost_0_tdata <= path_cost_0;
         path_cost_45_tdata <= path_cost_45;
         path_cost_90_tdata <= path_cost_90;
         path_cost_135_tdata <= path_cost_135;
@@ -183,7 +199,8 @@ module SGM#(
     always @(posedge aclk) begin
         for (integer disp = 0; disp < MAX_DISP; disp++)
             for (integer i = 0; i < MAX_SAMPLES_PER_CLOCK; i++)
-                sum_path_costs_tdata[i][disp] <= (path_cost_45_tdata[i][disp] + path_cost_90_tdata[i][disp] + path_cost_135_tdata[i][disp])/4;         sum_path_costs_tvalid <= path_cost_tvalid;
+                sum_path_costs_tdata[i][disp] <= (path_cost_0_tdata[i][disp]);//path_cost_45_tdata[i][disp] + path_cost_90_tdata[i][disp] + path_cost_135_tdata[i][disp])/4;         sum_path_costs_tvalid <= path_cost_tvalid;
+        sum_path_costs_tvalid <= path_cost_tvalid;
         sum_path_costs_tlast <= path_cost_tlast;
         sum_path_costs_tuser <= path_cost_tuser;
     end

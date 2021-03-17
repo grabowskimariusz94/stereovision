@@ -1,22 +1,14 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
+// Company: AGH
+// Engineer: Mariusz Grabowski
+//
 // Create Date: 04.12.2020 17:34:02
-// Design Name: 
 // Module Name: SAD
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
+// Target Devices: zcu104, zc702
+// Tool Versions: 2020.2
 // Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
+//
 //////////////////////////////////////////////////////////////////////////////////
 
 
