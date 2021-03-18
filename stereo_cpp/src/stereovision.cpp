@@ -1,5 +1,5 @@
 //
-// Created by User on 23.12.2020.
+// Created by Mariusz Grabowski on 23.12.2020.
 //
 
 #include "stereovision.hpp"
@@ -30,7 +30,7 @@ cv::Mat Stereovision::fold(cv::Mat imgL, cv::Mat imgR) {
     unsigned char* pr = (unsigned char*)(imgR.data);
 
     for (int row = 0; row < img.rows; ++row) {
-        for (int col = 0; col < img.cols-1; ++col) {
+        for (int col = 0; col < img.cols; ++col) {
             if (col % 2 == 0) {
                 p[img.step * row + 3 * col + 0] = pl[imgL.step * row + 3 * col + 0];
                 p[img.step * row + 3 * col + 1] = pl[imgL.step * row + 3 * col + 1];

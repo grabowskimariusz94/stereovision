@@ -44,8 +44,11 @@
     
     reg	tready = 1'b1;
     reg [C_AXIS_LR_TDATA_WIDTH-1 : 0] tdataL=0, tdataR=0;
-    reg [2:0] tvalid, tlast, tuser; 
-    reg [C_AXIS_LR_TDATA_WIDTH-1 : 0] lastLR[2:0]; // in no simmetrical => [1:0];
+    reg s_axis_lr_tvalid_buf = 1'b0;
+    reg [1:0] tvalid = 2'b0;
+    reg [1:0] tlast = 2'b0; 
+    reg [1:0] tuser = 2'b0; 
+    reg [C_AXIS_LR_TDATA_WIDTH-1 : 0] lastLR[1:0]; 
     initial begin
         lastLR[2] = 0; //
         lastLR[1] = 0;
@@ -55,74 +58,36 @@
     // delaying for buffering
     always @(posedge aclk) 
 	begin
-	   
-        tvalid[0] <= s_axis_lr_tvalid;
-        tvalid[1] <= tvalid[0];
-        tvalid[2] <= tvalid[1]; 
-        tlast[0] <= s_axis_lr_tlast;
-        tlast[1] <= tlast[0]; 
-        tlast[2] <= tlast[1]; 
-        tuser[0] <= s_axis_lr_tuser;
-        tuser[1] <= tuser[0]; 
-        tuser[2] <= tuser[1]; 
+	   s_axis_lr_tvalid_buf <= s_axis_lr_tvalid;
+	   if(s_axis_lr_tvalid|tlast[0]|tlast[1]) begin
+            tvalid[0] <= s_axis_lr_tvalid;
+            tvalid[1] <= tvalid[0];
+            tlast[0] <= s_axis_lr_tlast;
+            tlast[1] <= tlast[0];
+            tuser[0] <= s_axis_lr_tuser;
+            tuser[1] <= tuser[0];
+       end
     end
     
     // buffering
     always @(posedge aclk) 
 	begin
-	   //if(s_axis_lr_tvalid) 
-	    lastLR[0] <= s_axis_lr_tdata;
+	  if(s_axis_lr_tvalid|tlast[0]|tlast[1]) begin
+	    lastLR[0] <= (!(tlast[0]|tlast[1])||s_axis_lr_tvalid) ? s_axis_lr_tdata : 0;
 	    lastLR[1] <= lastLR[0];
-	    lastLR[2] <= lastLR[1]; //
+      end
     end
     
     // interpolation
     always @(posedge aclk) 
 	begin
-	   // simetrical version
-	   if(tvalid[1])
-        begin
-           if(tvalid[0])
-           begin
-               {tdataL[31-:8],tdataR[23-:8],tdataL[15-:8],tdataR[7-:8]} <= lastLR[1];
-               tdataR[31-:8] <= {1'b0,lastLR[2][7-:7]}+{1'b0,lastLR[1][23-:7]}; //arithmetic average
-               tdataL[23-:8] <= {1'b0,lastLR[1][31-:7]}+{1'b0,lastLR[1][15-:7]}; 
-               tdataR[15-:8] <= {1'b0,lastLR[1][23-:7]}+{1'b0,lastLR[1][7-:7]}; 
-               tdataL[7-:8] <= {1'b0,lastLR[1][15-:7]}+{1'b0,lastLR[0][31-:7]}; 
-           end
-           else
-           begin
-               {tdataL[31-:8],tdataR[23-:8],tdataL[15-:8],tdataR[7-:8]} <= lastLR[0];
-               tdataR[31-:8] <= {1'b0,lastLR[2][7-:7]}+{1'b0,lastLR[0][23-:7]}; //arithmetic average
-               tdataL[23-:8] <= {1'b0,lastLR[0][31-:7]}+{1'b0,lastLR[0][15-:7]}; 
-               tdataR[15-:8] <= {1'b0,lastLR[0][23-:7]}+{1'b0,lastLR[0][7-:7]}; 
-               tdataL[7-:8] <= {1'b0,lastLR[0][15-:7]}+{1'b0,s_axis_lr_tdata[31-:7]}; 
-           end
-	   end
-	   
-	   
-	   // not simetrical version
-	    /* 
-        if(tvalid[1])
-        begin
-            if(tvalid[0])
-            begin
-                {tdataR[31-:8],tdataL[23-:8],tdataR[15-:8],tdataL[7-:8]} <= {lastLR[0][15-:16],lastLR[1][31-:16]};
-                tdataL[31-:8] <= {1'b0,lastLR[0][23-:7]}+{1'b0,lastLR[0][7-:7]}; //arithmetic average
-                tdataR[23-:8] <= {1'b0,lastLR[0][15-:7]}+{1'b0,lastLR[1][31-:7]}; 
-                tdataL[15-:8] <= {1'b0,lastLR[0][7-:7]}+{1'b0,lastLR[1][23-:7]}; 
-                tdataR[7-:8] <= {1'b0,lastLR[1][31-:7]}+{1'b0,lastLR[1][15-:7]}; 
-            end
-            else
-            begin
-                {tdataR[31-:8],tdataL[23-:8],tdataR[15-:8],tdataL[7-:8]} <= {s_axis_lr_tdata[15-:16],lastLR[1][31-:16]};
-                tdataL[31-:8] <= {1'b0,s_axis_lr_tdata[23-:7]}+{1'b0,s_axis_lr_tdata[7-:7]}; //arithmetic average
-                tdataR[23-:8] <= {1'b0,s_axis_lr_tdata[15-:7]}+{1'b0,lastLR[1][31-:7]}; 
-                tdataL[15-:8] <= {1'b0,s_axis_lr_tdata[7-:7]}+{1'b0,lastLR[1][23-:7]}; 
-                tdataR[7-:8] <= {1'b0,lastLR[1][31-:7]}+{1'b0,lastLR[1][15-:7]}; 
-            end
-        end
-        */
+	
+	   {tdataL[31-:8],tdataR[23-:8],tdataL[15-:8],tdataR[7-:8]} <= lastLR[0];
+       tdataR[31-:8] <= {1'b0,lastLR[1][7-:7]}+{1'b0,lastLR[0][23-:7]}; //arithmetic average
+       tdataL[23-:8] <= {1'b0,lastLR[0][31-:7]}+{1'b0,lastLR[0][15-:7]}; 
+       tdataR[15-:8] <= {1'b0,lastLR[0][23-:7]}+{1'b0,lastLR[0][7-:7]}; 
+       tdataL[7-:8] <= (!(tlast[0]|tlast[1])||s_axis_lr_tvalid) ? ({1'b0,lastLR[0][15-:7]}+{1'b0,s_axis_lr_tdata[31-:7]}) : ({1'b0,lastLR[0][15-:7]}+0); 
+	
     end
     
     
@@ -130,11 +95,11 @@
 	assign s_axis_lr_tready = tready;
 	assign m_axis_l_tdata = tdataL;
 	assign m_axis_r_tdata = tdataR;
-	assign m_axis_l_tvalid = tvalid[2];
-	assign m_axis_r_tvalid = tvalid[2];
-	assign m_axis_l_tlast = tlast[2];
-	assign m_axis_r_tlast = tlast[2];
-	assign m_axis_l_tuser = tuser[2];
-	assign m_axis_r_tuser = tuser[2];
+	assign m_axis_l_tvalid = (s_axis_lr_tvalid_buf|tlast[0]|tlast[1]) ? tvalid[1] : 1'b0;
+	assign m_axis_r_tvalid = (s_axis_lr_tvalid_buf|tlast[0]|tlast[1]) ? tvalid[1] : 1'b0;
+	assign m_axis_l_tlast = (s_axis_lr_tvalid_buf|tlast[0]|tlast[1]) ? tlast[1] : 1'b0;
+	assign m_axis_r_tlast = (s_axis_lr_tvalid_buf|tlast[0]|tlast[1]) ? tlast[1] : 1'b0;
+	assign m_axis_l_tuser = (s_axis_lr_tvalid_buf|tlast[0]|tlast[1]) ? tuser[1] : 1'b0;
+	assign m_axis_r_tuser = (s_axis_lr_tvalid_buf|tlast[0]|tlast[1]) ? tuser[1] : 1'b0;
 	
 	endmodule
