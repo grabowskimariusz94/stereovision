@@ -1,7 +1,0 @@
-/*hdmi20_exdes*/
-the_ROM_image:
-{
-  [bootloader]<hdmi20_exdes/boot/fsbl.elf>
-   <bitstream> 
-  <elf,ps7_cortexa9_0>
-}
