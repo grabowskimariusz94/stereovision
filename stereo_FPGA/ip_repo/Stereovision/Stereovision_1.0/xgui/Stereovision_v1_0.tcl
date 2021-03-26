@@ -11,6 +11,8 @@ proc init_gui { IPINST } {
   ipgui::add_param $IPINST -name "MAX_SAMPLES_PER_CLOCK"
   ipgui::add_param $IPINST -name "AXIS_TDATA_WIDTH"
   ipgui::add_param $IPINST -name "DATA_WIDTH"
+  ipgui::add_param $IPINST -name "P1"
+  ipgui::add_param $IPINST -name "P2"
 
 }
 
@@ -68,6 +70,24 @@ proc validate_PARAM_VALUE.MAX_SAMPLES_PER_CLOCK { PARAM_VALUE.MAX_SAMPLES_PER_CL
 	return true
 }
 
+proc update_PARAM_VALUE.P1 { PARAM_VALUE.P1 } {
+	# Procedure called to update P1 when any of the dependent parameters in the arguments change
+}
+
+proc validate_PARAM_VALUE.P1 { PARAM_VALUE.P1 } {
+	# Procedure called to validate P1
+	return true
+}
+
+proc update_PARAM_VALUE.P2 { PARAM_VALUE.P2 } {
+	# Procedure called to update P2 when any of the dependent parameters in the arguments change
+}
+
+proc validate_PARAM_VALUE.P2 { PARAM_VALUE.P2 } {
+	# Procedure called to validate P2
+	return true
+}
+
 proc update_PARAM_VALUE.WIDTH { PARAM_VALUE.WIDTH } {
 	# Procedure called to update WIDTH when any of the dependent parameters in the arguments change
 }
@@ -111,5 +131,15 @@ proc update_MODELPARAM_VALUE.AXIS_TDATA_WIDTH { MODELPARAM_VALUE.AXIS_TDATA_WIDT
 proc update_MODELPARAM_VALUE.DATA_WIDTH { MODELPARAM_VALUE.DATA_WIDTH PARAM_VALUE.DATA_WIDTH } {
 	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
 	set_property value [get_property value ${PARAM_VALUE.DATA_WIDTH}] ${MODELPARAM_VALUE.DATA_WIDTH}
+}
+
+proc update_MODELPARAM_VALUE.P1 { MODELPARAM_VALUE.P1 PARAM_VALUE.P1 } {
+	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
+	set_property value [get_property value ${PARAM_VALUE.P1}] ${MODELPARAM_VALUE.P1}
+}
+
+proc update_MODELPARAM_VALUE.P2 { MODELPARAM_VALUE.P2 PARAM_VALUE.P2 } {
+	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
+	set_property value [get_property value ${PARAM_VALUE.P2}] ${MODELPARAM_VALUE.P2}
 }
 

@@ -1,0 +1,10 @@
+2021-03-26T17:08:18.218626900255-17:08:18 **** Incremental Build of configuration Debug for project Passthrough_A9_1 ****
+000-make all 
+000-make --no-print-directory pre-build
+000-a9-linaro-pre-build-step
+000-' '
+000-make --no-print-directory main-build
+000-make[1]: Nothing to be done for 'main-build'.
+00255-
+17:08:19 Build Finished (took 958ms)
+

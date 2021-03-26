@@ -1,0 +1,1447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <spirit:vendor>xilinx.com</spirit:vendor>
+  <spirit:library>customized_ip</spirit:library>
+  <spirit:name>exdes_Stereovision_0_0</spirit:name>
+  <spirit:version>1.0</spirit:version>
+  <spirit:busInterfaces>
+    <spirit:busInterface>
+      <spirit:name>S_AXIS</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_tdata</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TLAST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_tlast</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TUSER</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_tuser</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_tvalid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_tready</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>WIZ_DATA_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:id="BUSIFPARAM_VALUE.S_AXIS.WIZ_DATA_WIDTH" spirit:choiceRef="choice_list_6fc15197">32</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>TDATA_NUM_BYTES</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXIS.TDATA_NUM_BYTES">12</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>TDEST_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXIS.TDEST_WIDTH">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>TID_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXIS.TID_WIDTH">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>TUSER_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXIS.TUSER_WIDTH">1</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_TREADY</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXIS.HAS_TREADY">1</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_TSTRB</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXIS.HAS_TSTRB">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_TKEEP</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXIS.HAS_TKEEP">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_TLAST</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXIS.HAS_TLAST">1</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>FREQ_HZ</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXIS.FREQ_HZ">150000000</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>PHASE</spirit:name>
+          <spirit:value spirit:format="float" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXIS.PHASE">0.0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>CLK_DOMAIN</spirit:name>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXIS.CLK_DOMAIN">exdes_clk_wiz_1_clk_out1</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>LAYERED_METADATA</spirit:name>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXIS.LAYERED_METADATA">xilinx.com:interface:datatypes:1.0 {TDATA {datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value xilinx.com:video:G_B_R_444:1.0} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 24} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} array_type {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value rows} size 
+{attribs {resolve_type generated dependency active_rows format long minimum {} maximum {}} value 1} stride {attribs {resolve_type generated dependency active_rows_stride format long minimum {} maximum {}} value 24} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 24} bitoffset {attribs {resolve_type immediate dependency {} format long minimu
+m {} maximum {}} value 0} array_type {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value cols} size {attribs {resolve_type generated dependency active_cols format long minimum {} maximum {}} value 1} stride {attribs {resolve_type generated dependency active_cols_stride format long minimum {} maximum {}} value 24} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type 
+automatic dependency {} format long minimum {} maximum {}} value 24} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} struct {field_G {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value G} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitw
+idth {attribs {resolve_type generated dependency video_data_width format long minimum {} maximum {}} value 8} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true}}}} field_B {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value B} enabled {attribs {resolve_type generated dependency video_comp1_enabl
+ed format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type generated dependency video_data_width format long minimum {} maximum {}} value 8} bitoffset {attribs {resolve_type generated dependency video_comp1_offset format long minimum {} maximum {}} value 8} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true}}
+}} field_R {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value R} enabled {attribs {resolve_type generated dependency video_comp2_enabled format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type generated dependency video_data_width format long minimum {} maximum {}} value 8} bitoffset {attribs {resolve_type generated depen
+dency video_comp2_offset format long minimum {} maximum {}} value 16} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true}}}}}}}}}}} TDATA_WIDTH 24}</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>INSERT_VIP</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="BUSIFPARAM_VALUE.S_AXIS.INSERT_VIP">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>simulation.rtl</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>M_AXIS</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_tdata</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TLAST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_tlast</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TUSER</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_tuser</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_tvalid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_tready</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>WIZ_DATA_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:id="BUSIFPARAM_VALUE.M_AXIS.WIZ_DATA_WIDTH" spirit:choiceRef="choice_list_6fc15197">32</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>TDATA_NUM_BYTES</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.M_AXIS.TDATA_NUM_BYTES">12</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>TDEST_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.M_AXIS.TDEST_WIDTH">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>TID_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.M_AXIS.TID_WIDTH">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>TUSER_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.M_AXIS.TUSER_WIDTH">1</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_TREADY</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.M_AXIS.HAS_TREADY">1</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_TSTRB</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.M_AXIS.HAS_TSTRB">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_TKEEP</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.M_AXIS.HAS_TKEEP">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_TLAST</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.M_AXIS.HAS_TLAST">1</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>FREQ_HZ</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.M_AXIS.FREQ_HZ">150000000</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>PHASE</spirit:name>
+          <spirit:value spirit:format="float" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.M_AXIS.PHASE">0.0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>CLK_DOMAIN</spirit:name>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.M_AXIS.CLK_DOMAIN">exdes_clk_wiz_1_clk_out1</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>LAYERED_METADATA</spirit:name>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.M_AXIS.LAYERED_METADATA">undef</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>INSERT_VIP</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="BUSIFPARAM_VALUE.M_AXIS.INSERT_VIP">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>simulation.rtl</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>aresetn</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>aresetn</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>POLARITY</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.ARESETN.POLARITY" spirit:choiceRef="choice_list_9d8b0d81">ACTIVE_LOW</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>INSERT_VIP</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="BUSIFPARAM_VALUE.ARESETN.INSERT_VIP">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>simulation.rtl</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>aclk</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>CLK</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>aclk</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_RESET</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.ACLK.ASSOCIATED_RESET">aresetn</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_BUSIF</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.ACLK.ASSOCIATED_BUSIF">S_AXIS:M_AXIS</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>FREQ_HZ</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.ACLK.FREQ_HZ">150000000</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>FREQ_TOLERANCE_HZ</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.ACLK.FREQ_TOLERANCE_HZ">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>PHASE</spirit:name>
+          <spirit:value spirit:format="float" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.ACLK.PHASE">0.0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>CLK_DOMAIN</spirit:name>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.ACLK.CLK_DOMAIN">exdes_clk_wiz_1_clk_out1</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>INSERT_VIP</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="BUSIFPARAM_VALUE.ACLK.INSERT_VIP">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>simulation.rtl</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+  </spirit:busInterfaces>
+  <spirit:model>
+    <spirit:views>
+      <spirit:view>
+        <spirit:name>xilinx_verilogsynthesis</spirit:name>
+        <spirit:displayName>Verilog Synthesis</spirit:displayName>
+        <spirit:envIdentifier>verilogSource:vivado.xilinx.com:synthesis</spirit:envIdentifier>
+        <spirit:language>verilog</spirit:language>
+        <spirit:modelName>Stereovision_v1_0</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_verilogsynthesis_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Fri Mar 26 10:17:09 UTC 2021</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:30615b3a</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_synthesisconstraints</spirit:name>
+        <spirit:displayName>Synthesis Constraints</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:synthesis.constraints</spirit:envIdentifier>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:30615b3a</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_verilogsynthesiswrapper</spirit:name>
+        <spirit:displayName>Verilog Synthesis Wrapper</spirit:displayName>
+        <spirit:envIdentifier>verilogSource:vivado.xilinx.com:synthesis.wrapper</spirit:envIdentifier>
+        <spirit:language>verilog</spirit:language>
+        <spirit:modelName>exdes_Stereovision_0_0</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_verilogsynthesiswrapper_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Fri Mar 26 10:17:09 UTC 2021</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:30615b3a</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_verilogbehavioralsimulation</spirit:name>
+        <spirit:displayName>Verilog Simulation</spirit:displayName>
+        <spirit:envIdentifier>verilogSource:vivado.xilinx.com:simulation</spirit:envIdentifier>
+        <spirit:language>verilog</spirit:language>
+        <spirit:modelName>Stereovision_v1_0</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_verilogbehavioralsimulation_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Fri Mar 26 10:17:09 UTC 2021</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:f604a326</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_verilogsimulationwrapper</spirit:name>
+        <spirit:displayName>Verilog Simulation Wrapper</spirit:displayName>
+        <spirit:envIdentifier>verilogSource:vivado.xilinx.com:simulation.wrapper</spirit:envIdentifier>
+        <spirit:language>verilog</spirit:language>
+        <spirit:modelName>exdes_Stereovision_0_0</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_verilogsimulationwrapper_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Fri Mar 26 10:17:09 UTC 2021</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:f604a326</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_externalfiles</spirit:name>
+        <spirit:displayName>External Files</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:external.files</spirit:envIdentifier>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_externalfiles_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Fri Mar 26 10:18:33 UTC 2021</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:30615b3a</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+    </spirit:views>
+    <spirit:ports>
+      <spirit:port>
+        <spirit:name>aclk</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>aresetn</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_tready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_tdata</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.AXIS_TDATA_WIDTH&apos;)) - 1)">95</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_tuser</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_tlast</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_tvalid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_tvalid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_tdata</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.AXIS_TDATA_WIDTH&apos;)) - 1)">95</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_tuser</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_tlast</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_tready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">1</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>switch_img</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">3</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+    </spirit:ports>
+    <spirit:modelParameters>
+      <spirit:modelParameter xsi:type="spirit:nameValueTypeType" spirit:dataType="integer">
+        <spirit:name>WIDTH</spirit:name>
+        <spirit:displayName>Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.WIDTH">3840</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>HEIGHT</spirit:name>
+        <spirit:displayName>Height</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.HEIGHT">2160</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>MAX_DISP</spirit:name>
+        <spirit:displayName>Max Disp</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.MAX_DISP">255</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>CNTX_SIZE</spirit:name>
+        <spirit:displayName>Cntx Size</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.CNTX_SIZE">3</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>MAX_SAMPLES_PER_CLOCK</spirit:name>
+        <spirit:displayName>Max Samples Per Clock</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.MAX_SAMPLES_PER_CLOCK">4</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>AXIS_TDATA_WIDTH</spirit:name>
+        <spirit:displayName>Axis Tdata Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.AXIS_TDATA_WIDTH">96</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>DATA_WIDTH</spirit:name>
+        <spirit:displayName>Data Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.DATA_WIDTH">8</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>P1</spirit:name>
+        <spirit:displayName>P1</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.P1">16</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>P2</spirit:name>
+        <spirit:displayName>P2</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.P2">64</spirit:value>
+      </spirit:modelParameter>
+    </spirit:modelParameters>
+  </spirit:model>
+  <spirit:choices>
+    <spirit:choice>
+      <spirit:name>choice_list_6fc15197</spirit:name>
+      <spirit:enumeration>32</spirit:enumeration>
+    </spirit:choice>
+    <spirit:choice>
+      <spirit:name>choice_list_9d8b0d81</spirit:name>
+      <spirit:enumeration>ACTIVE_HIGH</spirit:enumeration>
+      <spirit:enumeration>ACTIVE_LOW</spirit:enumeration>
+    </spirit:choice>
+  </spirit:choices>
+  <spirit:fileSets>
+    <spirit:fileSet>
+      <spirit:name>xilinx_verilogsynthesis_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/new/Inter_col_v1_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/imports/Ncnx_Xppc/Ncntx_Xppc.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/new/SAD/SAD.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/new/SAD/SAD_v1_0.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/new/Stereovision.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/imports/Ncnx_Xppc/delay.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/imports/Ncnx_Xppc/delayLineBRAM_Xppc.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/imports/Ncnx_Xppc/delay_line.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/43ae/src/RGB_to_Grayscale_v1_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/43ae/hdl/Stereovision_v1_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_verilogsynthesiswrapper_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>synth/exdes_Stereovision_0_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_verilogbehavioralsimulation_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/new/Inter_col_v1_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/imports/Ncnx_Xppc/Ncntx_Xppc.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/new/SAD/SAD.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/new/SAD/SAD_v1_0.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/new/Stereovision.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/imports/Ncnx_Xppc/delay.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/imports/Ncnx_Xppc/delayLineBRAM_Xppc.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/edit_Stereovision_v1_0.srcs/sources_1/imports/sources_1/imports/Ncnx_Xppc/delay_line.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/43ae/src/RGB_to_Grayscale_v1_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/43ae/hdl/Stereovision_v1_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_verilogsimulationwrapper_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>sim/exdes_Stereovision_0_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_externalfiles_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>exdes_Stereovision_0_0.dcp</spirit:name>
+        <spirit:userFileType>dcp</spirit:userFileType>
+        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>exdes_Stereovision_0_0_stub.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_synth_blackbox_stub</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>exdes_Stereovision_0_0_stub.vhdl</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_synth_blackbox_stub</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>exdes_Stereovision_0_0_sim_netlist.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_single_language</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>exdes_Stereovision_0_0_sim_netlist.vhdl</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_single_language</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+    </spirit:fileSet>
+  </spirit:fileSets>
+  <spirit:description>Stereovision 4k</spirit:description>
+  <spirit:parameters>
+    <spirit:parameter>
+      <spirit:name>Component_Name</spirit:name>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.Component_Name" spirit:order="1">exdes_Stereovision_0_0</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>WIDTH</spirit:name>
+      <spirit:displayName>Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.WIDTH">3840</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>HEIGHT</spirit:name>
+      <spirit:displayName>Height</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.HEIGHT">2160</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>MAX_DISP</spirit:name>
+      <spirit:displayName>Max Disp</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.MAX_DISP">255</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>CNTX_SIZE</spirit:name>
+      <spirit:displayName>Cntx Size</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.CNTX_SIZE">3</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>MAX_SAMPLES_PER_CLOCK</spirit:name>
+      <spirit:displayName>Max Samples Per Clock</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.MAX_SAMPLES_PER_CLOCK">4</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>AXIS_TDATA_WIDTH</spirit:name>
+      <spirit:displayName>Axis Tdata Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.AXIS_TDATA_WIDTH">96</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>DATA_WIDTH</spirit:name>
+      <spirit:displayName>Data Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.DATA_WIDTH">8</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>P1</spirit:name>
+      <spirit:displayName>P1</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.P1">16</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>P2</spirit:name>
+      <spirit:displayName>P2</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.P2">64</spirit:value>
+    </spirit:parameter>
+  </spirit:parameters>
+  <spirit:vendorExtensions>
+    <xilinx:coreExtensions>
+      <xilinx:displayName>Stereovision_v1_0</xilinx:displayName>
+      <xilinx:xpmLibraries>
+        <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
+      </xilinx:xpmLibraries>
+      <xilinx:coreRevision>27</xilinx:coreRevision>
+      <xilinx:tags>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7bf0ab65_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b7146fd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@8a045fe_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6886f87b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@67ffb528_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@758a613f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6ca1ade2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4652c5eb_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@243dd14_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@120da70d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@30328bb4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@540175a5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5dc9f5be_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1c5c2e50_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@295a78ae_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@317829a5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@60c331b1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@18e34bfd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@502c2937_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@212ad22d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b90149d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@566fe7e4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5bfb63bb_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@59194e4c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1e825ac_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@41682881_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2c85f02c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6125877d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2b5800b7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e9ec78c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e718e1a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@13c214ae_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@29e5041_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@77c4804_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7f43ad66_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@42e33667_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@70daf245_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@70f194af_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@47eaa20e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1142e33_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3c2eb0e7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4932d2c9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b8b9948_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@782e23d3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@33ee89f8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e3e560b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@68264461_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@643ca363_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@77a4a776_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@51a1b8fb_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@54a95b20_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@a480f54_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1e2d6212_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7c0e3e20_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@52fe1a87_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2e628f4f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@35fe1f4a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@33bf79a6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@e3dff4e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2c8447bc_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2ab7ad52_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5345e4e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@18519a0d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3f353e3a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2109216b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3176cd96_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@be8b75e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6a2a9b55_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@130e5d06_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@45456f66_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f30faa8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@57a45dd2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@461d4acf_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@60b7bcad_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@282af21c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5275d05e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2955e93b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@501507c0_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@300d659e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5d396c7d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@8161cf6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2ddef82e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@23c3b773_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7d9886d4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@244d47eb_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@62d2f0dd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2880e714_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@23cf50c8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@407b5b7f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@42cb9cb3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4f0a1450_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@56a26466_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@78772087_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6f1274b5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3779c4c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@551a2b83_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2fe4321_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@676955dc_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6607c908_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1_0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6e5ebe6d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1_0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7bb6d311_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1_0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3b8abbc4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1_0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6ca3e666_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1_0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7e5012fd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1_0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4771595b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1_0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@39485cbf_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1_0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2de8f6a2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1_0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@73f3474d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1_0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6dbbc53a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1_0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3f799066_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1_0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@44932342_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1_0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1abd2b74_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1_0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5c088c75_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@133b8fef_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2664ac55_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@573ee4ff_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@76063bfd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3126044e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@52832c32_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6ea5ac12_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6463789e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2047a468_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@c5110aa_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@705e7cc3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@426135ee_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@62145f3a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6f179e5e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7def930d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6fc0c3c6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@f170632_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5fb2d9cc_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6d49e837_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2eedba53_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@308e013b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@537eb976_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6b3bd918_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f5b5039_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2a79e897_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f99f699_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@49a42996_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@71bb0515_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@25cc6dbb_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@33bd7b81_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@63065dfb_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1bb292be_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2c720ecf_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@217dafa_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@68976c2b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@625a65ed_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6438d147_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7a5ac27c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5b9fb9be_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40621758_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1750b102_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5613cde6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@245b28a9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@50d350ba_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@e37fe07_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@76fd3997_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2d6f9ed1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4d435ace_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@18cbe5e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@42a3dd65_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@61e66d53_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5464f37_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5fb08a84_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@35e8d783_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@24151d14_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@26f007c3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@88a3b49_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5beeeff1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4bca228e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@839dcb7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@589ff041_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4962e8c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@62ad4feb_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@49a4afe1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2cce08d1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@36d93589_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@617df03d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@ae7840b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@24245782_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ce45667_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@152dc103_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5eef45ad_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7a0d5040_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@62bd9483_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@30109b4d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@410e91d3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@e8e3dc9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@51cc525d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@66c99bcc_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@407b33ca_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1e137757_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2e0cbee2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@662b7214_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@61cb52ee_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@48928a4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2e5c4480_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5b7d6fe8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@19446931_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@35e6ec50_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@65f4f8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@648e27b1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1737868d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1073ecd7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@64c2f6ef_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5f941f0f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@39391fac_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@41538f82_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@93f8803_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6e3e52a1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@e301208_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@230b1923_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@205c13ce_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4111319d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7818aad9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@74543333_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@28e53ba6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3ef696b1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2ef8f750_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b46b0e0_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@468e7723_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5e2e1dd5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@64048175_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@56013f5a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b31f6d4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ead8f64_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3f5682d5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@a01ca5d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5af650cf_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1d7f3ce9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@34513af8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5ccccd1e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@96f26a9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3d684c2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6ef345d5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1a9adec0_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3672bc7d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@47bc8846_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@470ab93c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1277429c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1f5fd7a2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@61ce7993_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@88e1fb_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ca5574f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2fae50df_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1e536eb4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@fe75b59_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@24559d09_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@42dcc8d5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1330b68d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@64d5f85d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@622d8fb6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2267d2f0_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@43d9246e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7a033ec5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@36a12fce_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@432e48e9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@17748387_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3a585fa5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5c379b56_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@954a89d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3dcf2aef_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2caef871_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2b4cc027_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3674c696_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@d7ea54f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@493ff9ab_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@f5c83c3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@50674f91_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@aea7599_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@397648b1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@661d9515_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1935b1b7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6cfea038_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2648ae49_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@261d27e1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@766d5a58_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2da78f74_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@43e968b4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@17a35d1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1ebf9abc_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6418894d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5a857a67_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@13366f28_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@250f810f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@26aede4b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@16410b3f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40265a19_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5fa0fac_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6e9b9d6d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4d9515ca_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f17fac4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@78013875_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5623f4bf_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@836e0a0_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@12a894c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f00423c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@e01b20f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6dc11ed0_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@9165815_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@19443372_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@15f6df97_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1809b62b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6ef2b4ce_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@16688886_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5913d39d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1f68ea22_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7299bf48_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7bc715a8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@255d4388_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@a3e7bd9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@49950045_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5dce3bb3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@71ee066f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@192417d4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@52ff9afd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@22e48bbe_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1787d90c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@718b4c8b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@74d6b1c5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@12269dac_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@63df96c2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@43e5cae1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@51ce8f88_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@61afd975_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@38876e96_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2c258f9d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@666be51a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@70c5baa3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1754177b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7acd5880_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1a14a835_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@692a4084_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@55c18afa_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4a2fdff8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@aa55457_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@472879c1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3986e7b1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@163a340_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@77fc61e2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f13be0e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2905d5b4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7e15b302_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@e1a0cb6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@42063739_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@409f31ec_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6cf3a90a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@ed33029_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@29d22996_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@39747280_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4b2ec274_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1f6154cd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@787c846b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@37002670_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5da86624_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3968aaac_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@78e958aa_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@128f082c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@a8bdf51_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@75ab751a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@22a98f4d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@41f56031_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6b6c5684_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@319077e4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b91936c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6c34f633_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@71312012_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@51873014_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@91af361_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4acfb1de_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@752d1f5a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40427200_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f872143_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo/Stereovision/Stereovision_1.0</xilinx:tag>
+      </xilinx:tags>
+      <xilinx:configElementInfos>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.ACLK.ASSOCIATED_BUSIF" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.ACLK.ASSOCIATED_RESET" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.ACLK.CLK_DOMAIN" xilinx:valueSource="ip_propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.ACLK.FREQ_HZ" xilinx:valueSource="ip_propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.ACLK.FREQ_TOLERANCE_HZ" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.ACLK.PHASE" xilinx:valueSource="ip_propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.ARESETN.POLARITY" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXIS.CLK_DOMAIN" xilinx:valueSource="ip_propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXIS.FREQ_HZ" xilinx:valueSource="ip_propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXIS.HAS_TKEEP" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXIS.HAS_TLAST" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXIS.HAS_TREADY" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXIS.HAS_TSTRB" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXIS.LAYERED_METADATA" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXIS.PHASE" xilinx:valueSource="ip_propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXIS.TDATA_NUM_BYTES" xilinx:valueSource="auto" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXIS.TDEST_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXIS.TID_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXIS.TUSER_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXIS.WIZ_DATA_WIDTH" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXIS.CLK_DOMAIN" xilinx:valueSource="ip_propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXIS.FREQ_HZ" xilinx:valueSource="ip_propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXIS.HAS_TKEEP" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXIS.HAS_TLAST" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXIS.HAS_TREADY" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXIS.HAS_TSTRB" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXIS.LAYERED_METADATA" xilinx:valueSource="user_prop" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXIS.PHASE" xilinx:valueSource="ip_propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXIS.TDATA_NUM_BYTES" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXIS.TDEST_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXIS.TID_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXIS.TUSER_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXIS.WIZ_DATA_WIDTH" xilinx:valuePermission="bd"/>
+      </xilinx:configElementInfos>
+    </xilinx:coreExtensions>
+    <xilinx:packagingInfo>
+      <xilinx:xilinxVersion>2020.2</xilinx:xilinxVersion>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="e9a003cf"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="204e86e2"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="9b0e65b3"/>
+      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="15f79b27"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="436ecb31"/>
+    </xilinx:packagingInfo>
+  </spirit:vendorExtensions>
+</spirit:component>
