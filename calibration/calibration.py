@@ -54,13 +54,63 @@ ret_R, mtx_R, dist_R, rvecs_R, tvecs_R = cv2.calibrateCamera(objpoints, imgpoint
 retval, cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2, R, T, E, F =  cv2.stereoCalibrate(objpoints,imgpoints_L,imgpoints_R,mtx_L,dist_L,mtx_R,dist_R,gray_l.shape[::-1])
 
 R1, R2, P1, P2, Q, validPixROI1, validPixROI2 = cv2.stereoRectify(cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2, gray_r.shape[::-1], R, T)
+RInv1 = np.linalg.inv(R1)
+RInv2 = np.linalg.inv(R2)
 
+# Parameters -  cameraMatrix, P, distCoeffs, R_inv
+f = open("params.txt", "w")
+
+print("cameraMatrix")
+print(cameraMatrix1)
+cameraMatrix1_int = np.uint16(cameraMatrix1)
+cameraMatrix1_frac = np.uint8((cameraMatrix1-cameraMatrix1_int)*256)
+cameraMatrix2_int = np.uint16(cameraMatrix2)
+cameraMatrix2_frac = np.uint8((cameraMatrix2-cameraMatrix2_int)*256)
+print(cameraMatrix1_int)
+print(cameraMatrix1_frac)
+f.write("cameraMatrixL_int\n"+np.array_str(cameraMatrix1_int)+"\n")
+f.write("cameraMatrixL_frac\n"+np.array_str(cameraMatrix1_frac)+"\n")
+f.write("cameraMatrixR_int\n"+np.array_str(cameraMatrix2_int)+"\n")
+f.write("cameraMatrixR_frac\n"+np.array_str(cameraMatrix2_frac)+"\n")
+
+print("P")
+print(P1)
+P1_int = np.uint16(P1)
+P1_frac = np.uint8((P1-P1_int)*256)
+P2_int = np.uint16(P2)
+P2_frac = np.uint8((P2-P2_int)*256)
+print(P1_int)
+print(P1_frac)
+f.write("PL_int\n"+np.array_str(P1_int)+"\n")
+f.write("PL_frac\n"+np.array_str(P1_frac)+"\n")
+f.write("PR_int\n"+np.array_str(P2_int)+"\n")
+f.write("PR_frac\n"+np.array_str(P2_frac)+"\n")
+
+print("distCoeffs")
+print(distCoeffs1)
+distCoeffs1_frac = np.int16(distCoeffs1*256*128)
+distCoeffs2_frac = np.int16(distCoeffs2*256*128)
+print(distCoeffs1_frac)
+f.write("distCoeffsL_frac\n"+np.array_str(distCoeffs1_frac)+"\n")
+f.write("distCoeffsR_frac\n"+np.array_str(distCoeffs2_frac)+"\n")
+
+print("RInv")
+print(RInv1)
+RInv1_frac = np.int16(RInv1*256*128)
+RInv2_frac = np.int16(RInv2*256*128)
+print(RInv1_frac)
+f.write("RInvL_frac\n"+np.array_str(RInv1_frac)+"\n")
+f.write("RInvR_frac\n"+np.array_str(RInv2_frac)+"\n")
+
+f.close()
 #####################################
 ###### Calculation with OpenCV ######
 #####################################
 
-map1_L, map2_L = cv2.initUndistortRectifyMap(cameraMatrix1, distCoeffs1, R1, P1, gray_l.shape[::-1], cv2.CV_32FC1)
+map1_L, map2_L = cv2.initUndistortRectifyMap(cameraMatrix1, distCoeffs1, R1, P1, gray_l.shape[::-1], cv2.CV_16SC2)
 map1_R, map2_R = cv2.initUndistortRectifyMap(cameraMatrix2, distCoeffs2, R2, P2, gray_l.shape[::-1], cv2.CV_16SC2)
+
+
 
 img_l = cv2.imread('images_left/left02.jpg')
 img_r = cv2.imread('images_right/right02.jpg')
@@ -75,9 +125,16 @@ gray_r = cv2.cvtColor(dst_R, cv2.COLOR_BGR2GRAY)
 ######## Hardware Prototype #########
 #####################################
 
+cameraMatrix1 = cameraMatrix1_int+np.float32(cameraMatrix1_frac)/256
+cameraMatrix2 = cameraMatrix2_int+np.float32(cameraMatrix2_frac)/256
+distCoeffs1 = np.float32(distCoeffs1_frac)/(256*128)
+distCoeffs2 = np.float32(distCoeffs2_frac)/(256*128)
+RInv1 = np.float32(RInv1_frac)/(256*128)
+RInv2 = np.float32(RInv2_frac)/(256*128)
+P1 = P1_int+np.float32(P1_frac)/256
+P2 = P2_int+np.float32(P2_frac)/256
+
 (Y, X ,Z) = img_l.shape
-R1_inv = np.linalg.inv(R1)
-R2_inv = np.linalg.inv(R2)
 mapx_L = np.zeros((Y,X))
 mapy_L = np.zeros((Y,X))
 mapx_R = np.zeros((Y,X))
@@ -86,7 +143,7 @@ for v in range(Y):
    for u in range(X):
        x = (u - P1[0, 2]) / P1[0, 0]
        y = (v - P1[1, 2]) / P1[1, 1]
-       [X1,Y1,W] = np.dot(R1_inv,[[x],[y],[1]])
+       [X1,Y1,W] = np.dot(RInv1,[[x],[y],[1]])
        x1 = X1 / W
        y1 = Y1 / W
        r2 = x1**2+y1**2
@@ -100,7 +157,7 @@ for v in range(Y):
    for u in range(X):
        x = (u - P2[0, 2]) / P2[0, 0]
        y = (v - P2[1, 2]) / P2[1, 1]
-       [X1, Y1, W] = np.dot(R2_inv, [[x], [y], [1]])
+       [X1, Y1, W] = np.dot(RInv2, [[x], [y], [1]])
        x1 = X1 / W
        y1 = Y1 / W
        r2 = x1 ** 2 + y1 ** 2
