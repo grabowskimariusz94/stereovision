@@ -159,8 +159,8 @@ for v in range(Y):
             2 * distCoeffs1[0,2] * x1 * y1 + distCoeffs1[0,3] * (r2 + 2 * x1 ** 2)
        y2 = y1 * (1 + distCoeffs1[0,0] * r2 + distCoeffs1[0,1] * r2 **2 + distCoeffs1[0,4] * r2 **3) + \
             2 * distCoeffs1[0,3] * x1 * y1 + distCoeffs1[0,2] * (r2 + 2 * y1 ** 2)
-       mapx_L[v, u] = fx1 * x2 + cx1
-       mapy_L[v, u] = fy1 * y2 + cy1
+       mapx_L[v, u] = fx1 * x2 + cx1 - u
+       mapy_L[v, u] = fy1 * y2 + cy1 - v
 for v in range(Y):
    for u in range(X):
        x = (u - cxNew2) * fxNewInv2
@@ -173,8 +173,12 @@ for v in range(Y):
             2 * distCoeffs2[0, 2] * x1 * y1 + distCoeffs2[0, 3] * (r2 + 2 * x1 ** 2)
        y2 = y1 * (1 + distCoeffs2[0, 0] * r2 + distCoeffs2[0, 1] * r2 ** 2 + distCoeffs2[0, 4] * r2 ** 3) + \
             2 * distCoeffs2[0, 3] * x1 * y1 + distCoeffs2[0, 2] * (r2 + 2 * y1 ** 2)
-       mapx_R[v, u] = fx2 * x2 + cx2
-       mapy_R[v, u] = fy2 * y2 + cy2
+       mapx_R[v, u] = fx2 * x2 + cx2 - u
+       mapy_R[v, u] = fy2 * y2 + cy2 - v
+
+print("maps")
+print(mapx_L)
+print(mapy_L)
 
 dst_L2 = np.zeros((Y,X),"uint8")
 dst_R2 = np.zeros((Y,X),"uint8")
@@ -191,10 +195,10 @@ for j in range(Y):
         dx2 = 1 - dx1
         dy1 = y - y0
         dy2 = 1 - dy1
-        p00 = gray_L[y0, x0]
-        p01 = gray_L[y0, min(x0 + 1, X - 1)]
-        p10 = gray_L[min(y0 + 1, Y - 1), x0]
-        p11 = gray_L[min(y0 + 1, Y - 1), min(x0 + 1, X - 1)]
+        p00 = gray_L[j+y0, i+x0]
+        p01 = gray_L[j+y0, min(i+x0 + 1, X - 1)]
+        p10 = gray_L[min(j+y0 + 1, Y - 1), i+x0]
+        p11 = gray_L[min(j+y0 + 1, Y - 1), min(i+x0 + 1, X - 1)]
         p0x = p00 * dx2 + p01 * dx1
         p1x = p10 * dx2 + p11 * dx1
         dst_L2[j,i] = p0x * dy2 + p1x * dy1
@@ -208,10 +212,10 @@ for j in range(Y):
         dx2 = 1 - dx1
         dy1 = y - y0
         dy2 = 1 - dy1
-        p00 = gray_R[y0, x0]
-        p01 = gray_R[y0, min(x0 + 1, X - 1)]
-        p10 = gray_R[min(y0 + 1, Y - 1), x0]
-        p11 = gray_R[min(y0 + 1, Y - 1), min(x0 + 1, X - 1)]
+        p00 = gray_R[j+y0, i+x0]
+        p01 = gray_R[j+y0, min(i+x0 + 1, X - 1)]
+        p10 = gray_R[min(j+y0 + 1, Y - 1), i+x0]
+        p11 = gray_R[min(j+y0 + 1, Y - 1), min(i+x0 + 1, X - 1)]
         p0x = p00 * dx2 + p01 * dx1
         p1x = p10 * dx2 + p11 * dx1
         dst_R2[j,i] = p0x * dy2 + p1x * dy1
