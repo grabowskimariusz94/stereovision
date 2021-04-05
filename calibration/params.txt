@@ -1,28 +1,28 @@
-cameraMatrixL_int
+cameraMatrixL_int [fx fy cx cy]
 [536 537 338 231]
-cameraMatrixL_frac
+cameraMatrixL_frac [fx fy cx cy] (*256)
 [220  45 138 138]
-cameraMatrixR_int
+cameraMatrixR_int [fx fy cx cy]
 [540 539 327 248]
-cameraMatrixR_frac
+cameraMatrixR_frac [fx fy cx cy] (*256)
 [ 20 160  49  99]
-PL_int
+newCameraMatrixL_int [fx fy cx cy]
 [  0   0 341 243]
-PL_frac
+newCameraMatrixL_frac [fx (*256*256) fy (*256*256) cx cy] (*256)
 [31161 31161   177   163]
-PR_int
+newCameraMatrixR_int [fx fy cx cy]
 [  0   0 341 243]
-PR_frac
+newCameraMatrixR_frac [fx (*256*256) fy (*256*256) cx cy] (*256)
 [31161 31161   177   163]
-distCoeffsL_frac
+distCoeffsL_frac [k1 k2 p1 p2 k3] (*256*128)
 [[-9871  5161    46    15 -1855]]
-distCoeffsR_frac
+distCoeffsR_frac [k1 k2 p1 p2 k3] (*256*128)
 [[-10000   6405    -17     38  -4917]]
-RInvL_frac
+RInvL_frac (*256*128)
 [[32766   230  -150]
  [ -229 32766   166]
  [  151  -165 32767]]
-RInvR_frac
+RInvR_frac (*256*128)
 [[32765   354  -233]
  [ -355 32765  -164]
  [  231   167 32766]]
