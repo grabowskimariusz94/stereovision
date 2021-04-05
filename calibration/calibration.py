@@ -62,29 +62,35 @@ f = open("params.txt", "w")
 
 print("cameraMatrix")
 print(cameraMatrix1)
-cameraMatrix1_int = np.uint16(cameraMatrix1)
-cameraMatrix1_frac = np.uint8((cameraMatrix1-cameraMatrix1_int)*256)
-cameraMatrix2_int = np.uint16(cameraMatrix2)
-cameraMatrix2_frac = np.uint8((cameraMatrix2-cameraMatrix2_int)*256)
-print(cameraMatrix1_int)
-print(cameraMatrix1_frac)
-f.write("cameraMatrixL_int\n"+np.array_str(cameraMatrix1_int)+"\n")
-f.write("cameraMatrixL_frac\n"+np.array_str(cameraMatrix1_frac)+"\n")
-f.write("cameraMatrixR_int\n"+np.array_str(cameraMatrix2_int)+"\n")
-f.write("cameraMatrixR_frac\n"+np.array_str(cameraMatrix2_frac)+"\n")
+fx1,fy1,cx1,cy1 = cameraMatrix1[0,0],cameraMatrix1[1,1],cameraMatrix1[0,2],cameraMatrix1[1,2]
+[fx1_int,fy1_int,cx1_int,cy1_int] = np.uint16([fx1,fy1,cx1,cy1])
+[fx1_frac,fy1_frac,cx1_frac,cy1_frac] = np.uint8((np.array([fx1,fy1,cx1,cy1])-np.array([fx1_int,fy1_int,cx1_int,cy1_int]))*256)
+fx2,fy2,cx2,cy2 = cameraMatrix2[0,0],cameraMatrix2[1,1],cameraMatrix2[0,2],cameraMatrix2[1,2]
+[fx2_int,fy2_int,cx2_int,cy2_int] = np.uint16([fx2,fy2,cx2,cy2])
+[fx2_frac,fy2_frac,cx2_frac,cy2_frac] = np.uint8((np.array([fx2,fy2,cx2,cy2])-np.array([fx2_int,fy2_int,cx2_int,cy2_int]))*256)
+print([fx1_int,fy1_int,cx1_int,cy1_int] )
+print([fx1_frac,fy1_frac,cx1_frac,cy1_frac])
+f.write("cameraMatrixL_int\n"+np.array_str(np.array([fx1_int,fy1_int,cx1_int,cy1_int]))+"\n")
+f.write("cameraMatrixL_frac\n"+np.array_str(np.array([fx1_frac,fy1_frac,cx1_frac,cy1_frac]))+"\n")
+f.write("cameraMatrixR_int\n"+np.array_str(np.array([fx2_int,fy2_int,cx2_int,cy2_int] ))+"\n")
+f.write("cameraMatrixR_frac\n"+np.array_str(np.array([fx2_frac,fy2_frac,cx2_frac,cy2_frac]))+"\n")
 
 print("P")
 print(P1)
-P1_int = np.uint16(P1)
-P1_frac = np.uint8((P1-P1_int)*256)
-P2_int = np.uint16(P2)
-P2_frac = np.uint8((P2-P2_int)*256)
-print(P1_int)
-print(P1_frac)
-f.write("PL_int\n"+np.array_str(P1_int)+"\n")
-f.write("PL_frac\n"+np.array_str(P1_frac)+"\n")
-f.write("PR_int\n"+np.array_str(P2_int)+"\n")
-f.write("PR_frac\n"+np.array_str(P2_frac)+"\n")
+fxNewInv1,fyNewInv1,cxNew1,cyNew1 = 1/P1[0,0],1/P1[1,1],P1[0,2],P1[1,2]
+[cxNew1_int,cyNew1_int] = np.uint16([cxNew1,cyNew1])
+[cxNew1_frac,cyNew1_frac] = np.uint8((np.array([cxNew1,cyNew1])-np.array([cxNew1_int,cyNew1_int]))*256)
+[fxNewInv1_frac,fyNewInv1_frac] = np.uint16(np.array([fxNewInv1,fyNewInv1])*256*256*256)
+fxNewInv2,fyNewInv2,cxNew2,cyNew2 = 1/P2[0,0],1/P2[1,1],P2[0,2],P2[1,2]
+[cxNew2_int,cyNew2_int] = np.uint16([cxNew2,cyNew2])
+[cxNew2_frac,cyNew2_frac] = np.uint8((np.array([cxNew2,cyNew2])-np.array([cxNew2_int,cyNew2_int]))*256)
+[fxNewInv2_frac,fyNewInv2_frac] = np.uint16(np.array([fxNewInv2,fyNewInv2])*256*256*256 )
+print([0,0,cxNew1_int,cyNew1_int])
+print([fxNewInv1_frac,fyNewInv1_frac,cxNew1_frac,cyNew1_frac])
+f.write("PL_int\n"+np.array_str(np.array([0,0,cxNew1_int,cyNew1_int]))+"\n")
+f.write("PL_frac\n"+np.array_str(np.array([fxNewInv1_frac,fyNewInv1_frac,cxNew1_frac,cyNew1_frac]))+"\n")
+f.write("PR_int\n"+np.array_str(np.array([0,0,cxNew2_int,cyNew2_int]))+"\n")
+f.write("PR_frac\n"+np.array_str(np.array([fxNewInv2_frac,fyNewInv2_frac,cxNew2_frac,cyNew2_frac]))+"\n")
 
 print("distCoeffs")
 print(distCoeffs1)
@@ -125,14 +131,16 @@ gray_r = cv2.cvtColor(dst_R, cv2.COLOR_BGR2GRAY)
 ######## Hardware Prototype #########
 #####################################
 
-cameraMatrix1 = cameraMatrix1_int+np.float32(cameraMatrix1_frac)/256
-cameraMatrix2 = cameraMatrix2_int+np.float32(cameraMatrix2_frac)/256
+[fx1,fy1,cx1,cy1] = np.array([fx1_int,fy1_int,cx1_int,cy1_int]) + np.float32(np.array([fx1_frac,fy1_frac,cx1_frac,cy1_frac]))/256
+[fx2,fy2,cx2,cy2] = np.array([fx2_int,fy2_int,cx2_int,cy2_int]) + np.float32(np.array([fx2_frac,fy2_frac,cx2_frac,cy2_frac]))/256
+[cxNew1,cyNew1] = np.array([cxNew1_int,cyNew1_int]) + np.float32(np.array([cxNew1_frac,cyNew1_frac]))/256
+[cxNew2,cyNew2] = np.array([cxNew2_int,cyNew2_int]) + np.float32(np.array([cxNew2_frac,cyNew2_frac]))/256
+[fxNewInv1,fyNewInv1] = np.float64(np.array([fxNewInv1_frac,fyNewInv1_frac]))/(256*256*256)
+[fxNewInv2,fyNewInv2] = np.float64(np.array([fxNewInv2_frac,fyNewInv2_frac]))/(256*256*256)
 distCoeffs1 = np.float32(distCoeffs1_frac)/(256*128)
 distCoeffs2 = np.float32(distCoeffs2_frac)/(256*128)
 RInv1 = np.float32(RInv1_frac)/(256*128)
 RInv2 = np.float32(RInv2_frac)/(256*128)
-P1 = P1_int+np.float32(P1_frac)/256
-P2 = P2_int+np.float32(P2_frac)/256
 
 (Y, X ,Z) = img_l.shape
 mapx_L = np.zeros((Y,X))
@@ -141,8 +149,8 @@ mapx_R = np.zeros((Y,X))
 mapy_R = np.zeros((Y,X))
 for v in range(Y):
    for u in range(X):
-       x = (u - P1[0, 2]) / P1[0, 0]
-       y = (v - P1[1, 2]) / P1[1, 1]
+       x = (u - cxNew1) * fxNewInv1
+       y = (v - cyNew1) * fyNewInv1
        [X1,Y1,W] = np.dot(RInv1,[[x],[y],[1]])
        x1 = X1 / W
        y1 = Y1 / W
@@ -151,12 +159,12 @@ for v in range(Y):
             2 * distCoeffs1[0,2] * x1 * y1 + distCoeffs1[0,3] * (r2 + 2 * x1 ** 2)
        y2 = y1 * (1 + distCoeffs1[0,0] * r2 + distCoeffs1[0,1] * r2 **2 + distCoeffs1[0,4] * r2 **3) + \
             2 * distCoeffs1[0,3] * x1 * y1 + distCoeffs1[0,2] * (r2 + 2 * y1 ** 2)
-       mapx_L[v, u] = cameraMatrix1[0, 0] * x2 + cameraMatrix1[0, 2]
-       mapy_L[v, u] = cameraMatrix1[1, 1] * y2 + cameraMatrix1[1, 2]
+       mapx_L[v, u] = fx1 * x2 + cx1
+       mapy_L[v, u] = fy1 * y2 + cy1
 for v in range(Y):
    for u in range(X):
-       x = (u - P2[0, 2]) / P2[0, 0]
-       y = (v - P2[1, 2]) / P2[1, 1]
+       x = (u - cxNew2) * fxNewInv2
+       y = (v - cyNew2) * fyNewInv2
        [X1, Y1, W] = np.dot(RInv2, [[x], [y], [1]])
        x1 = X1 / W
        y1 = Y1 / W
@@ -165,8 +173,8 @@ for v in range(Y):
             2 * distCoeffs2[0, 2] * x1 * y1 + distCoeffs2[0, 3] * (r2 + 2 * x1 ** 2)
        y2 = y1 * (1 + distCoeffs2[0, 0] * r2 + distCoeffs2[0, 1] * r2 ** 2 + distCoeffs2[0, 4] * r2 ** 3) + \
             2 * distCoeffs2[0, 3] * x1 * y1 + distCoeffs2[0, 2] * (r2 + 2 * y1 ** 2)
-       mapx_R[v, u] = cameraMatrix2[0, 0] * x2 + cameraMatrix2[0, 2]
-       mapy_R[v, u] = cameraMatrix2[1, 1] * y2 + cameraMatrix2[1, 2]
+       mapx_R[v, u] = fx2 * x2 + cx2
+       mapy_R[v, u] = fy2 * y2 + cy2
 
 dst_L2 = np.zeros((Y,X),"uint8")
 dst_R2 = np.zeros((Y,X),"uint8")
