@@ -48,7 +48,7 @@
     ) stereo
     (
         .aclk(aclk),
-
+        .aresetn(aresetn),
 		// Ports of Axi Slave Bus Interface S00_AXIS
 		.s_axis_img_tready(s_axis_tready),
 		.s_axis_img_tdata(s_axis_tdata),
