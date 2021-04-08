@@ -2,18 +2,25 @@
 // Created by Mariusz Grabowski on 23.12.2020.
 //
 
-#include "stereovision.hpp"
+//#include "stereovision.hpp"
+#include "../include/stereovision.hpp"
 
+
+// --------------------------------------------------------------------------------------------------------------------
+// Read the input image (greyscale or colour)
 
 cv::Mat Stereovision::read(const std::string file_name, bool is_gray) {
     cv::Mat img = (is_gray)? cv::imread(file_name, cv::IMREAD_GRAYSCALE) : cv::imread(file_name);
     if (!img.data) {
-        std::cout << "Nie odnaleziono pliku!" << file_name;
+        std::cout << "File not found !" << file_name;
         exit(1);
         return img;
     }
     return img;
 }
+
+// --------------------------------------------------------------------------------------------------------------------
+// Write the image (with optional normalization for a disparity image)
 
 void Stereovision::write(cv::Mat img, const std::string file_name, bool with_normalizing, const uint8_t d_range) {
     if (with_normalizing)
@@ -22,20 +29,43 @@ void Stereovision::write(cv::Mat img, const std::string file_name, bool with_nor
 
 }
 
-cv::Mat Stereovision::fold(cv::Mat imgL, cv::Mat imgR) {
-    cv::Mat img(imgL.rows, imgR.cols-1, CV_8UC3);
+// --------------------------------------------------------------------------------------------------------------------
+// Rescale the image, so the number of cols is divisible by 4
 
-    unsigned char* p = (unsigned char*)(img.data);
+cv::Mat Stereovision::rescale4ppc(cv::Mat img) {
+    int rows = img.rows;
+    int cols = img.cols;
+
+    cols = (cols/4)*4;
+
+    cv::Mat resized_img;
+    cv::resize(img, resized_img, cv::Size(cols,rows));
+
+    return resized_img;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+// Fold two images (left and right) into one
+
+cv::Mat Stereovision::fold(cv::Mat imgL, cv::Mat imgR) {
+
+    cv::Mat img(imgL.rows, imgR.cols, CV_8UC3);
+
+    // Pointers to data
+    unsigned char* p =  (unsigned char*)(img.data);
     unsigned char* pl = (unsigned char*)(imgL.data);
     unsigned char* pr = (unsigned char*)(imgR.data);
 
+
     for (int row = 0; row < img.rows; ++row) {
         for (int col = 0; col < img.cols; ++col) {
+            // Even - left column
             if (col % 2 == 0) {
                 p[img.step * row + 3 * col + 0] = pl[imgL.step * row + 3 * col + 0];
                 p[img.step * row + 3 * col + 1] = pl[imgL.step * row + 3 * col + 1];
                 p[img.step * row + 3 * col + 2] = pl[imgL.step * row + 3 * col + 2];
             }
+            // Odd - right column
             else {
                 p[img.step * row + 3 * col + 0] = pr[imgR.step * row + 3 * col + 0];
                 p[img.step * row + 3 * col + 1] = pr[imgR.step * row + 3 * col + 1];
@@ -45,6 +75,9 @@ cv::Mat Stereovision::fold(cv::Mat imgL, cv::Mat imgR) {
     }
     return img;
 }
+
+// --------------------------------------------------------------------------------------------------------------------
+// Custom RGB to grayscale conversion
 
 cv::Mat Stereovision::RGB_to_Grayscale(cv::Mat img) {
     cv::Mat gray(img.rows,img.cols,CV_8UC1);
@@ -65,13 +98,25 @@ cv::Mat Stereovision::RGB_to_Grayscale(cv::Mat img) {
     return gray;
 }
 
-std::vector<cv::Mat> Stereovision::unfold(cv::Mat img) {
+// --------------------------------------------------------------------------------------------------------------------
+// Unfold the image using custom interpolation
+
+std::vector<cv::Mat> Stereovision::unfold_mg(cv::Mat img) {
+
+    // Output vector
     std::vector<cv::Mat> output;
+
+    // Left and right output images
     cv::Mat imgL(img.rows, img.cols, CV_8UC1);
     cv::Mat imgR(img.rows, img.cols, CV_8UC1);
-    unsigned char* p = (unsigned char*)(img.data);
+
+    // Pointers
+    unsigned char* p  = (unsigned char*)(img.data);
     unsigned char* pl = (unsigned char*)(imgL.data);
     unsigned char* pr = (unsigned char*)(imgR.data);
+
+    // Loop over the image (old version by MG)
+
     for (int row = 0; row < img.rows; ++row) {
         for (int col = 0; col < img.cols; ++col) {
             if (col % 2 == 0) {
@@ -82,6 +127,93 @@ std::vector<cv::Mat> Stereovision::unfold(cv::Mat img) {
                 pl[imgL.step * row + col] = (col == img.cols-1) ? (p[img.step * row + col - 1] / 2) : ((p[img.step * row + col - 1]) / 2 + (p[img.step * row + col + 1]) / 2);
                 pr[imgL.step * row + col] = p[img.step * row + col];
             }
+        }
+    }
+
+
+    output.push_back(imgL);
+    output.push_back(imgR);
+
+    return output;
+}
+
+std::vector<cv::Mat> Stereovision::unfold_tk(cv::Mat img) {
+
+    // Output vector
+    std::vector<cv::Mat> output;
+
+    // Left and right output images
+    cv::Mat imgL(img.rows, img.cols, CV_8UC1);
+    cv::Mat imgR(img.rows, img.cols, CV_8UC1);
+
+    // Pointers
+    unsigned char* p  = (unsigned char*)(img.data);
+    unsigned char* pl = (unsigned char*)(imgL.data);
+    unsigned char* pr = (unsigned char*)(imgR.data);
+
+
+    // Loop over the image (by TK)
+    // In 4ppc L0R0L1R1, L2R2L3R3
+    std::vector<unsigned char> four_ppc_n(4,0);     // current pixel
+    std::vector<unsigned char> four_ppc_nd(4,0);    // delayed pixel
+
+    for (int row = 0; row < img.rows; ++row) {
+        for (int col = 0; col < img.cols; col += 4) {
+
+            // Read the data to a vector (this may slow down, but will be more clear)
+            for (int k=0; k< 4; k++)
+                four_ppc_n[k] = p[img.step * row + col+k];
+
+            // If we are not at the first pixel and also not in the last line
+            if ( col > 0 && col < img.cols ) {
+                int col_w = col - 4;
+                std::cout << col_w << std::endl;
+                // Left image
+                // L0
+                pl[imgL.step * row + col_w+0] =  four_ppc_nd[0];
+                // L1
+                pl[imgL.step * row + col_w+1] =  (four_ppc_nd[0]+four_ppc_nd[2])/2;
+                // L2
+                pl[imgL.step * row + col_w+2] =  four_ppc_nd[2];
+                // L3
+                pl[imgL.step * row + col_w+3] =  (four_ppc_nd[2]+four_ppc_n[0])/2;;
+                // Right image
+                // R0
+                pr[imgR.step * row + col_w+0] =  four_ppc_nd[1];
+                // R1
+                pr[imgR.step * row + col_w+1] =  (four_ppc_nd[1]+four_ppc_nd[3])/2;
+                // R2
+                pr[imgR.step * row + col_w+2] =  four_ppc_nd[3];
+                // R3
+                pr[imgR.step * row + col_w+3] =  (four_ppc_nd[3]+four_ppc_n[1])/2;;
+
+            }
+        // Last 4 columns
+        // Left image
+        // L0
+        pl[imgL.step * row + col+0] =  four_ppc_n[0];
+        // L1
+        pl[imgL.step * row + col+1] =  (four_ppc_n[0]+four_ppc_n[2])/2;
+        // L2
+        pl[imgL.step * row + col+2] =  four_ppc_n[2];
+        // L3
+        pl[imgL.step * row + col+3] =  four_ppc_n[2];
+        // Right image
+        // R0
+        pr[imgR.step * row + col+0] =  four_ppc_n[1];
+        // R1
+        pr[imgR.step * row + col+1] =  (four_ppc_n[1]+four_ppc_n[3])/2;
+        // R2
+        pr[imgR.step * row + col+2] =  four_ppc_n[3];
+        // R3
+        pr[imgR.step * row + col+3] =  four_ppc_n[3];
+
+
+        // Copy the previous vector
+        four_ppc_nd = four_ppc_n;
+
+
+
         }
     }
 
