@@ -25,8 +25,9 @@ imgpoints_R = []
 
 for i in range(1,13):
     img_l = cv2.imread('images_left/left%02d.jpg' % i)    
-    img_r = cv2.imread('images_right/right%02d.jpg' % i)  
-
+    img_r = cv2.imread('images_right/right%02d.jpg' % i)
+    #img_l = cv2.resize(img_l, (4096,2160), cv2.INTER_LINEAR)
+    #img_r = cv2.resize(img_r, (4096,2160), cv2.INTER_LINEAR)
     gray_l = cv2.cvtColor(img_l, cv2.COLOR_BGR2GRAY)               
     gray_r = cv2.cvtColor(img_r, cv2.COLOR_BGR2GRAY)               
 
@@ -62,51 +63,39 @@ f = open("params.txt", "w")
 
 print("cameraMatrix")
 print(cameraMatrix1)
-fx1,fy1,cx1,cy1 = cameraMatrix1[0,0],cameraMatrix1[1,1],cameraMatrix1[0,2],cameraMatrix1[1,2]
-[fx1_int,fy1_int,cx1_int,cy1_int] = np.uint16([fx1,fy1,cx1,cy1])
-[fx1_frac,fy1_frac,cx1_frac,cy1_frac] = np.uint8((np.array([fx1,fy1,cx1,cy1])-np.array([fx1_int,fy1_int,cx1_int,cy1_int]))*256)
-fx2,fy2,cx2,cy2 = cameraMatrix2[0,0],cameraMatrix2[1,1],cameraMatrix2[0,2],cameraMatrix2[1,2]
-[fx2_int,fy2_int,cx2_int,cy2_int] = np.uint16([fx2,fy2,cx2,cy2])
-[fx2_frac,fy2_frac,cx2_frac,cy2_frac] = np.uint8((np.array([fx2,fy2,cx2,cy2])-np.array([fx2_int,fy2_int,cx2_int,cy2_int]))*256)
-print([fx1_int,fy1_int,cx1_int,cy1_int] )
-print([fx1_frac,fy1_frac,cx1_frac,cy1_frac])
-f.write("cameraMatrixL_int [fx fy cx cy]\n"+np.array_str(np.array([fx1_int,fy1_int,cx1_int,cy1_int]))+"\n")
-f.write("cameraMatrixL_frac [fx fy cx cy] (*256)\n"+np.array_str(np.array([fx1_frac,fy1_frac,cx1_frac,cy1_frac]))+"\n")
-f.write("cameraMatrixR_int [fx fy cx cy]\n"+np.array_str(np.array([fx2_int,fy2_int,cx2_int,cy2_int] ))+"\n")
-f.write("cameraMatrixR_frac [fx fy cx cy] (*256)\n"+np.array_str(np.array([fx2_frac,fy2_frac,cx2_frac,cy2_frac]))+"\n")
+fx1,fy1 = np.uint32(np.array([cameraMatrix1[0,0],cameraMatrix1[1,1]])*(256/4))  # [18 bits]
+cx1,cy1 = np.uint32(np.array([cameraMatrix1[0,2],cameraMatrix1[1,2]])*256*4)    # [22 bits]
+fx2,fy2 = np.uint32(np.array([cameraMatrix2[0,0],cameraMatrix2[1,1]])*(256/4))  # [18 bits]
+cx2,cy2 = np.uint32(np.array([cameraMatrix2[0,2],cameraMatrix2[1,2]])*256*4)    # [22 bits]
+print([fx1,fy1,cx1,cy1])
+f.write("cameraMatrixL [fx(/16) fy(/16) cx cy] (*256*4)\n"+np.array_str(np.array([fx1,fy1,cx1,cy1]))+"\n")
+f.write("cameraMatrixR [fx(/16) fy(/16) cx cy] (*256*4)\n"+np.array_str(np.array([fx2,fy2,cx2,cy2] ))+"\n")
 
 print("P")
 print(P1)
-fxNewInv1,fyNewInv1,cxNew1,cyNew1 = 1/P1[0,0],1/P1[1,1],P1[0,2],P1[1,2]
-[cxNew1_int,cyNew1_int] = np.uint16([cxNew1,cyNew1])
-[cxNew1_frac,cyNew1_frac] = np.uint8((np.array([cxNew1,cyNew1])-np.array([cxNew1_int,cyNew1_int]))*256)
-[fxNewInv1_frac,fyNewInv1_frac] = np.uint16(np.array([fxNewInv1,fyNewInv1])*256*256*256)
-fxNewInv2,fyNewInv2,cxNew2,cyNew2 = 1/P2[0,0],1/P2[1,1],P2[0,2],P2[1,2]
-[cxNew2_int,cyNew2_int] = np.uint16([cxNew2,cyNew2])
-[cxNew2_frac,cyNew2_frac] = np.uint8((np.array([cxNew2,cyNew2])-np.array([cxNew2_int,cyNew2_int]))*256)
-[fxNewInv2_frac,fyNewInv2_frac] = np.uint16(np.array([fxNewInv2,fyNewInv2])*256*256*256 )
-print([0,0,cxNew1_int,cyNew1_int])
-print([fxNewInv1_frac,fyNewInv1_frac,cxNew1_frac,cyNew1_frac])
-f.write("newCameraMatrixL_int [fx fy cx cy]\n"+np.array_str(np.array([0,0,cxNew1_int,cyNew1_int]))+"\n")
-f.write("newCameraMatrixL_frac [fx (*256*256) fy (*256*256) cx cy] (*256)\n"+np.array_str(np.array([fxNewInv1_frac,fyNewInv1_frac,cxNew1_frac,cyNew1_frac]))+"\n")
-f.write("newCameraMatrixR_int [fx fy cx cy]\n"+np.array_str(np.array([0,0,cxNew2_int,cyNew2_int]))+"\n")
-f.write("newCameraMatrixR_frac [fx (*256*256) fy (*256*256) cx cy] (*256)\n"+np.array_str(np.array([fxNewInv2_frac,fyNewInv2_frac,cxNew2_frac,cyNew2_frac]))+"\n")
+fxNewInv1,fyNewInv1 = np.uint32(np.array([1/P1[0,0],1/P1[1,1]])*256*256*256*4)  # [18 bits]
+cxNew1,cyNew1       = np.uint32(np.array([P1[0,2],P1[1,2]])*256*4)              # [22 bits]
+fxNewInv2,fyNewInv2 = np.uint32(np.array([1/P2[0,0],1/P2[1,1]])*256*256*256*4)  # [18 bits]
+cxNew2,cyNew2       = np.uint32(np.array([P2[0,2],P2[1,2]])*256*4)              # [22 bits]
+print([fxNewInv1,fyNewInv1,cxNew1,cyNew1])
+f.write("newCameraMatrixL_frac [1/fx (*256*256) 1/fy (*256*256) cx cy] (*256*4)\n"+np.array_str(np.array([fxNewInv1,fyNewInv1,cxNew1,cyNew1]))+"\n")
+f.write("newCameraMatrixR_frac [1/fx (*256*256) 1/fy (*256*256) cx cy] (*256*4)\n"+np.array_str(np.array([fxNewInv2,fyNewInv2,cxNew2,cyNew2]))+"\n")
 
 print("distCoeffs")
 print(distCoeffs1)
-distCoeffs1_frac = np.int16(distCoeffs1*256*128)
-distCoeffs2_frac = np.int16(distCoeffs2*256*128)
-print(distCoeffs1_frac)
-f.write("distCoeffsL_frac [k1 k2 p1 p2 k3] (*256*128)\n"+np.array_str(distCoeffs1_frac)+"\n")
-f.write("distCoeffsR_frac [k1 k2 p1 p2 k3] (*256*128)\n"+np.array_str(distCoeffs2_frac)+"\n")
+distCoeffs1_int = np.int32(distCoeffs1*256*128*4) # [18 bits]
+distCoeffs2_int = np.int32(distCoeffs2*256*128*4) # [18 bits]
+print(distCoeffs1_int)
+f.write("distCoeffsL [k1 k2 p1 p2 k3] (*256*128*4)\n"+np.array_str(distCoeffs1_int)+"\n")
+f.write("distCoeffsR [k1 k2 p1 p2 k3] (*256*128*4)\n"+np.array_str(distCoeffs2_int)+"\n")
 
 print("RInv")
 print(RInv1)
-RInv1_frac = np.int16(RInv1*256*128)
-RInv2_frac = np.int16(RInv2*256*128)
-print(RInv1_frac)
-f.write("RInvL_frac (*256*128)\n"+np.array_str(RInv1_frac)+"\n")
-f.write("RInvR_frac (*256*128)\n"+np.array_str(RInv2_frac)+"\n")
+RInv1 = np.int32(RInv1*256*128*4) # [18 bits]
+RInv2 = np.int32(RInv2*256*128*4) # [18 bits]
+print(RInv1)
+f.write("RInvL (*256*128*4)\n"+np.array_str(RInv1)+"\n")
+f.write("RInvR (*256*128*4)\n"+np.array_str(RInv2)+"\n")
 
 f.close()
 #####################################
@@ -131,54 +120,64 @@ gray_r = cv2.cvtColor(dst_R, cv2.COLOR_BGR2GRAY)
 ######## Hardware Prototype #########
 #####################################
 
-[fx1,fy1,cx1,cy1] = np.array([fx1_int,fy1_int,cx1_int,cy1_int]) + np.float32(np.array([fx1_frac,fy1_frac,cx1_frac,cy1_frac]))/256
-[fx2,fy2,cx2,cy2] = np.array([fx2_int,fy2_int,cx2_int,cy2_int]) + np.float32(np.array([fx2_frac,fy2_frac,cx2_frac,cy2_frac]))/256
-[cxNew1,cyNew1] = np.array([cxNew1_int,cyNew1_int]) + np.float32(np.array([cxNew1_frac,cyNew1_frac]))/256
-[cxNew2,cyNew2] = np.array([cxNew2_int,cyNew2_int]) + np.float32(np.array([cxNew2_frac,cyNew2_frac]))/256
-[fxNewInv1,fyNewInv1] = np.float64(np.array([fxNewInv1_frac,fyNewInv1_frac]))/(256*256*256)
-[fxNewInv2,fyNewInv2] = np.float64(np.array([fxNewInv2_frac,fyNewInv2_frac]))/(256*256*256)
-distCoeffs1 = np.float32(distCoeffs1_frac)/(256*128)
-distCoeffs2 = np.float32(distCoeffs2_frac)/(256*128)
-RInv1 = np.float32(RInv1_frac)/(256*128)
-RInv2 = np.float32(RInv2_frac)/(256*128)
+def initUndistorRectifyMap_HW(fx,fy,cx,cy,cxNew,cyNew,fxNewInv,fyNewInv,distCoeffs,RInv,Y,X):
+    mapx_int = np.zeros((Y, X))
+    mapy_int = np.zeros((Y, X))
+    mapx_fraq = np.zeros((Y, X))
+    mapy_fraq = np.zeros((Y, X))
+    for v in range(Y):
+        for u in range(X):  # u,v [12 bits] (unsigned) (4K)
+            x = np.int64((u * 256 * 4 - cxNew) * fxNewInv / (256 * 256 * 4 * 2))
+            y = np.int64((v * 256 * 4 - cyNew) * fyNewInv / (256 * 256 * 4 * 2))
+            # [2 bits](signed)*256*128*4 => 19 bits
+            X1 = np.int64((np.int32(RInv[0, 0] * x / (256 * 128 * 4)) + np.int32(
+                RInv[0, 1] * y / (256 * 128 * 4)) + np.int32(RInv[0, 2])) / 4)
+            Y1 = np.int64((np.int32(RInv[1, 0] * x / (256 * 128 * 4)) + np.int32(
+                RInv[1, 1] * y / (256 * 128 * 4)) + np.int32(RInv[1, 2])) / 4)
+            W = np.int64((np.int32(RInv[2, 0] * x / (256 * 128 * 4)) + np.int32(
+                RInv[2, 1] * y / (256 * 128 * 4)) + np.int32(RInv[2, 2])) / 4)
+            # (([19 bits] * [19 bits])/(256*128*4) + ([19 bits] * [19 bits])/(256*128*4) + [18 bits])/4 => [19 bits]
+            x1 = np.int64(X1 * 256 * 128 * 4 / W)
+            y1 = np.int64(Y1 * 256 * 128 * 4 / W)
+            # [2 bits](signed)*256*128*4 => [19 bits]
+            r2 = np.int64(x1 ** 2 / (256 * 128 * 4)) + np.int64(y1 ** 2 / (256 * 128 * 4))
+            # [20 bits] (unsigned)
+            kr = 1 * (256 * 128 * 4) + np.int32(distCoeffs[0, 0] * r2 / (256 * 128 * 4)) + np.int32(
+                distCoeffs[0, 1] * np.int32(r2 ** 2 / (256 * 128 * 4)) / (
+                            256 * 128 * 4))  # + distCoeffs1[0,4] * r2 **3
+            # [20 bits] (unsigned)
+            x2 = np.int64(x1 * kr / (256 * 128 * 4)) + 2 * np.int64(
+                distCoeffs[0, 2] * np.int32(x1 * y1 / (256 * 128 * 4)) / (256 * 128 * 4)) + \
+                 np.int64(distCoeffs[0, 3] * (r2 + 2 * np.int32(x1 ** 2 / (256 * 128 * 4))) / (256 * 128 * 4))
+            y2 = np.int64(y1 * kr / (256 * 128 * 4)) + 2 * np.int32(
+                distCoeffs[0, 3] * np.int32(x1 * y1 / (256 * 128 * 4)) / (256 * 128 * 4)) + \
+                 np.int64(distCoeffs[0, 2] * (r2 + 2 * np.int32(y1 ** 2 / (256 * 128 * 4))) / (256 * 128 * 4))
+            x3 = (np.int32(fx * x2 / (256 / 4) / 128) + cx) - u*(256 * 4)
+            y3 = (np.int32(fy * y2 / (256 / 4) / 128) + cy) - v*(256 * 4)
+            mapx_int[v, u] = np.int16(x3 / (256 * 4)) #12 bits
+            mapy_int[v, u] = np.int16(y3 / (256 * 4))
+            mapx_fraq[v, u] = np.int16((x3 - mapx_int[v, u]*(256 * 4)))  # 10 bits
+            mapy_fraq[v, u] = np.int16((y3 - mapy_int[v, u]*(256 * 4)))  # 10 bits
+
+    return mapx_int,mapy_int,mapx_fraq,mapy_fraq
+
+[fx1,fy1,cx1,cy1] = np.array([fx1,fy1,cx1,cy1])
+[fx2,fy2,cx2,cy2] = np.array([fx2,fy2,cx2,cy2])
+[cxNew1,cyNew1] = np.array([cxNew1,cyNew1])
+[cxNew2,cyNew2] = np.array([cxNew2,cyNew2])
+[fxNewInv1,fyNewInv1] = np.array([fxNewInv1,fyNewInv1])
+[fxNewInv2,fyNewInv2] = np.array([fxNewInv2,fyNewInv2])
+distCoeffs1 = np.array(distCoeffs1_int)
+distCoeffs2 = np.array(distCoeffs2_int)
+RInv1 = np.array(RInv1)
+RInv2 = np.array(RInv2)
 
 (Y, X ,Z) = img_l.shape
-mapx_L = np.zeros((Y,X))
-mapy_L = np.zeros((Y,X))
-mapx_R = np.zeros((Y,X))
-mapy_R = np.zeros((Y,X))
-for v in range(Y):
-   for u in range(X):
-       x = (u - cxNew1) * fxNewInv1
-       y = (v - cyNew1) * fyNewInv1
-       [X1,Y1,W] = np.dot(RInv1,[[x],[y],[1]])
-       x1 = X1 / W
-       y1 = Y1 / W
-       r2 = x1**2+y1**2
-       x2 = x1 * (1 + distCoeffs1[0,0] * r2 + distCoeffs1[0,1] * r2 **2 + distCoeffs1[0,4] * r2 **3) + \
-            2 * distCoeffs1[0,2] * x1 * y1 + distCoeffs1[0,3] * (r2 + 2 * x1 ** 2)
-       y2 = y1 * (1 + distCoeffs1[0,0] * r2 + distCoeffs1[0,1] * r2 **2 + distCoeffs1[0,4] * r2 **3) + \
-            2 * distCoeffs1[0,3] * x1 * y1 + distCoeffs1[0,2] * (r2 + 2 * y1 ** 2)
-       mapx_L[v, u] = fx1 * x2 + cx1 - u
-       mapy_L[v, u] = fy1 * y2 + cy1 - v
-for v in range(Y):
-   for u in range(X):
-       x = (u - cxNew2) * fxNewInv2
-       y = (v - cyNew2) * fyNewInv2
-       [X1, Y1, W] = np.dot(RInv2, [[x], [y], [1]])
-       x1 = X1 / W
-       y1 = Y1 / W
-       r2 = x1 ** 2 + y1 ** 2
-       x2 = x1 * (1 + distCoeffs2[0, 0] * r2 + distCoeffs2[0, 1] * r2 ** 2 + distCoeffs2[0, 4] * r2 ** 3) + \
-            2 * distCoeffs2[0, 2] * x1 * y1 + distCoeffs2[0, 3] * (r2 + 2 * x1 ** 2)
-       y2 = y1 * (1 + distCoeffs2[0, 0] * r2 + distCoeffs2[0, 1] * r2 ** 2 + distCoeffs2[0, 4] * r2 ** 3) + \
-            2 * distCoeffs2[0, 3] * x1 * y1 + distCoeffs2[0, 2] * (r2 + 2 * y1 ** 2)
-       mapx_R[v, u] = fx2 * x2 + cx2 - u
-       mapy_R[v, u] = fy2 * y2 + cy2 - v
+mapx_L_int,mapy_L_int,mapx_L_fraq,mapy_L_fraq = initUndistorRectifyMap_HW(fx1,fy1,cx1,cy1,cxNew1,cyNew1,fxNewInv1,fyNewInv1,distCoeffs1,RInv1,Y,X)
+mapx_R_int,mapy_R_int,mapx_R_fraq,mapy_R_fraq = initUndistorRectifyMap_HW(fx2,fy2,cx2,cy2,cxNew2,cyNew2,fxNewInv2,fyNewInv2,distCoeffs2,RInv2,Y,X)
 
-print("maps")
-print(mapx_L)
-print(mapy_L)
+mapx_L, mapy_L = mapx_L_int+mapx_L_fraq/(256 * 4),  mapy_L_int+mapy_L_fraq/(256 * 4)
+mapx_R, mapy_R = mapx_R_int+mapx_R_fraq/(256 * 4),  mapy_R_int+mapy_R_fraq/(256 * 4)
 
 dst_L2 = np.zeros((Y,X),"uint8")
 dst_R2 = np.zeros((Y,X),"uint8")
