@@ -13,6 +13,7 @@ proc init_gui { IPINST } {
   ipgui::add_param $IPINST -name "DATA_WIDTH"
   ipgui::add_param $IPINST -name "P1"
   ipgui::add_param $IPINST -name "P2"
+  ipgui::add_param $IPINST -name "TLAST_CYCLES"
 
 }
 
@@ -88,6 +89,15 @@ proc validate_PARAM_VALUE.P2 { PARAM_VALUE.P2 } {
 	return true
 }
 
+proc update_PARAM_VALUE.TLAST_CYCLES { PARAM_VALUE.TLAST_CYCLES } {
+	# Procedure called to update TLAST_CYCLES when any of the dependent parameters in the arguments change
+}
+
+proc validate_PARAM_VALUE.TLAST_CYCLES { PARAM_VALUE.TLAST_CYCLES } {
+	# Procedure called to validate TLAST_CYCLES
+	return true
+}
+
 proc update_PARAM_VALUE.WIDTH { PARAM_VALUE.WIDTH } {
 	# Procedure called to update WIDTH when any of the dependent parameters in the arguments change
 }
@@ -141,5 +151,10 @@ proc update_MODELPARAM_VALUE.P1 { MODELPARAM_VALUE.P1 PARAM_VALUE.P1 } {
 proc update_MODELPARAM_VALUE.P2 { MODELPARAM_VALUE.P2 PARAM_VALUE.P2 } {
 	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
 	set_property value [get_property value ${PARAM_VALUE.P2}] ${MODELPARAM_VALUE.P2}
+}
+
+proc update_MODELPARAM_VALUE.TLAST_CYCLES { MODELPARAM_VALUE.TLAST_CYCLES PARAM_VALUE.TLAST_CYCLES } {
+	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
+	set_property value [get_property value ${PARAM_VALUE.TLAST_CYCLES}] ${MODELPARAM_VALUE.TLAST_CYCLES}
 }
 

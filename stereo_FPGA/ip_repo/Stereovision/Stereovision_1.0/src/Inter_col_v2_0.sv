@@ -73,14 +73,14 @@
     // interpolation
     always @(posedge aclk) 
 	begin
-	   tdataL[31-:8] <= s_axis_lr_tdata[31-:8];
-	   tdataL[23-:8] <= {1'b0,s_axis_lr_tdata[31-:7]}+{1'b0,s_axis_lr_tdata[15-:7]}; //arithmetic average
-	   tdataL[15-:8] <= s_axis_lr_tdata[15-:8];
-	   tdataL[7-:8] <= (!tlast) ? ({1'b0,s_axis_lr_tdata[15-:7]}+{1'b0,lastLR[31-:7]}) : s_axis_lr_tdata[15-:8];
-       tdataR[31-:8] <= s_axis_lr_tdata[23-:8]; 
-       tdataR[23-:8] <= {1'b0,s_axis_lr_tdata[23-:7]}+{1'b0,s_axis_lr_tdata[7-:7]}; 
-       tdataR[15-:8] <= s_axis_lr_tdata[7-:8]; 
-       tdataR[7-:8] <= (!tlast) ? ({1'b0,s_axis_lr_tdata[7-:7]}+{1'b0,lastLR[23-:7]}) : s_axis_lr_tdata[7-:8];
+	   tdataR[31-:8] <= s_axis_lr_tdata[31-:8];
+	   tdataR[23-:8] <= {1'b0,s_axis_lr_tdata[31-:7]}+{1'b0,s_axis_lr_tdata[15-:7]}; //arithmetic average
+	   tdataR[15-:8] <= s_axis_lr_tdata[15-:8];
+	   tdataR[7-:8] <= (!tlast) ? ({1'b0,s_axis_lr_tdata[15-:7]}+{1'b0,lastLR[31-:7]}) : s_axis_lr_tdata[15-:8];
+       tdataL[31-:8] <= s_axis_lr_tdata[23-:8]; 
+       tdataL[23-:8] <= {1'b0,s_axis_lr_tdata[23-:7]}+{1'b0,s_axis_lr_tdata[7-:7]}; 
+       tdataL[15-:8] <= s_axis_lr_tdata[7-:8]; 
+       tdataL[7-:8] <= (!tlast) ? ({1'b0,s_axis_lr_tdata[7-:7]}+{1'b0,lastLR[23-:7]}) : s_axis_lr_tdata[7-:8];
     end
     
     

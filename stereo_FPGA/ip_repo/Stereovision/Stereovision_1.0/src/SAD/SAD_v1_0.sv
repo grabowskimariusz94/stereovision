@@ -15,7 +15,7 @@
 	    input wire  aclk,
 		
 		// Ports of Axi Slave Bus Interface S_AXIS_L
-		input wire [AXIS_TDATA_WIDTH-1 : 0] s_axis_l_tdata,
+		input wire [AXIS_TDATA_WIDTH-1 : 0] s_axis_l_tdata, // MSB - the eldest, LSB - the latest
 		input wire  s_axis_l_tlast,
 		input wire  s_axis_l_tuser,
 		input wire  s_axis_l_tvalid,
@@ -44,6 +44,15 @@
 // --------------------------------------
 //  Ncntx_Xppc
 // --------------------------------------   
+
+    logic s_axis_l_tlast_buf = 1'b0; // needed for proper operation of the Ncntx_Xppc
+    logic s_axis_r_tlast_buf = 1'b0;
+	always @(posedge aclk)
+	begin
+	   s_axis_l_tlast_buf <= s_axis_l_tlast;
+	   s_axis_r_tlast_buf <= s_axis_l_tlast;
+	end
+
 	logic [(DATA_WIDTH+(MAX_SAMPLES_PER_CLOCK-1))-1:0] out_cntx_r [CNTX_SIZE][CNTX_SIZE][MAX_DISP+(MAX_SAMPLES_PER_CLOCK-1)];
 	logic out_cntx_r_valid_int [MAX_DISP+(MAX_SAMPLES_PER_CLOCK-1)],out_cntx_r_valid [MAX_DISP+(MAX_SAMPLES_PER_CLOCK-1)];
 	logic buf_r_tvalid, buf_r_tuser, buf_r_tlast;
@@ -71,7 +80,7 @@
         // Ports of AXIS Video Slave S00
         .s00_axis_video_tdata(s_axis_l_tdata),
         .s00_axis_video_tuser(s_axis_l_tuser),
-        .s00_axis_video_tlast(s_axis_l_tlast),
+        .s00_axis_video_tlast(s_axis_l_tlast&(!s_axis_l_tlast_buf)),
         .s00_axis_video_tvalid(s_axis_l_tvalid),
         .s00_axis_video_tready(),
         
@@ -106,7 +115,7 @@
         // Ports of AXIS Video Slave S00
         .s00_axis_video_tdata(s_axis_r_tdata),
         .s00_axis_video_tuser(s_axis_r_tuser),
-        .s00_axis_video_tlast(s_axis_r_tlast),
+        .s00_axis_video_tlast(s_axis_r_tlast&(!s_axis_r_tlast_buf)),
         .s00_axis_video_tvalid(s_axis_r_tvalid),
         .s00_axis_video_tready(),
         

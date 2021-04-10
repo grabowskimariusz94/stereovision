@@ -56,5 +56,3 @@ endgenerate
 
 assign odata = tdata[DELAY];
 endmodule
-
-`default_nettype wire

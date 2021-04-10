@@ -14,7 +14,8 @@
         
         
         parameter P1 = 16,
-        parameter P2 = 64
+        parameter P2 = 64,
+        parameter TLAST_CYCLES = 40
 	)
 	(
 		input wire  aclk,
@@ -44,7 +45,8 @@
         .CNTX_SIZE(CNTX_SIZE),
         .MAX_SAMPLES_PER_CLOCK(MAX_SAMPLES_PER_CLOCK),
         .AXIS_TDATA_WIDTH(AXIS_TDATA_WIDTH/3),
-        .DATA_WIDTH(DATA_WIDTH)
+        .DATA_WIDTH(DATA_WIDTH),
+        .TLAST_CYCLES(TLAST_CYCLES)
     ) stereo
     (
         .aclk(aclk),
