@@ -5,7 +5,8 @@
 //
 // Create Date: 16.02.2021 21:49:56
 // Module Name: Min_disp
-// Target Devices: zcu104, zc702
+// Target Devices: vc707
+// Tool Versions: 2020.2
 // Description: 
 //
 //////////////////////////////////////////////////////////////////////////////////

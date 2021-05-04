@@ -5,7 +5,7 @@
 //
 // Create Date: 13.02.2021 21:15:12
 // Module Name: Stereovision
-// Target Devices: zcu104, zc702
+// Target Devices: vc707
 // Tool Versions: 2020.2
 // Description: 
 //

@@ -1,15 +1,12 @@
 # Definitional proc to organize widgets for parameters.
 proc init_gui { IPINST } {
   ipgui::add_param $IPINST -name "Component_Name"
-  #Adding Page
-  ipgui::add_page $IPINST -name "Page 0"
-
   ipgui::add_param $IPINST -name "WIDTH"
+  ipgui::add_param $IPINST -name "AXIS_TDATA_WIDTH"
   ipgui::add_param $IPINST -name "HEIGHT"
   ipgui::add_param $IPINST -name "MAX_DISP"
   ipgui::add_param $IPINST -name "CNTX_SIZE"
   ipgui::add_param $IPINST -name "MAX_SAMPLES_PER_CLOCK"
-  ipgui::add_param $IPINST -name "AXIS_TDATA_WIDTH"
   ipgui::add_param $IPINST -name "DATA_WIDTH"
   ipgui::add_param $IPINST -name "P1"
   ipgui::add_param $IPINST -name "P2"

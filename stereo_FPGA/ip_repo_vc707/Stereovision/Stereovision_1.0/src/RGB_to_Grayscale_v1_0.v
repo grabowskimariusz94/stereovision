@@ -4,7 +4,7 @@
 //
 // Create Date: 13.02.2021 23:16:10
 // Module Name: RGB_to_Grayscale_v1_0
-// Target Devices: zcu104, zc702
+// Target Devices: vc707
 // Tool Versions: 2020.2
 // Description: 
 //

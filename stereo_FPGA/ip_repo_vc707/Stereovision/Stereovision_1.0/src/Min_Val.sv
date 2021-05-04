@@ -2,16 +2,17 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company: AGH
 // Engineer: Mariusz Grabowski
-//
-// Create Date: 05.12.2020 17:21:19
-// Module Name: Min_SAD
-// Target Devices: zcu104, zc702
+// 
+// Create Date: 06.03.2021 19:33:36
+// Module Name: Min_Val
+// Target Devices: vc707
+// Tool Versions: 2020.2
 // Description: 
 //
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Min_Arg#(
+module Min_Val#(
         parameter ELEM = 64, // number of elements
         parameter DATA_WIDTH = 8
     )
@@ -23,16 +24,9 @@ module Min_Arg#(
     generate
         for (genvar i = $clog2(ELEM); i >= 0; i--) begin: regs
             reg [2**i-1:0][DATA_WIDTH-1:0] min;
-            reg [2**i-1:0][DATA_WIDTH-1:0] disp;
         end
     endgenerate
-    
     assign regs[$clog2(ELEM)].min = i_sads_data;
-    generate
-        for (genvar i = ELEM; i >= 0; i--) begin
-            assign regs[$clog2(ELEM)].disp[i] = i;
-        end
-    endgenerate
     
     generate
         for (genvar i = $clog2(ELEM)-1; i >= 0; i--) begin 
@@ -41,10 +35,8 @@ module Min_Arg#(
                 for (integer j=0;j<2**i;j=j+1) begin
                     if(regs[i+1].min[2*j] <= regs[i+1].min[2*j+1]) begin
                         regs[i].min[j] <= regs[i+1].min[2*j];
-                        regs[i].disp[j] <= regs[i+1].disp[2*j];
                     end else begin
                         regs[i].min[j] <= regs[i+1].min[2*j+1];
-                        regs[i].disp[j] <= regs[i+1].disp[2*j+1];
                     end
                 end
                 
@@ -52,6 +44,6 @@ module Min_Arg#(
         end
     endgenerate
     
-    assign o_disp_data = regs[0].disp*(2**DATA_WIDTH/ELEM);
+    assign o_disp_data = regs[0].min;
     
 endmodule

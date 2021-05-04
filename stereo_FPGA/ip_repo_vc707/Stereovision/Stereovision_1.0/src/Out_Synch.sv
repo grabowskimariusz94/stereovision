@@ -5,7 +5,7 @@
 // 
 // Create Date: 10.04.2021 18:14:12
 // Module Name: Out_Synch
-// Target Devices: zcu104, zc702
+// Target Devices: vc707
 // Tool Versions: 2020.2
 // Description: 
 // 
@@ -37,12 +37,10 @@ module Out_Synch #
     
     reg do_buffer = 1'b0;
     reg [$clog2(TLAST_CYCLES-1):0] counter = 0;
-    reg  [(AXIS_TDATA_WIDTH+2)-1 : 0] delay_in;
-    wire [(AXIS_TDATA_WIDTH+2)-1 : 0] delay_out;
     
     reg [(AXIS_TDATA_WIDTH+2)-1 : 0] buffer [(TLAST_CYCLES-1)-1:0] = '{default: '0};
     always @(posedge aclk)
-        buffer[(TLAST_CYCLES-1)-2:0]=buffer[(TLAST_CYCLES-1)-1:1];
+        buffer[(TLAST_CYCLES-1)-2:0] <= buffer[(TLAST_CYCLES-1)-1:1];
     
     always @(posedge aclk)begin
         buffer[(TLAST_CYCLES-1)-1] <= '0;

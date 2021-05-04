@@ -4,7 +4,7 @@
 //
 // Create Date: 08.04.2021 17:31:06
 // Module Name: Inter_col_v1_0
-// Target Devices: zcu104, zc702
+// Target Devices: vc707
 // Tool Versions: 2020.2
 // Description: 
 //
