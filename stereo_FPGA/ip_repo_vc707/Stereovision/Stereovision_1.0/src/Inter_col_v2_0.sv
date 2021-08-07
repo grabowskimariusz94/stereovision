@@ -42,7 +42,7 @@
 		output wire  m_axis_r_tuser
 	);
     
-    reg	tready = 1'b1;
+    wire tready;
     reg [C_AXIS_LR_TDATA_WIDTH-1 : 0] tdataL=0, tdataR=0;
     reg tvalid = 1'b0;
     reg tlast = 1'b0; 
@@ -54,33 +54,41 @@
         lastLR = 0;
     end
     
+    assign tready = m_axis_l_tready & m_axis_r_tready;
+    
     // delaying for buffering
     always @(posedge aclk) 
 	begin
-       tvalid <= s_axis_lr_tvalid;
-       tlast <= s_axis_lr_tlast;
-       tuser <= s_axis_lr_tuser;
+	   if(tready) begin
+           tvalid <= s_axis_lr_tvalid;
+           tlast <= s_axis_lr_tlast;
+           tuser <= s_axis_lr_tuser;
+       end
     end
     
     // buffering
     always @(posedge aclk) 
 	begin
-	  if(s_axis_lr_tvalid) begin
-	    lastLR <= s_axis_lr_tdata;
+	  if(tready) begin
+          if(s_axis_lr_tvalid) begin
+            lastLR <= s_axis_lr_tdata;
+          end
       end
     end
     
     // interpolation
     always @(posedge aclk) 
 	begin
-	   tdataR[31-:8] <= s_axis_lr_tdata[31-:8];
-	   tdataR[23-:8] <= {1'b0,s_axis_lr_tdata[31-:7]}+{1'b0,s_axis_lr_tdata[15-:7]}; //arithmetic average
-	   tdataR[15-:8] <= s_axis_lr_tdata[15-:8];
-	   tdataR[7-:8] <= (!tlast) ? ({1'b0,s_axis_lr_tdata[15-:7]}+{1'b0,lastLR[31-:7]}) : s_axis_lr_tdata[15-:8];
-       tdataL[31-:8] <= s_axis_lr_tdata[23-:8]; 
-       tdataL[23-:8] <= {1'b0,s_axis_lr_tdata[23-:7]}+{1'b0,s_axis_lr_tdata[7-:7]}; 
-       tdataL[15-:8] <= s_axis_lr_tdata[7-:8]; 
-       tdataL[7-:8] <= (!tlast) ? ({1'b0,s_axis_lr_tdata[7-:7]}+{1'b0,lastLR[23-:7]}) : s_axis_lr_tdata[7-:8];
+	   if(tready) begin
+           tdataR[31-:8] <= s_axis_lr_tdata[31-:8];
+           tdataR[23-:8] <= {1'b0,s_axis_lr_tdata[31-:7]}+{1'b0,s_axis_lr_tdata[15-:7]}; //arithmetic average
+           tdataR[15-:8] <= s_axis_lr_tdata[15-:8];
+           tdataR[7-:8] <= (!tlast) ? ({1'b0,s_axis_lr_tdata[15-:7]}+{1'b0,lastLR[31-:7]}) : s_axis_lr_tdata[15-:8];
+           tdataL[31-:8] <= s_axis_lr_tdata[23-:8]; 
+           tdataL[23-:8] <= {1'b0,s_axis_lr_tdata[23-:7]}+{1'b0,s_axis_lr_tdata[7-:7]}; 
+           tdataL[15-:8] <= s_axis_lr_tdata[7-:8]; 
+           tdataL[7-:8] <= (!tlast) ? ({1'b0,s_axis_lr_tdata[7-:7]}+{1'b0,lastLR[23-:7]}) : s_axis_lr_tdata[7-:8];
+       end
     end
     
     

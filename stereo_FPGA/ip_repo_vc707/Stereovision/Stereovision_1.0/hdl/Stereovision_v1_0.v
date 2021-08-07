@@ -1,11 +1,15 @@
 
 `timescale 1 ns / 1 ps
 
+
+
 	module Stereovision_v1_0 #
 	(
+	    parameter FORMAT = 0, // 0 - RGB, 1 - YUV422 
+	
 		parameter WIDTH = 3840,
         parameter HEIGHT = 2160,
-        parameter MAX_DISP = 255,
+        parameter MAX_DISP = 256,
         parameter CNTX_SIZE = 3,
         parameter MAX_SAMPLES_PER_CLOCK = 4,
     
@@ -14,8 +18,9 @@
         
         
         parameter P1 = 16,
-        parameter P2 = 64,
-        parameter TLAST_CYCLES = 40
+        parameter P2 = 64
+//        parameter TLAST_CYCLES = 40,
+//        parameter TUSER_CYCLES = 120
 	)
 	(
 		input wire  aclk,
@@ -39,14 +44,16 @@
 
     Stereovision
     #(
+        .FORMAT(FORMAT),
         .WIDTH(WIDTH),
         .HEIGHT(HEIGHT),
         .MAX_DISP(MAX_DISP),
         .CNTX_SIZE(CNTX_SIZE),
         .MAX_SAMPLES_PER_CLOCK(MAX_SAMPLES_PER_CLOCK),
         .AXIS_TDATA_WIDTH(AXIS_TDATA_WIDTH/3),
-        .DATA_WIDTH(DATA_WIDTH),
-        .TLAST_CYCLES(TLAST_CYCLES)
+        .DATA_WIDTH(DATA_WIDTH)
+//        .TLAST_CYCLES(TLAST_CYCLES),
+//        .TUSER_CYCLES(TUSER_CYCLES)
     ) stereo
     (
         .aclk(aclk),

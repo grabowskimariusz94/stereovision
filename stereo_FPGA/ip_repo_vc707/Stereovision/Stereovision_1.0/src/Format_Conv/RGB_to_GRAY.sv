@@ -3,7 +3,7 @@
 // Engineer: Mariusz Grabowski
 //
 // Create Date: 13.02.2021 23:16:10
-// Module Name: RGB_to_Grayscale_v1_0
+// Module Name: RGB_to_GRAY
 // Target Devices: vc707
 // Tool Versions: 2020.2
 // Description: 
@@ -12,62 +12,58 @@
 
 `timescale 1 ns / 1 ps
 
-	module RGB_to_Grayscale_v1_0 #
+	module RGB_to_GRAY #
 	(
-		// Parameters of Axi Slave Bus Interface S00_AXIS
-		parameter integer C_S_AXIS_rgb_TDATA_WIDTH	= 96,
-
-		// Parameters of Axi Master Bus Interface M00_AXIS
-		parameter integer C_M_AXIS_gray_TDATA_WIDTH	= 32
+		parameter DATA_WIDTH = 8, 	// pixel's data width
+		parameter PPC = 4 			// pixels per clock
 	)
 	(
         input wire  aclk,
         input wire  aresetn,
 
-		// Ports of Axi Slave Bus Interface S00_AXIS
 		output wire  s_axis_rgb_tready,
-		input wire [C_S_AXIS_rgb_TDATA_WIDTH-1 : 0] s_axis_rgb_tdata,
+		input wire [DATA_WIDTH*PPC*3-1 : 0] s_axis_rgb_tdata,
 		input wire  s_axis_rgb_tuser,
 		input wire  s_axis_rgb_tlast,
 		input wire  s_axis_rgb_tvalid,
 
-		// Ports of Axi Master Bus Interface M00_AXIS
 		output wire  m_axis_gray_tvalid,
-		output wire [C_M_AXIS_gray_TDATA_WIDTH-1 : 0] m_axis_gray_tdata,
+		output wire [DATA_WIDTH*PPC-1 : 0] m_axis_gray_tdata,
 		output wire  m_axis_gray_tuser,
 		output wire  m_axis_gray_tlast,
 		input wire  m_axis_gray_tready
 	);
     
     // Parameters
-    parameter k_r = 9'd77;
-    parameter k_g = 9'd150;
-    parameter k_b = 9'd29;
+    localparam k_r = 9'd77;
+    localparam k_g = 9'd150;
+    localparam k_b = 9'd29;
 
     // regs for multiplication
     reg[17:0] r1=0,r2=0,r3=0,r4=0,g1=0,g2,g3=0,g4=0,b1=0,b2=0,b3=0,b4=0;
     reg[17:0] sum1=0, sum2=0, sum3=0, sum4=0;
     
     // regs for outputs
-    reg	tready = 1'b1;
     //reg [C_M_AXIS_gray_TDATA_WIDTH-1 : 0] tdata;
     reg [1:0] tvalid, tuser, tlast;
 
     always@(posedge aclk) 
     begin
-        tvalid[0] <= s_axis_rgb_tvalid;
-        tvalid[1] <= tvalid[0];
-        
-        tlast[0] <= s_axis_rgb_tlast;
-        tlast[1] <= tlast[0]; 
-        
-        tuser[0] <= s_axis_rgb_tuser;
-        tuser[1] <= tuser[0]; 
+        if(m_axis_gray_tready) begin
+            tvalid[0] <= s_axis_rgb_tvalid;
+            tvalid[1] <= tvalid[0];
+            
+            tlast[0] <= s_axis_rgb_tlast;
+            tlast[1] <= tlast[0]; 
+            
+            tuser[0] <= s_axis_rgb_tuser;
+            tuser[1] <= tuser[0]; 
+        end
     end
     
     always@(posedge aclk) 
     begin
-        if(s_axis_rgb_tvalid)
+        if(s_axis_rgb_tvalid & m_axis_gray_tready)
         begin
             r1 <= k_r * {1'b0,s_axis_rgb_tdata[23-:8]};
             r2 <= k_r * {1'b0,s_axis_rgb_tdata[47-:8]};
@@ -89,7 +85,7 @@
     
 	always @(posedge aclk) 
 	begin
-	   if(tvalid[0])
+	   if(tvalid[0] & m_axis_gray_tready)
 	   begin
 	       sum1 <= r1+g1+b1;
 	       sum2 <= r2+g2+b2;
@@ -102,7 +98,7 @@
 	
 	
 	// Outputs
-	assign s_axis_rgb_tready = tready;
+	assign s_axis_rgb_tready = m_axis_gray_tready;
 	assign m_axis_gray_tvalid = tvalid[1];
 	assign m_axis_gray_tuser = tuser[1];
 	assign m_axis_gray_tlast = tlast[1];

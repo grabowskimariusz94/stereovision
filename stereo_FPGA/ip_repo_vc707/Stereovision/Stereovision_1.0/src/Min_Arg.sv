@@ -17,6 +17,8 @@ module Min_Arg#(
         parameter DATA_WIDTH = 8
     )
     (
+        input aclk,
+        input c_en,
         input [ELEM-1:0][DATA_WIDTH-1:0]  i_sads_data, 
         output [DATA_WIDTH-1:0] o_disp_data
     );
@@ -38,10 +40,17 @@ module Min_Arg#(
     generate
         for (genvar i = $clog2(ELEM)-1; i >= 0; i--) begin 
             for (genvar j=0;j<2**i;j=j+1) begin
-                logic compare;
-                assign compare = (regs[i+1].min[2*j] <= regs[i+1].min[2*j+1]);
-                assign regs[i].min[j] = compare ? regs[i+1].min[2*j] : regs[i+1].min[2*j+1];
-                assign regs[i].disp[j] = compare ? regs[i+1].disp[2*j] : regs[i+1].disp[2*j+1];
+                always @(posedge aclk) begin
+                    if(c_en) begin
+                        logic compare;
+                        //assign compare = (regs[i+1].min[2*j] <= regs[i+1].min[2*j+1]);
+                       // assign regs[i].min[j] = compare ? regs[i+1].min[2*j] : regs[i+1].min[2*j+1];
+                        //assign regs[i].disp[j] = compare ? regs[i+1].disp[2*j] : regs[i+1].disp[2*j+1];
+                        compare = (regs[i+1].min[2*j] <= regs[i+1].min[2*j+1]);
+                        regs[i].min[j] <= compare ? regs[i+1].min[2*j] : regs[i+1].min[2*j+1];
+                        regs[i].disp[j] <= compare ? regs[i+1].disp[2*j] : regs[i+1].disp[2*j+1];
+                    end
+                end
             end
         end
     endgenerate
