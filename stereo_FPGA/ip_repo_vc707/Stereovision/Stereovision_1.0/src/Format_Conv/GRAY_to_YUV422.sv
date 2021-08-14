@@ -37,7 +37,7 @@
 	always @(*) begin
 		m_axis_yuv_tdata <= 0;
 		for(integer i = PPC; i > 0; i = i - 1) begin
-			m_axis_yuv_tdata[2*i-1 * DATA_WIDTH - 1 -: DATA_WIDTH] <= s_axis_gray_tdata[i*DATA_WIDTH-1-:DATA_WIDTH];
+			m_axis_yuv_tdata[(2*i-1) * DATA_WIDTH - 1 -: DATA_WIDTH] <= s_axis_gray_tdata[i*DATA_WIDTH-1-:DATA_WIDTH];
 			m_axis_yuv_tdata[2*i * DATA_WIDTH - 1 -: DATA_WIDTH] <= 8'hFF/2;
 		end
 		m_axis_yuv_tvalid <= s_axis_gray_tvalid;

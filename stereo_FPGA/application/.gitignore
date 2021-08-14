@@ -1,0 +1,5 @@
+bitfiles/
+impl/*
+!impl/impl.sh
+!impl/impl.tcl
+

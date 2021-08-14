@@ -45,7 +45,7 @@ module YUV422_to_GRAY #
             m_axis_gray_tlast <= s_axis_yuv_tlast;
             m_axis_gray_tuser <= s_axis_yuv_tuser;
             for(integer i = PPC; i > 0; i = i - 1) begin
-                m_axis_gray_tdata[i*DATA_WIDTH-1-:DATA_WIDTH] <= s_axis_yuv_tdata[i*2*DATA_WIDTH-1-:DATA_WIDTH];
+                m_axis_gray_tdata[i*DATA_WIDTH-1-:DATA_WIDTH] <= s_axis_yuv_tdata[i*2*DATA_WIDTH-DATA_WIDTH-1-:DATA_WIDTH];
             end
         end
     end

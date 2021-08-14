@@ -54,6 +54,8 @@ if { $list_projs eq "" } {
    set_property BOARD_PART xilinx.com:vc707:part0:1.4 [current_project]
 }
 
+# ADD IP REPOS
+set_property  ip_repo_paths  {./../../ip_repo_vc707} [current_project]
 
 # CHANGE DESIGN NAME HERE
 variable design_name
