@@ -1,0 +1,2596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <spirit:vendor>xilinx.com</spirit:vendor>
+  <spirit:library>user</spirit:library>
+  <spirit:name>Video_Synch</spirit:name>
+  <spirit:version>1.0</spirit:version>
+  <spirit:busInterfaces>
+    <spirit:busInterface>
+      <spirit:name>s_axis_video_aresetn</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_video_aresetn</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>POLARITY</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.S_AXIS_VIDEO_ARESETN.POLARITY" spirit:choiceRef="choice_list_9d8b0d81">ACTIVE_LOW</spirit:value>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>m_axis_memory_aclk</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>CLK</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_memory_aclk</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_RESET</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.M_AXIS_MEMORY_ACLK.ASSOCIATED_RESET">aresetn</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_BUSIF</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.M_AXIS_MEMORY_ACLK.ASSOCIATED_BUSIF">M0_AXI</spirit:value>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>s_axis_video_aclk</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>CLK</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_video_aclk</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_RESET</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.S_AXIS_VIDEO_ACLK.ASSOCIATED_RESET">s_axis_video_aresetn</spirit:value>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>m_axis_video0</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_video0_tdata</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TLAST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_video0_tlast</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TUSER</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_video0_tuser</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_video0_tvalid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_video0_tready</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>m_axis_video1</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_video1_tdata</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TLAST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_video1_tlast</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TUSER</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_video1_tuser</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_video1_tvalid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_video1_tready</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>s_axis_video0</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_video0_tdata</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TLAST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_video0_tlast</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TUSER</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_video0_tuser</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_video0_tvalid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_video0_tready</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>s_axis_video1</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_video1_tdata</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TLAST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_video1_tlast</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TUSER</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_video1_tuser</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_video1_tvalid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axis_video1_tready</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>M0_AXI</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="aximm" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="aximm_rtl" spirit:version="1.0"/>
+      <spirit:master>
+        <spirit:addressSpaceRef spirit:addressSpaceRef="M0_AXI"/>
+      </spirit:master>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_AWID</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWADDR</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_AWADDR</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWLEN</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_AWLEN</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWSIZE</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_AWSIZE</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWBURST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_AWBURST</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWLOCK</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_AWLOCK</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWCACHE</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_AWCACHE</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWPROT</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_AWPROT</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWQOS</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_AWQOS</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWUSER</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_AWUSER</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_AWVALID</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_AWREADY</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>WDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_WDATA</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>WSTRB</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_WSTRB</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>WLAST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_WLAST</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>WVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_WVALID</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>WREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_WREADY</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>BID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_BID</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>BRESP</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_BRESP</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>BVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_BVALID</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>BREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_BREADY</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_ARID</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARADDR</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_ARADDR</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARLEN</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_ARLEN</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARSIZE</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_ARSIZE</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARBURST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_ARBURST</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARLOCK</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_ARLOCK</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARCACHE</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_ARCACHE</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARPROT</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_ARPROT</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARQOS</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_ARQOS</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARUSER</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_ARUSER</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_ARVALID</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_ARREADY</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_RID</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_RDATA</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RRESP</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_RRESP</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RLAST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_RLAST</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_RVALID</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>M0_AXI_RREADY</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+  </spirit:busInterfaces>
+  <spirit:addressSpaces>
+    <spirit:addressSpace>
+      <spirit:name>M0_AXI</spirit:name>
+      <spirit:range spirit:format="long" spirit:resolve="dependent" spirit:dependency="pow(2,(spirit:decode(id(&apos;MODELPARAM_VALUE.C_M_AXI_ADDR_WIDTH&apos;)) - 1) + 1)" spirit:minimum="4096" spirit:rangeType="long">562949953421312</spirit:range>
+      <spirit:width spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_M_AXI_DATA_WIDTH&apos;)) - 1) + 1">128</spirit:width>
+    </spirit:addressSpace>
+  </spirit:addressSpaces>
+  <spirit:model>
+    <spirit:views>
+      <spirit:view>
+        <spirit:name>xilinx_verilogsynthesis</spirit:name>
+        <spirit:displayName>Verilog Synthesis</spirit:displayName>
+        <spirit:envIdentifier>verilogSource:vivado.xilinx.com:synthesis</spirit:envIdentifier>
+        <spirit:language>verilog</spirit:language>
+        <spirit:modelName>Video_Synch_v1_0</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_verilogsynthesis_xilinx_com_ip_mig_7series_4_2__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_verilogsynthesis_xilinx_com_ip_fifo_generator_13_2__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_verilogsynthesis_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>e0fc6efa</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_verilogbehavioralsimulation</spirit:name>
+        <spirit:displayName>Verilog Simulation</spirit:displayName>
+        <spirit:envIdentifier>verilogSource:vivado.xilinx.com:simulation</spirit:envIdentifier>
+        <spirit:language>verilog</spirit:language>
+        <spirit:modelName>Video_Synch_v1_0</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_verilogbehavioralsimulation_xilinx_com_ip_mig_7series_4_2__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_verilogbehavioralsimulation_xilinx_com_ip_fifo_generator_13_2__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_verilogbehavioralsimulation_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>e0fc6efa</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_xpgui</spirit:name>
+        <spirit:displayName>UI Layout</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:xgui.ui</spirit:envIdentifier>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_xpgui_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>d591af8a</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>bd_tcl</spirit:name>
+        <spirit:displayName>Block Diagram</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:block.diagram</spirit:envIdentifier>
+        <spirit:fileSetRef>
+          <spirit:localName>bd_tcl_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>16328387</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+    </spirit:views>
+    <spirit:ports>
+      <spirit:port>
+        <spirit:name>s_axis_video_aclk</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_video_aresetn</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_memory_aclk</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_video0_tready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_video0_tdata</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.TDATA_WIDTH&apos;)) - 0)">96</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_video0_tuser</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_video0_tlast</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_video0_tvalid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_video1_tready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_video1_tdata</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.TDATA_WIDTH&apos;)) - 1)">95</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_video1_tuser</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_video1_tlast</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_video1_tvalid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_video0_tvalid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_video0_tdata</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.TDATA_WIDTH&apos;)) - 1)">95</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_video0_tuser</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_video0_tlast</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_video0_tready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">1</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_video1_tvalid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_video1_tdata</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.TDATA_WIDTH&apos;)) - 1)">95</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_video1_tuser</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_video1_tlast</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_video1_tready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">1</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_AWID</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_M_AXI_THREAD_ID_WIDTH&apos;)) - 1)">5</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_AWADDR</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_M_AXI_ADDR_WIDTH&apos;)) - 1)">48</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_AWLEN</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">7</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_AWSIZE</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">2</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_AWBURST</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">1</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_AWLOCK</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_AWCACHE</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">3</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_AWPROT</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">2</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_AWQOS</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">3</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_AWUSER</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_M_AXI_AWUSER_WIDTH&apos;)) - 1)">0</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_AWVALID</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_AWREADY</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_WDATA</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_M_AXI_DATA_WIDTH&apos;)) - 1)">127</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_WSTRB</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="((spirit:decode(id(&apos;MODELPARAM_VALUE.C_M_AXI_DATA_WIDTH&apos;)) / 8) - 1)">15</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_WLAST</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_WVALID</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_WREADY</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_BID</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_M_AXI_THREAD_ID_WIDTH&apos;)) - 1)">5</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_BRESP</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">1</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_BVALID</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_BREADY</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_ARID</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_M_AXI_THREAD_ID_WIDTH&apos;)) - 1)">5</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_ARADDR</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_M_AXI_ADDR_WIDTH&apos;)) - 1)">48</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_ARLEN</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">7</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_ARSIZE</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">2</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_ARBURST</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">1</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_ARLOCK</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">1</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_ARCACHE</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">3</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_ARPROT</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">2</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_ARQOS</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">3</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_ARUSER</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_M_AXI_ARUSER_WIDTH&apos;)) - 1)">0</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_ARVALID</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_ARREADY</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_RID</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_M_AXI_THREAD_ID_WIDTH&apos;)) - 1)">5</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_RDATA</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_M_AXI_DATA_WIDTH&apos;)) - 1)">127</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_RRESP</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">1</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_RLAST</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_RVALID</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>M0_AXI_RREADY</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>sw</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">1</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>addr_pixel_out</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">27</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>state_pixel_out</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">3</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>status</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">3</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>fifo_rd_wr_data_count</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">11</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>fifo_rd_rd_data_count</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">11</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+    </spirit:ports>
+    <spirit:modelParameters>
+      <spirit:modelParameter xsi:type="spirit:nameValueTypeType" spirit:dataType="integer">
+        <spirit:name>img_size</spirit:name>
+        <spirit:displayName>Img Size</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.img_size">33177600</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>BURST_SIZE</spirit:name>
+        <spirit:displayName>Burst Size</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.BURST_SIZE">128</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>SAMPLES_PER_CLOCK</spirit:name>
+        <spirit:displayName>Samples Per Clock</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.SAMPLES_PER_CLOCK">4</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>BITS_PER_PIXEL</spirit:name>
+        <spirit:displayName>Bits Per Pixel</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.BITS_PER_PIXEL">24</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>TDATA_WIDTH</spirit:name>
+        <spirit:displayName>Tdata Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="dependent" spirit:id="MODELPARAM_VALUE.TDATA_WIDTH" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.SAMPLES_PER_CLOCK&apos;)) * spirit:decode(id(&apos;MODELPARAM_VALUE.BITS_PER_PIXEL&apos;)))">96</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>WIDTH</spirit:name>
+        <spirit:displayName>Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.WIDTH">3840</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>HEIGHT</spirit:name>
+        <spirit:displayName>Height</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.HEIGHT">2160</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>W_POSITION_WIDTH</spirit:name>
+        <spirit:displayName>W Position Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.W_POSITION_WIDTH">10</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>H_POSITION_WIDTH</spirit:name>
+        <spirit:displayName>H Position Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.H_POSITION_WIDTH">12</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="string">
+        <spirit:name>C_M_AXI_PROTOCOL</spirit:name>
+        <spirit:displayName>C M Axi Protocol</spirit:displayName>
+        <spirit:value spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_M_AXI_PROTOCOL">AXI4</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>C_M_AXI_THREAD_ID_WIDTH</spirit:name>
+        <spirit:displayName>C M Axi Thread Id Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_M_AXI_THREAD_ID_WIDTH">6</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>C_M_AXI_ADDR_WIDTH</spirit:name>
+        <spirit:displayName>C M Axi Addr Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_M_AXI_ADDR_WIDTH">49</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>C_M_AXI_DATA_WIDTH</spirit:name>
+        <spirit:displayName>C M Axi Data Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_M_AXI_DATA_WIDTH">128</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>C_M_AXI_AWUSER_WIDTH</spirit:name>
+        <spirit:displayName>C M Axi Awuser Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_M_AXI_AWUSER_WIDTH">1</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>C_M_AXI_ARUSER_WIDTH</spirit:name>
+        <spirit:displayName>C M Axi Aruser Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_M_AXI_ARUSER_WIDTH">1</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>C_M_AXI_WUSER_WIDTH</spirit:name>
+        <spirit:displayName>C M Axi Wuser Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_M_AXI_WUSER_WIDTH">1</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>C_M_AXI_RUSER_WIDTH</spirit:name>
+        <spirit:displayName>C M Axi Ruser Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_M_AXI_RUSER_WIDTH">1</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>C_M_AXI_BUSER_WIDTH</spirit:name>
+        <spirit:displayName>C M Axi Buser Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_M_AXI_BUSER_WIDTH">1</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>C_M_AXI_SUPPORTS_WRITE</spirit:name>
+        <spirit:displayName>C M Axi Supports Write</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_M_AXI_SUPPORTS_WRITE">1</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>C_M_AXI_SUPPORTS_READ</spirit:name>
+        <spirit:displayName>C M Axi Supports Read</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_M_AXI_SUPPORTS_READ">1</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>C_INTERCONNECT_M_AXI_WRITE_ISSUING</spirit:name>
+        <spirit:displayName>C Interconnect M Axi Write Issuing</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_INTERCONNECT_M_AXI_WRITE_ISSUING">8</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>C_M_AXI_TARGET</spirit:name>
+        <spirit:displayName>C M Axi Target</spirit:displayName>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_M_AXI_TARGET" spirit:bitStringLength="32">0x00000000</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>C_OFFSET_WIDTH</spirit:name>
+        <spirit:displayName>C Offset Width</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_OFFSET_WIDTH">9</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>C_M_AXI_BURST_LEN</spirit:name>
+        <spirit:displayName>C M Axi Burst Len</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_M_AXI_BURST_LEN">16</spirit:value>
+      </spirit:modelParameter>
+    </spirit:modelParameters>
+  </spirit:model>
+  <spirit:choices>
+    <spirit:choice>
+      <spirit:name>choice_list_9d8b0d81</spirit:name>
+      <spirit:enumeration>ACTIVE_HIGH</spirit:enumeration>
+      <spirit:enumeration>ACTIVE_LOW</spirit:enumeration>
+    </spirit:choice>
+  </spirit:choices>
+  <spirit:fileSets>
+    <spirit:fileSet>
+      <spirit:name>xilinx_verilogsynthesis_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>src/fifo_128_1024/fifo_128_1024.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_axi4_master_i_0/ctrl_i/fifo_wr/fifo_128_1024</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/Video_Synch_v1_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/axi4_master.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/axi_mem_ctrl.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fifo_128_xxx.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>CHECKSUM_fe6a64e6</spirit:userFileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_verilogsynthesis_xilinx_com_ip_mig_7series_4_2__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="mig_7series" xilinx:version="4.2">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_verilogsynthesis_xilinx_com_ip_fifo_generator_13_2__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="fifo_generator" xilinx:version="13.2">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_verilogbehavioralsimulation_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>src/fifo_128_1024/fifo_128_1024.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_axi4_master_i_0/ctrl_i/fifo_wr/fifo_128_1024</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/Video_Synch_v1_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/axi4_master.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/axi_mem_ctrl.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fifo_128_xxx.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_verilogbehavioralsimulation_xilinx_com_ip_mig_7series_4_2__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="mig_7series" xilinx:version="4.2">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_verilogbehavioralsimulation_xilinx_com_ip_fifo_generator_13_2__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="fifo_generator" xilinx:version="13.2">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_xpgui_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>xgui/Video_Synch_v1_0.tcl</spirit:name>
+        <spirit:fileType>tclSource</spirit:fileType>
+        <spirit:userFileType>CHECKSUM_d591af8a</spirit:userFileType>
+        <spirit:userFileType>XGUI_VERSION_2</spirit:userFileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>bd_tcl_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>bd/bd.tcl</spirit:name>
+        <spirit:fileType>tclSource</spirit:fileType>
+      </spirit:file>
+    </spirit:fileSet>
+  </spirit:fileSets>
+  <spirit:description>Synchronization of two Video Stream with DDR</spirit:description>
+  <spirit:parameters>
+    <spirit:parameter>
+      <spirit:name>Component_Name</spirit:name>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.Component_Name" spirit:order="1">Video_Synch_v1_0</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>img_size</spirit:name>
+      <spirit:displayName>Img Size</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.img_size">33177600</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>BURST_SIZE</spirit:name>
+      <spirit:displayName>Burst Size</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.BURST_SIZE">128</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>SAMPLES_PER_CLOCK</spirit:name>
+      <spirit:displayName>Samples Per Clock</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.SAMPLES_PER_CLOCK">4</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>BITS_PER_PIXEL</spirit:name>
+      <spirit:displayName>Bits Per Pixel</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.BITS_PER_PIXEL">24</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>TDATA_WIDTH</spirit:name>
+      <spirit:displayName>Tdata Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.TDATA_WIDTH">96</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>WIDTH</spirit:name>
+      <spirit:displayName>Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.WIDTH">3840</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>HEIGHT</spirit:name>
+      <spirit:displayName>Height</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.HEIGHT">2160</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>W_POSITION_WIDTH</spirit:name>
+      <spirit:displayName>W Position Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.W_POSITION_WIDTH">10</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>H_POSITION_WIDTH</spirit:name>
+      <spirit:displayName>H Position Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.H_POSITION_WIDTH">12</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_M_AXI_PROTOCOL</spirit:name>
+      <spirit:displayName>C M Axi Protocol</spirit:displayName>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.C_M_AXI_PROTOCOL">AXI4</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_M_AXI_THREAD_ID_WIDTH</spirit:name>
+      <spirit:displayName>C M Axi Thread Id Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_M_AXI_THREAD_ID_WIDTH">6</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_M_AXI_ADDR_WIDTH</spirit:name>
+      <spirit:displayName>C M Axi Addr Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_M_AXI_ADDR_WIDTH">49</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_M_AXI_DATA_WIDTH</spirit:name>
+      <spirit:displayName>C M Axi Data Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_M_AXI_DATA_WIDTH">128</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_M_AXI_AWUSER_WIDTH</spirit:name>
+      <spirit:displayName>C M Axi Awuser Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_M_AXI_AWUSER_WIDTH">1</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_M_AXI_ARUSER_WIDTH</spirit:name>
+      <spirit:displayName>C M Axi Aruser Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_M_AXI_ARUSER_WIDTH">1</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_M_AXI_WUSER_WIDTH</spirit:name>
+      <spirit:displayName>C M Axi Wuser Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_M_AXI_WUSER_WIDTH">1</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_M_AXI_RUSER_WIDTH</spirit:name>
+      <spirit:displayName>C M Axi Ruser Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_M_AXI_RUSER_WIDTH">1</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_M_AXI_BUSER_WIDTH</spirit:name>
+      <spirit:displayName>C M Axi Buser Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_M_AXI_BUSER_WIDTH">1</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_M_AXI_SUPPORTS_WRITE</spirit:name>
+      <spirit:displayName>C M Axi Supports Write</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_M_AXI_SUPPORTS_WRITE">1</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_M_AXI_SUPPORTS_READ</spirit:name>
+      <spirit:displayName>C M Axi Supports Read</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_M_AXI_SUPPORTS_READ">1</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_INTERCONNECT_M_AXI_WRITE_ISSUING</spirit:name>
+      <spirit:displayName>C Interconnect M Axi Write Issuing</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_INTERCONNECT_M_AXI_WRITE_ISSUING">8</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_M_AXI_TARGET</spirit:name>
+      <spirit:displayName>C M Axi Target</spirit:displayName>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.C_M_AXI_TARGET" spirit:bitStringLength="32">0x00000000</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_OFFSET_WIDTH</spirit:name>
+      <spirit:displayName>C Offset Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_OFFSET_WIDTH">9</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>C_M_AXI_BURST_LEN</spirit:name>
+      <spirit:displayName>C M Axi Burst Len</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.C_M_AXI_BURST_LEN">16</spirit:value>
+    </spirit:parameter>
+  </spirit:parameters>
+  <spirit:vendorExtensions>
+    <xilinx:coreExtensions>
+      <xilinx:supportedFamilies>
+        <xilinx:family xilinx:lifeCycle="Pre-Production">virtex7</xilinx:family>
+      </xilinx:supportedFamilies>
+      <xilinx:taxonomies>
+        <xilinx:taxonomy>AXI_Peripheral</xilinx:taxonomy>
+      </xilinx:taxonomies>
+      <xilinx:displayName>Video_Synch_v1.0</xilinx:displayName>
+      <xilinx:xpmLibraries>
+        <xilinx:xpmLibrary>XPM_CDC</xilinx:xpmLibrary>
+        <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
+      </xilinx:xpmLibraries>
+      <xilinx:coreRevision>36</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2021-09-05T05:07:09Z</xilinx:coreCreationDateTime>
+      <xilinx:tags>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@8c94e2f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7d447ec6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@132047f1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1c4f33b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4a66eaf9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@64943a4c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@271e8ff3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@583a46c7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@a54b5be_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@f9d2971_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1682a93b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@46ab2cdd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@189f5e1f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1a5a4e5f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1a7a3b44_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@663a863d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2bc3fbcc_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5426a630_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7663ae63_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b946eb9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5afbca68_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6e588778_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2effc0b1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1bad19a2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e255c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@44bcba18_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7091af91_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5ea93d32_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5ddd9651_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@33e5ec9f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@647a9fec_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4517224f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@605a0718_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@616500f8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2b7a5835_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@10324de6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@687afb12_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@59158757_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3f72d952_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@f490411_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@72981434_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@674fb00b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1bbabcc4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@60f5596a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@48bff814_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7b9192c6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@268bd873_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@44383af1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@251ebd97_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@335d09aa_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@475d2329_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5943a6c3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4c55fa12_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@725b0330_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@57b4594c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3070e3da_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5a361140_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4565ee88_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5f42a5a2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@12b14f4d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6d5b28fc_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@480ad7bf_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e07df47_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@726be85e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1a07581_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3559be6b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40109e75_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@479b4d1b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4b720f10_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6bd23a3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6bdd8490_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@923b6c4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@313efd38_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@25756b39_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5eeb4b98_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b0e9ff3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2501fa04_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@31b7df39_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@55cb28fd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@385d4794_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5549d508_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@27fe3fed_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@24e129d2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@138197c5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6fc24e37_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1b53a7a9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7fe1eeb7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3b1fcea_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3b3fdb32_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3d7f9d2e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5e8dad25_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@528c7f8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7e7d872b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@554d1283_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@51a04aa3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2c575567_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@79a2838b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4255a604_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@13cacc1e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@13586f88_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2b1bcf1b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@10e4b6ea_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7a136a3a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3c4aa32e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4148ae4a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3389d894_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ecfc9dc_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@36181f63_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6940f868_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6e5942f9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3c9b2f85_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1d76b105_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2ba39989_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@35ac4b0b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40388bee_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1c5e967c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4810d2df_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@786f6e30_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6bb92feb_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1e8cb44a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7aa9a772_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2de21be4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@10999c0b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@13b28e00_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2e538155_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@75209038_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7a56af83_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@647495ab_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@61b0c710_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7e7094d4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@f5b43ea_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5ab7c038_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@28a973a6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4a8ab368_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@25634aef_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@59642141_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e25105_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e34cbcb_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4e50608f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6e22a670_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@746617b3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7e4ebea8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@794bf0d2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@47e32e88_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4a3daae7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3227b184_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3417eb01_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@74688a6f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@247a5abc_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2257cb3d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@57d95090_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3d3e3cab_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@10c4d6bd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6b07d4e1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6f9aa98d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@15cb4104_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@37666cb6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@439b2f1d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@26325a2a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5b8fa0ee_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3c26bc75_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@307ac11a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3d876fc0_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2dc3c114_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@68f1b1b4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@762c54ea_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@30fe8a7c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@55986c87_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@169b6c87_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@283601ab_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6d3e2085_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@39e5d002_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@364788fd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@70deebfe_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b9cbc86_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7f6ea001_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@352fcc06_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@745ff031_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@9cc14fb_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@397b4ddd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1b91ec17_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4607de43_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4cb34a4a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1a0a1380_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5d81341d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1c1b50b0_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5e80aaf3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@59e38404_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@55c8e21_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@25bb134e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2cf6269e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@58dca24d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6ec000f1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4514f0e5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@76ca47c7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@63fbc34_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@28b7bfe_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@25a578e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7bb77ae2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@34ab938e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@60b937c0_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6f478134_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b751068_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@55bc2549_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2bd1cb59_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3d2693c4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7bf2b2de_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@43f85f56_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@d4feae8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@53661825_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1dc1f3bb_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7aaf8629_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e4968f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@508d21d4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4f2834b6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f8535a0_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b60ce2f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@518211ca_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@737a666c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6b1c8782_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@21c812e0_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f1853ad_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@65e68256_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@41108e96_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3d7cb258_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1f74b340_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@77678661_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4f572c48_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@586ff1bd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@301ccc53_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@75172e31_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@689367a7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6ee9ee45_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@36178cc_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@36b0154a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@25897ea8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@698ed51_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6e65e211_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1f275a8e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@56d19b9a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7e7610c4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@55b6a89f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1eef0248_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@39865507_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@178aa6c8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4e75d3e5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@30292fd3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5c5d2e41_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@48654bef_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4d6f9410_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5a439c16_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1959b346_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7413b410_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5769bfa7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5ed9b6e5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@71c26074_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@19c6378c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6d94c232_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3d37f80f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@55f674dc_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1e07e278_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@10e597_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7bcd4d5b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@adcb9ba_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1db1211c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1ce7f8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@46f9689_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4bdcd435_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3d3442e7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b25db8d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4d4af181_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40bdf2c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@46774a3b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@64fc4017_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3c12347d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@476a9ed9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7182fc0a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@38e58a11_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@93f562b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@174d0cec_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@598cdb5b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2a852c9a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5d3d88_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1f0fba39_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6d84e460_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@223f2843_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5ec036b1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@54377f92_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@e335c34_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2fa681a5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4c5c290a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7ba3e074_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@61c4dc04_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6f3103b7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4148de5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4c22c089_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7e09f5be_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b56b8a8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@13dbadd4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@21ec1b57_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@14dcd534_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@44043478_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@67f05ffa_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6e811122_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@32a10033_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@65cd6210_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2e9374c1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5b186e66_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@39fd536f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2faab38a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@48827256_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6efd309f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@17d2a023_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4c3ad04c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@433618a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@17398eab_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@421f6595_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4424529b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1c6c9da_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3c20a6ce_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@64cff2c3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@155bef0e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@41aafa16_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@25d0fba4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@398328b7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@83350e5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@58a4e081_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@69ff9bdd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@713ba722_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5b357486_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@37570971_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@48dd6cd7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1d4318b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6ec7d067_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@51a150b0_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e9007ec_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4466c3c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@28e17f14_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@457a69fe_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6eafa8dd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4d71a0dd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@550c1f8e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@13abeae6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@68904356_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@278242c1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4900ce5b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7b4cd16_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@31a01e4e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@30497b09_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7d9a214_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@68879c45_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@279bf7e6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@46e68a06_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7c26acf_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@22872e02_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@11d96ae8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@31c2729b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5e97c498_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7fb0f7c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@cc74b94_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4cd6c4aa_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@510ea7dd_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4a0a08c2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4d98fdf_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7d61dc9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3ab01499_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@737c8706_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@19b4902c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@29aca5a9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4396aae0_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@ec754ad_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@61aab5b8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@20073bed_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@aa5f508_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@705a7d04_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4fad6484_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@412ceec2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@74f03c63_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4237e085_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@274b39f2_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@28db43c8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@43a0af58_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@eb07641_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@65aea280_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6b161cb7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6b6a1b49_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@171a4d53_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@fe61460_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5585740e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@52af3559_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@478f7d87_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2024531d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5cf0feb4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6227af03_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5c4bd5f9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@77edb0a3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@77290138_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6115a2ef_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@542a7a88_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2b038622_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@773fd8a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6a103aa1_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4366cca3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2127d2be_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2b444cbe_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@44c72db9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@69ce82d_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@620d8897_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@51e45121_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@ed542ec_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1c1e9d4c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6981db4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7a852e2a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@16e0ea97_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@78b82a27_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@38f37add_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@47568bf7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3a9ba7ec_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@18117926_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@32305aa6_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@57e31dde_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@668032b9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5eabd658_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@43694f0e_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@ba7db6a_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@865242b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@101c1c20_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@63942d1f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6bbdbfc0_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5a5d2718_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5c8809a9_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@631b766c_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2216c1b8_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@19ae4844_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7ea08fc7_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@15cb553f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@42e08144_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3608c9a5_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5ab168a3_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@284cbc2f_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ae3c74b_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6cedccf4_ARCHIVE_LOCATION">c:/Projects/Stereovision/stereo_fpga/ip_repo_vc707/HDMI_Design/Video_Synch_1.0</xilinx:tag>
+      </xilinx:tags>
+    </xilinx:coreExtensions>
+    <xilinx:packagingInfo>
+      <xilinx:xilinxVersion>2020.2</xilinx:xilinxVersion>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="9634b12b"/>
+      <xilinx:checksum xilinx:scope="addressSpaces" xilinx:value="70d9049d"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="3bc93945"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="ae60f93f"/>
+      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="fd772b28"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="ea108e00"/>
+    </xilinx:packagingInfo>
+  </spirit:vendorExtensions>
+</spirit:component>
