@@ -140,9 +140,6 @@ module Video_Synch_v1_0 #
         input wire                       M0_AXI_RVALID, //
         output wire                   M0_AXI_RREADY, //
         
-        input [1:0] sw, // mux
-        
-        
         output [27 : 0] addr_pixel_out,
         output [3 : 0] state_pixel_out, 
         output wire [3:0]status, // status kontrolera pamieci
@@ -308,77 +305,20 @@ module Video_Synch_v1_0 #
     );
     
     
-    // MUX0 for m_axis_video0
-    wire [C_M_AXI_DATA_WIDTH-1:0] mux0_tdata [3:0];
-    wire mux0_tready [3:0];
-    wire mux0_tuser [3:0];
-    wire mux0_tlast [3:0];
-    wire mux0_tvalid [3:0];
-    // MUX1 for m_axis_video1
-    wire [C_M_AXI_DATA_WIDTH-1:0] mux1_tdata [3:0];
-    wire mux1_tready [3:0];
-    wire mux1_tuser [3:0];
-    wire mux1_tlast [3:0];
-    wire mux1_tvalid [3:0];
+    assign   m_axis_video0_tdata = video0_tdata_d;
+    assign   m_axis_video0_tuser = video0_tuser_d;
+    assign   m_axis_video0_tlast = video0_tlast_d;
+    assign   m_axis_video0_tvalid = video0_tvalid_d;
     
-    // Input 
-    assign mux0_tdata[0] = {s_axis_video0_tdata, 32'b0};
-    assign mux0_tuser[0] = s_axis_video0_tuser;
-    assign mux0_tlast[0] = s_axis_video0_tlast;
-    assign mux0_tvalid[0] = s_axis_video0_tvalid;
-    assign mux0_tready[0] = m_axis_video0_tready; 
+    assign   m_axis_video1_tdata = data_from_ram[C_M_AXI_DATA_WIDTH-1 -: TDATA_WIDTH];
+    assign   m_axis_video1_tuser = video0_tuser_d;
+    assign   m_axis_video1_tlast = video0_tlast_d;
+    assign   m_axis_video1_tvalid = video0_tvalid_d;
     
-    assign mux1_tdata[0] = {s_axis_video1_tdata, 32'b0};
-    assign mux1_tuser[0] = s_axis_video1_tuser;
-    assign mux1_tlast[0] = s_axis_video1_tlast;
-    assign mux1_tvalid[0] = s_axis_video1_tvalid;
-    assign mux1_tready[0] = m_axis_video1_tready; 
-
-    // Synchronized
-    assign mux0_tdata[1] = {video0_tdata_d, 32'b0};
-    assign mux0_tuser[1] = video0_tuser_d;
-    assign mux0_tlast[1] = video0_tlast_d;
-    assign mux0_tvalid[1] = video0_tvalid_d;
-    assign mux0_tready[1] = m_axis_video0_tready; 
+    assign s_axis_video0_tready = m_axis_video0_tready;
+    assign s_axis_video1_tready = m_axis_video1_tready;
     
-    assign mux1_tdata[1] = data_from_ram;
-    assign mux1_tuser[1] = video0_tuser_d;
-    assign mux1_tlast[1] = video0_tlast_d;
-    assign mux1_tvalid[1] = video0_tvalid_d;
-    assign mux1_tready[1] = m_axis_video1_tready; 
-    
-    // test 1
-    assign mux1_tdata[3] = {video0_tdata_d, 32'b0};
-    assign mux1_tuser[3] = video0_tuser_d;
-    assign mux1_tlast[3] = video0_tlast_d;
-    assign mux1_tvalid[3] = video0_tvalid_d;
-    assign mux1_tready[3] = m_axis_video0_tready;
-     
-    assign mux0_tready[3] = m_axis_video0_tready; 
-    
-    assign mux1_tdata[2] = {s_axis_video0_tdata, 32'b0};
-    assign mux1_tuser[2] = s_axis_video0_tuser;
-    assign mux1_tlast[2] = s_axis_video0_tlast;
-    assign mux1_tvalid[2] = s_axis_video0_tvalid;
-    assign mux1_tready[2] = m_axis_video0_tready; 
-    
-    assign mux0_tready[2] = m_axis_video0_tready; 
-    // test 1 end
-    
-    assign   m_axis_video0_tdata = mux0_tdata[sw][C_M_AXI_DATA_WIDTH-1 -: TDATA_WIDTH];
-    assign   m_axis_video0_tuser = mux0_tuser[sw];
-    assign   m_axis_video0_tlast = mux0_tlast[sw];
-    assign   m_axis_video0_tvalid = mux0_tvalid[sw];
-    
-    assign   m_axis_video1_tdata = mux1_tdata[sw][C_M_AXI_DATA_WIDTH-1 -: TDATA_WIDTH];
-    assign   m_axis_video1_tuser = mux1_tuser[sw];
-    assign   m_axis_video1_tlast = mux1_tlast[sw];
-    assign   m_axis_video1_tvalid = mux1_tvalid[sw];
-    
-    assign s_axis_video0_tready = mux0_tready[sw];
-    assign s_axis_video1_tready = mux1_tready[sw];
-    
-    assign   addr_pixel_out = mux1_tdata[sw][27 : 0];
-    assign   state_pixel_out = mux1_tdata[sw][31 : 28];
+    assign   addr_pixel_out = data_from_ram[27 : 0];
+    assign   state_pixel_out = data_from_ram[31 : 28];
 
 endmodule
