@@ -100,7 +100,7 @@ xpm_memory_spram #(
     .wea(ce),           // WRITE_DATA_WIDTH_A-bit input: Write enable vector for port A input data port dina. 1 bit wide when word-wide writes are used.
     .injectdbiterra(1'b0),
     .injectsbiterra(1'b0),
-    .regcea(1'b0),
+    .regcea(1'b1), // NEW 1
     .rsta(1'b0),
     .sleep(1'b0),
     .dbiterra(dbiterra),

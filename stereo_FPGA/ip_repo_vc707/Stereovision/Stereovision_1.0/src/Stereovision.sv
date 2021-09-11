@@ -57,8 +57,6 @@ module Stereovision
 // RGB to Gray
 // --------------------------------------   
     
-    logic       rgb2gray_tready;
-    
     logic        gray_tlast;
     logic        gray_tready;
     logic        gray_tuser;
@@ -109,8 +107,6 @@ module Stereovision
 // --------------------------------------
 // Unfolding
 // --------------------------------------  
-    logic        unfold_tready;
-    
     logic        unfolded_l_tlast;
     logic        unfolded_l_tready;
     logic        unfolded_l_tuser;
@@ -148,8 +144,6 @@ module Stereovision
 // Cost Calculation
 // --------------------------------------  
     
-    logic       s_l_tready, s_r_tready;
-    
     logic        c_l_tlast;
     logic        c_l_tready;
     logic        c_l_tuser;
@@ -172,12 +166,14 @@ module Stereovision
   ) sad (
     .aclk(aclk),
     .s_axis_l_tready(unfolded_l_tready),
-    .s_axis_l_tdata({unfolded_l_tdata[7-:8],unfolded_l_tdata[15-:8],unfolded_l_tdata[23-:8],unfolded_l_tdata[31-:8]}),
+    //.s_axis_l_tdata({unfolded_l_tdata[7-:8],unfolded_l_tdata[15-:8],unfolded_l_tdata[23-:8],unfolded_l_tdata[31-:8]}),
+    .s_axis_l_tdata(unfolded_l_tdata),
     .s_axis_l_tlast(unfolded_l_tlast),
     .s_axis_l_tuser(unfolded_l_tuser),
     .s_axis_l_tvalid(unfolded_l_tvalid),
     .s_axis_r_tready(unfolded_r_tready),
-    .s_axis_r_tdata({unfolded_r_tdata[7-:8],unfolded_r_tdata[15-:8],unfolded_r_tdata[23-:8],unfolded_r_tdata[31-:8]}),
+    //.s_axis_r_tdata({unfolded_r_tdata[7-:8],unfolded_r_tdata[15-:8],unfolded_r_tdata[23-:8],unfolded_r_tdata[31-:8]}),
+    .s_axis_r_tdata(unfolded_r_tdata),
     .s_axis_r_tlast(unfolded_r_tlast),
     .s_axis_r_tuser(unfolded_r_tuser),
     .s_axis_r_tvalid(unfolded_r_tvalid),
@@ -185,26 +181,19 @@ module Stereovision
     .m_axis_l_tvalid(c_l_tvalid),
     .m_axis_l_tdata(c_l_tdata),
     .m_axis_l_tlast(c_l_tlast),
-    .m_axis_l_tuser(c_l_tuser),
-    .m_axis_r_tready(c_r_tready),
-    .m_axis_r_tvalid(c_r_tvalid),
-    .m_axis_r_tdata(c_r_tdata),
-    .m_axis_r_tlast(c_r_tlast),
-    .m_axis_r_tuser(c_r_tuser)
+    .m_axis_l_tuser(c_l_tuser)
+//    .m_axis_r_tready(c_r_tready),
+//    .m_axis_r_tvalid(c_r_tvalid),
+//    .m_axis_r_tdata(c_r_tdata),
+//    .m_axis_r_tlast(c_r_tlast),
+//    .m_axis_r_tuser(c_r_tuser)
     
   );
   
   logic        sad_l_tlast;
-  logic        sad_l_tready;
   logic        sad_l_tuser;
   logic        sad_l_tvalid;
   logic  [AXIS_TDATA_WIDTH-1:0] sad_l_tdata;
-  logic        sad_r_tlast;
-  logic        sad_r_tready;
-  logic        sad_r_tuser;
-  logic        sad_r_tvalid;
-  logic  [AXIS_TDATA_WIDTH-1:0] sad_r_tdata;
-  
   logic        sad_tready;
   
   Min_disp#(
@@ -226,80 +215,63 @@ module Stereovision
 		.m_axis_min_tuser(sad_l_tuser)
     );
     
-  Min_disp#(
-        .MAX_DISP(MAX_DISP),
-        .MAX_SAMPLES_PER_CLOCK(MAX_SAMPLES_PER_CLOCK),
-	    .AXIS_TDATA_WIDTH(AXIS_TDATA_WIDTH),
-		.DATA_WIDTH(DATA_WIDTH)
-	)minR(
-	   .aclk(aclk),
-	    .s_axis_costs_tready(c_r_tready),
-		.s_axis_costs_tdata(c_r_tdata),
-		.s_axis_costs_tlast(c_r_tlast),
-		.s_axis_costs_tuser(c_r_tuser),
-		.s_axis_costs_tvalid(c_r_tvalid),
-		.m_axis_min_tready(sad_tready),
-		.m_axis_min_tvalid(sad_r_tvalid),
-		.m_axis_min_tdata({sad_r_tdata[7-:8],sad_r_tdata[15-:8],sad_r_tdata[23-:8],sad_r_tdata[31-:8]}) ,
-		.m_axis_min_tlast(sad_r_tlast),
-		.m_axis_min_tuser(sad_r_tuser)
-    );
-  
-//    logic        synch_l_tlast;
-//    logic        synch_l_tready;
-//    logic        synch_l_tuser;
-//    logic        synch_l_tvalid;
-//    logic  [AXIS_TDATA_WIDTH-1:0] synch_l_tdata;
-//    logic        synch_r_tlast;
-//    logic        synch_r_tready;
-//    logic        synch_r_tuser;
-//    logic        synch_r_tvalid;
-//    logic  [AXIS_TDATA_WIDTH-1:0] synch_r_tdata;
-  
-        
-//    Out_Synch #(
-//		.AXIS_TDATA_WIDTH(AXIS_TDATA_WIDTH),
-//		.TLAST_CYCLES(TLAST_CYCLES),
-//		.TUSER_CYCLES(TUSER_CYCLES)
-//	) synchL
-//	(
-//        .aclk(aclk),
-//        .aresetn(aresetn),
-		
-//		.s_axis_tready(sad_l_tready),
-//		.s_axis_tdata(sad_l_tdata),
-//		.s_axis_tvalid(sad_l_tvalid),
-//		.s_axis_tlast(sad_l_tlast),
-//		.s_axis_tuser(sad_l_tuser),
-
-//		.m_axis_tvalid(synch_l_tvalid),
-//		.m_axis_tdata(synch_l_tdata),
-//		.m_axis_tready(synch_l_tready),
-//		.m_axis_tlast(synch_l_tlast),
-//		.m_axis_tuser(synch_l_tuser)
+//  Min_disp#(
+//        .MAX_DISP(MAX_DISP),
+//        .MAX_SAMPLES_PER_CLOCK(MAX_SAMPLES_PER_CLOCK),
+//	    .AXIS_TDATA_WIDTH(AXIS_TDATA_WIDTH),
+//		.DATA_WIDTH(DATA_WIDTH)
+//	)minR(
+//	   .aclk(aclk),
+//	    .s_axis_costs_tready(c_r_tready),
+//		.s_axis_costs_tdata(c_r_tdata),
+//		.s_axis_costs_tlast(c_r_tlast),
+//		.s_axis_costs_tuser(c_r_tuser),
+//		.s_axis_costs_tvalid(c_r_tvalid),
+//		.m_axis_min_tready(sad_tready),
+//		.m_axis_min_tvalid(sad_r_tvalid),
+//		.m_axis_min_tdata({sad_r_tdata[7-:8],sad_r_tdata[15-:8],sad_r_tdata[23-:8],sad_r_tdata[31-:8]}) ,
+//		.m_axis_min_tlast(sad_r_tlast),
+//		.m_axis_min_tuser(sad_r_tuser)
 //    );
-//    Out_Synch #(
-//		.AXIS_TDATA_WIDTH(AXIS_TDATA_WIDTH),
-//		.TLAST_CYCLES(TLAST_CYCLES),
-//		.TUSER_CYCLES(TUSER_CYCLES)
-//	) synchR
-//	(
-//        .aclk(aclk),
-//        .aresetn(aresetn),
-
-//		.s_axis_tready(sad_r_tready),
-//		.s_axis_tdata(sad_r_tdata),
-//		.s_axis_tvalid(sad_r_tvalid),
-//		.s_axis_tlast(sad_r_tlast),
-//		.s_axis_tuser(sad_r_tuser),
-
-//		.m_axis_tvalid(synch_r_tvalid),
-//		.m_axis_tdata(synch_r_tdata),
-//		.m_axis_tready(synch_r_tready),
-//		.m_axis_tlast(synch_r_tlast),
-//		.m_axis_tuser(synch_r_tuser)
-//    );
+ 
         
+    logic        mux_tuser [$bits(switch_img)**2-1:0];
+    logic        mux_tlast [$bits(switch_img)**2-1:0];
+    logic        mux_tvalid [$bits(switch_img)**2-1:0];
+    logic  [AXIS_TDATA_WIDTH-1:0] mux_tdata [$bits(switch_img)**2-1:0];
+    //logic        mux_l_tready [$bits(switch_img)**2-1:0];
+      
+    assign mux_tuser[0]  = gray_tuser;
+    assign mux_tlast[0]  = gray_tlast;
+    assign mux_tvalid[0] = gray_tvalid;
+    assign mux_tdata[0]  = gray_tdata;
+    
+    assign mux_tuser[1]  = sad_l_tuser;
+    assign mux_tlast[1]  = sad_l_tlast;
+    assign mux_tvalid[1] = sad_l_tvalid;
+    assign mux_tdata[1]  = sad_l_tdata;
+    
+    assign mux_tuser[2]  = unfolded_l_tuser;
+    assign mux_tlast[2]  = unfolded_l_tlast;
+    assign mux_tvalid[2] = unfolded_l_tvalid;
+    assign mux_tdata[2]  = unfolded_l_tdata;
+    
+    assign mux_tuser[3]  = unfolded_r_tuser;
+    assign mux_tlast[3]  = unfolded_r_tlast;
+    assign mux_tvalid[3] = unfolded_r_tvalid;
+    assign mux_tdata[3]  = unfolded_r_tdata;
+    
+    assign mux_tuser[4]  = sad_l_tuser;
+    assign mux_tlast[4]  = sad_l_tlast;
+    assign mux_tvalid[4] = sad_l_tvalid;
+    assign mux_tdata[4]  = sad_l_tdata;
+    
+//    assign mux_tuser[5]  = sad_r_tuser;
+//    assign mux_tlast[5]  = sad_r_tlast;
+//    assign mux_tvalid[5] = sad_r_tvalid;
+//    assign mux_tdata[5]  = sad_r_tdata;
+     
+           
     generate 
         if( FORMAT == 0 ) 
             GRAY_to_RGB#(
@@ -307,11 +279,11 @@ module Stereovision
                 .PPC(MAX_SAMPLES_PER_CLOCK)
                 )
             gray2rgb
-               (.s_axis_gray_tdata(gray_tdata),
-                .s_axis_gray_tlast(gray_tlast),
+               (.s_axis_gray_tdata(mux_tdata[switch_img]),
+                .s_axis_gray_tlast(mux_tlast[switch_img]),
                 .s_axis_gray_tready(sad_tready),
-                .s_axis_gray_tuser(gray_tuser),
-                .s_axis_gray_tvalid(gray_tvalid),
+                .s_axis_gray_tuser(mux_tuser[switch_img]),
+                .s_axis_gray_tvalid(mux_tvalid[switch_img]),
                 .m_axis_rgb_tdata(m_axis_disp_tdata),
                 .m_axis_rgb_tlast(m_axis_disp_tlast),
                 .m_axis_rgb_tready(m_axis_disp_tready),
@@ -324,142 +296,17 @@ module Stereovision
                 .PPC(MAX_SAMPLES_PER_CLOCK)
                 )
             gray2yuv
-               (.s_axis_gray_tdata(gray_tdata),
-                .s_axis_gray_tlast(gray_tlast),
+               (.s_axis_gray_tdata(mux_tdata[switch_img]),
+                .s_axis_gray_tlast(mux_tlast[switch_img]),
                 .s_axis_gray_tready(sad_tready),
-                .s_axis_gray_tuser(gray_tuser),
-                .s_axis_gray_tvalid(gray_tvalid),
+                .s_axis_gray_tuser(mux_tuser[switch_img]),
+                .s_axis_gray_tvalid(mux_tvalid[switch_img]),
                 .m_axis_yuv_tdata(m_axis_disp_tdata),
                 .m_axis_yuv_tlast(m_axis_disp_tlast),
                 .m_axis_yuv_tready(m_axis_disp_tready),
                 .m_axis_yuv_tuser(m_axis_disp_tuser),
                 .m_axis_yuv_tvalid(m_axis_disp_tvalid));
     endgenerate
-        
-//    always @(*) begin
-//        case(switch_img)
-//            4'b0000: begin
-//                m_axis_disp_tdata <= s_axis_img_tdata;
-//                m_axis_disp_tvalid <= s_axis_img_tvalid;
-//                m_axis_disp_tuser <= s_axis_img_tuser;
-//                m_axis_disp_tlast <= s_axis_img_tlast;
-//                s_axis_img_tready <= m_axis_disp_tready;
-//                gray_tready <= unfold_tready;
-//                unfolded_l_tready <= s_l_tready;
-//                unfolded_r_tready <= s_r_tready;
-//                sad_l_tready <= m_axis_disp_tready; // sad is the end of the chain so can be tight up to m_axis_disp_tready
-//                sad_r_tready <= m_axis_disp_tready;
-//            end
-//            4'b0001: begin
-//                 m_axis_disp_tdata <= 'b0;
-//                for(integer i = MAX_SAMPLES_PER_CLOCK; i > 0; i = i - 1) begin
-//                    m_axis_disp_tdata <= 0;
-//                    m_axis_disp_tdata[1 * DATA_WIDTH - 1 -: DATA_WIDTH] <= gray_tdata[1*DATA_WIDTH-1-:DATA_WIDTH];
-//                    m_axis_disp_tdata[3 * DATA_WIDTH - 1 -: DATA_WIDTH] <= gray_tdata[2*DATA_WIDTH-1-:DATA_WIDTH];
-//                    m_axis_disp_tdata[5 * DATA_WIDTH - 1 -: DATA_WIDTH] <= gray_tdata[3*DATA_WIDTH-1-:DATA_WIDTH];
-//                    m_axis_disp_tdata[7 * DATA_WIDTH - 1 -: DATA_WIDTH] <= gray_tdata[4*DATA_WIDTH-1-:DATA_WIDTH];
-//                    m_axis_disp_tdata[2 * DATA_WIDTH - 1 -: DATA_WIDTH] <= 8'hFF/2;
-//                    m_axis_disp_tdata[4 * DATA_WIDTH - 1 -: DATA_WIDTH] <= 8'hFF/2;
-//                    m_axis_disp_tdata[6 * DATA_WIDTH - 1 -: DATA_WIDTH] <= 8'hFF/2;
-//                    m_axis_disp_tdata[8 * DATA_WIDTH - 1 -: DATA_WIDTH] <= 8'hFF/2;
-//                end
-//                m_axis_disp_tvalid <= gray_tvalid;
-//                m_axis_disp_tuser <= gray_tuser;
-//                m_axis_disp_tlast <= gray_tlast;
-//                s_axis_img_tready <= rgb2gray_tready;
-//                gray_tready <= m_axis_disp_tready;
-//                unfolded_l_tready <= s_l_tready;
-//                unfolded_r_tready <= s_r_tready;
-//                sad_l_tready <= m_axis_disp_tready;
-//                sad_r_tready <= m_axis_disp_tready;
-//            end
-//            4'b0010: begin
-//                for(integer i = MAX_SAMPLES_PER_CLOCK; i > 0; i = i - 1) begin
-//                   m_axis_disp_tdata[i * 3 * DATA_WIDTH - 0 * DATA_WIDTH - 1 -: DATA_WIDTH] <= unfolded_l_tdata[i*DATA_WIDTH-1-:DATA_WIDTH];
-//                   m_axis_disp_tdata[i * 3 * DATA_WIDTH - 2 * DATA_WIDTH - 1 -: DATA_WIDTH] <= unfolded_l_tdata[i*DATA_WIDTH-1-:DATA_WIDTH];
-//                   m_axis_disp_tdata[i * 3 * DATA_WIDTH - 1 * DATA_WIDTH - 1 -: DATA_WIDTH] <= unfolded_l_tdata[i*DATA_WIDTH-1-:DATA_WIDTH];
-//                    m_axis_disp_tdata <= 0;
-//                    m_axis_disp_tdata[1 * DATA_WIDTH - 1 -: DATA_WIDTH] <= gray_tdata[1*DATA_WIDTH-1-:DATA_WIDTH];
-//                    m_axis_disp_tdata[3 * DATA_WIDTH - 1 -: DATA_WIDTH] <= gray_tdata[2*DATA_WIDTH-1-:DATA_WIDTH];
-//                    m_axis_disp_tdata[5 * DATA_WIDTH - 1 -: DATA_WIDTH] <= gray_tdata[3*DATA_WIDTH-1-:DATA_WIDTH];
-//                    m_axis_disp_tdata[7 * DATA_WIDTH - 1 -: DATA_WIDTH] <= gray_tdata[4*DATA_WIDTH-1-:DATA_WIDTH];
-//                    m_axis_disp_tdata[2 * DATA_WIDTH - 1 -: DATA_WIDTH] <= 8'hFF/2;
-//                    m_axis_disp_tdata[4 * DATA_WIDTH - 1 -: DATA_WIDTH] <= 8'hFF/2;
-//                    m_axis_disp_tdata[6 * DATA_WIDTH - 1 -: DATA_WIDTH] <= 8'hFF/2;
-//                    m_axis_disp_tdata[8 * DATA_WIDTH - 1 -: DATA_WIDTH] <= 8'hFF/2;
-//                end
-//                m_axis_disp_tvalid <= unfolded_l_tvalid;
-//                m_axis_disp_tuser <= unfolded_l_tuser;
-//                m_axis_disp_tlast <= unfolded_l_tlast;
-//                s_axis_img_tready <= rgb2gray_tready;
-//                gray_tready <= unfold_tready;
-//                unfolded_l_tready <= m_axis_disp_tready;
-//                unfolded_r_tready <= m_axis_disp_tready;
-//                sad_l_tready <= m_axis_disp_tready;
-//                sad_r_tready <= m_axis_disp_tready;
-//            end
-//            4'b0011: begin
-//                for(integer i = MAX_SAMPLES_PER_CLOCK; i > 0; i = i - 1) begin
-//                   m_axis_disp_tdata[i * 3 * DATA_WIDTH - 0 * DATA_WIDTH - 1 -: DATA_WIDTH] <= unfolded_r_tdata[i*DATA_WIDTH-1-:DATA_WIDTH];
-//                   m_axis_disp_tdata[i * 3 * DATA_WIDTH - 2 * DATA_WIDTH - 1 -: DATA_WIDTH] <= unfolded_r_tdata[i*DATA_WIDTH-1-:DATA_WIDTH];
-//                   m_axis_disp_tdata[i * 3 * DATA_WIDTH - 1 * DATA_WIDTH - 1 -: DATA_WIDTH] <= unfolded_r_tdata[i*DATA_WIDTH-1-:DATA_WIDTH];
-//                end
-//                m_axis_disp_tvalid <= unfolded_r_tvalid;
-//                m_axis_disp_tuser <= unfolded_r_tuser;
-//                m_axis_disp_tlast <= unfolded_r_tlast;
-//                s_axis_img_tready <= rgb2gray_tready;
-//                gray_tready <= unfold_tready;
-//                unfolded_l_tready <= m_axis_disp_tready;
-//                unfolded_r_tready <= m_axis_disp_tready;
-//                sad_l_tready <= m_axis_disp_tready;
-//                sad_r_tready <= m_axis_disp_tready;
-//            end
-//            4'b0100: begin
-//                for(integer i = MAX_SAMPLES_PER_CLOCK; i > 0; i = i - 1) begin
-//                   m_axis_disp_tdata[i * 3 * DATA_WIDTH - 0 * DATA_WIDTH - 1 -: DATA_WIDTH] <= sad_l_tdata[i*DATA_WIDTH-1-:DATA_WIDTH];
-//                   m_axis_disp_tdata[i * 3 * DATA_WIDTH - 2 * DATA_WIDTH - 1 -: DATA_WIDTH] <= sad_l_tdata[i*DATA_WIDTH-1-:DATA_WIDTH];
-//                   m_axis_disp_tdata[i * 3 * DATA_WIDTH - 1 * DATA_WIDTH - 1 -: DATA_WIDTH] <= sad_l_tdata[i*DATA_WIDTH-1-:DATA_WIDTH];
-//                end
-//                m_axis_disp_tvalid <= sad_l_tvalid;
-//                m_axis_disp_tuser <= sad_l_tuser;
-//                m_axis_disp_tlast <= sad_l_tlast;
-//                s_axis_img_tready <= rgb2gray_tready;
-//                gray_tready <= unfold_tready;
-//                unfolded_l_tready <= s_l_tready;
-//                unfolded_r_tready <= s_r_tready;
-//                sad_l_tready <= m_axis_disp_tready;
-//                sad_r_tready <= m_axis_disp_tready;
-//            end
-//            4'b0101: begin
-//                for(integer i = MAX_SAMPLES_PER_CLOCK; i > 0; i = i - 1) begin
-//                   m_axis_disp_tdata[i * 3 * DATA_WIDTH - 0 * DATA_WIDTH - 1 -: DATA_WIDTH] <= sad_r_tdata[i*DATA_WIDTH-1-:DATA_WIDTH];
-//                   m_axis_disp_tdata[i * 3 * DATA_WIDTH - 2 * DATA_WIDTH - 1 -: DATA_WIDTH] <= sad_r_tdata[i*DATA_WIDTH-1-:DATA_WIDTH];
-//                   m_axis_disp_tdata[i * 3 * DATA_WIDTH - 1 * DATA_WIDTH - 1 -: DATA_WIDTH] <= sad_r_tdata[i*DATA_WIDTH-1-:DATA_WIDTH];
-//                end
-//                m_axis_disp_tvalid <= sad_r_tvalid;
-//                m_axis_disp_tuser <= sad_r_tuser;
-//                m_axis_disp_tlast <= sad_r_tlast;
-//                s_axis_img_tready <= rgb2gray_tready;
-//                gray_tready <= unfold_tready;
-//                unfolded_l_tready <= s_l_tready;
-//                unfolded_r_tready <= s_r_tready;
-//                sad_l_tready <= m_axis_disp_tready;
-//                sad_r_tready <= m_axis_disp_tready;
-//            end
-//            default: begin
-//                m_axis_disp_tdata <= s_axis_img_tdata;
-//                m_axis_disp_tvalid <= s_axis_img_tvalid;
-//                m_axis_disp_tuser <= s_axis_img_tuser;
-//                m_axis_disp_tlast <= s_axis_img_tlast;
-//                s_axis_img_tready <= m_axis_disp_tready;
-//                gray_tready <= unfold_tready;
-//                unfolded_l_tready <= s_l_tready;
-//                unfolded_r_tready <= s_r_tready;
-//                sad_l_tready <= m_axis_disp_tready; // sad is the end of the chain so can be tight up to m_axis_disp_tready
-//                sad_r_tready <= m_axis_disp_tready;
-//            end
-//        endcase
-//    end 
     
     
     

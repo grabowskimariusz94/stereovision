@@ -2,7 +2,7 @@
 `default_nettype none
 //////////////////////////////////////////////////////////////////////////////////
 // Company: AGH, EVS
-// Engineer: Marcin Kowalczyk
+// Engineer: Marcin Kowalczyk / Hubert Szolc
 // 
 // Create Date: 07/01/2021 08:09:36 AM
 // Module Name: Ncntx_Xppc
@@ -18,14 +18,14 @@
 
 module SNcntx_Xppc
 #(
-    parameter integer SAMPLES_PER_CLOCK = 4, // Number of samples per clock
-    parameter integer BITS_PER_PIXEL    = 8, // Width of component data
-    parameter integer TDATA_WIDTH       = SAMPLES_PER_CLOCK*BITS_PER_PIXEL, // Width of TDATA
+    parameter integer SAMPLES_PER_CLOCK = 4,                                    // Number of samples per clock
+    parameter integer BITS_PER_PIXEL    = 8,                                    // Width of component data
+    parameter integer TDATA_WIDTH       = SAMPLES_PER_CLOCK * BITS_PER_PIXEL,   // Width of TDATA
 
-
-    parameter integer CONTEXT_SIZE = 3, // Size of context
-    parameter integer WIDTH        = 3840, // Pixels per one line
-    parameter integer HEIGHT       = 2160, // Lines in one frame of video
+    parameter integer CONTEXT_SIZE = 3,                                         // Size of context
+    parameter integer N_CNTX       = 13,                                        // Number of output contexts
+    parameter integer WIDTH        = 3840,                                      // Pixels per one line
+    parameter integer HEIGHT       = 2160,                                      // Lines in one frame of video
 
     parameter integer W_POSITION_WIDTH = 10,
     parameter integer H_POSITION_WIDTH = 12,
@@ -39,183 +39,184 @@ module SNcntx_Xppc
     input wire s_axis_aresetn,
 
     // Ports of AXIS Video Slave S00
-    input wire [TDATA_WIDTH-1 : 0] VIDEO_IN_tdata,
+    input wire [TDATA_WIDTH - 1 : 0] VIDEO_IN_tdata,
     input wire                     VIDEO_IN_tuser,
     input wire                     VIDEO_IN_tlast,
     input wire                     VIDEO_IN_tvalid,
     output wire                    VIDEO_IN_tready,
 
     // Output context
-    output wire [BITS_PER_PIXEL-1 : 0] out_cntx [CONTEXT_SIZE-1 : 0][CONTEXT_SIZE-1 : 0][SAMPLES_PER_CLOCK-1 : 0],
+    output wire [BITS_PER_PIXEL - 1 : 0] out_cntx [CONTEXT_SIZE - 1 : 0][CONTEXT_SIZE - 1 : 0][N_CNTX - 1 : 0],
     output wire                        context_tvalid,
     output wire                        context_tlast,
     input  wire                        context_tready,
     output wire                        context_tuser,
 
-    output wire                        out_pixel_valid [SAMPLES_PER_CLOCK-1 : 0]
+    output wire                        out_pixel_valid [N_CNTX - 1 : 0]
 );
 
-    localparam integer GROUPS        = WIDTH/SAMPLES_PER_CLOCK;
-    localparam integer FRAME_W_SHIFT = $ceil((CONTEXT_SIZE-1.0)/(2.0*SAMPLES_PER_CLOCK));
-    localparam integer BORDER_WIDTH  = (CONTEXT_SIZE-1)/2;
-    localparam integer CONTEXT_WIDTH = FRAME_W_SHIFT*2+1;
+    localparam integer GROUPS        = WIDTH / SAMPLES_PER_CLOCK;
+    localparam integer FRAME_W_SHIFT = $ceil((CONTEXT_SIZE - 1.0) / (2.0 * SAMPLES_PER_CLOCK));
+    localparam integer BORDER_WIDTH  = (CONTEXT_SIZE - 1) / 2;
+    localparam integer MIN_GROUPS    = $ceil((CONTEXT_SIZE + N_CNTX - 1.0) / SAMPLES_PER_CLOCK);                    // Minimum number of groups needed to construct all contexts
+    localparam integer CONTEXT_WIDTH = MIN_GROUPS > FRAME_W_SHIFT * 2 + 1 ? MIN_GROUPS : FRAME_W_SHIFT * 2 + 1;     // Number of groups from which contexts will be contructed
+    localparam integer SHIFT_COEFF   = $clog2(SAMPLES_PER_CLOCK);
 
     localparam STATE_WIDTH = 3;
 
-    localparam [STATE_WIDTH-1 : 0] removeLines = 'd0;
-    localparam [STATE_WIDTH-1 : 0] removePixels = 'd1;
-    localparam [STATE_WIDTH-1 : 0] generatePixels = 'd2;
-    localparam [STATE_WIDTH-1 : 0] generateLines = 'd3;
-    localparam [STATE_WIDTH-1 : 0] normalOperation = 'd4;
-    localparam [STATE_WIDTH-1 : 0] synchronization = 'd5;
+    localparam [STATE_WIDTH - 1 : 0] removeLines        = 'd0;
+    localparam [STATE_WIDTH - 1 : 0] removePixels       = 'd1;
+    localparam [STATE_WIDTH - 1 : 0] generatePixels     = 'd2;
+    localparam [STATE_WIDTH - 1 : 0] generateLines      = 'd3;
+    localparam [STATE_WIDTH - 1 : 0] normalOperation    = 'd4;
+    localparam [STATE_WIDTH - 1 : 0] synchronization    = 'd5;
 
-    logic [W_POSITION_WIDTH-1 : 0] posX = 'd0;
-    logic [H_POSITION_WIDTH-1 : 0] posY = 'd0;
-    logic [STATE_WIDTH-1 : 0] state = synchronization;
+    logic [W_POSITION_WIDTH - 1 : 0] posX = 'd0;
+    logic [H_POSITION_WIDTH - 1 : 0] posY = 'd0;
+    logic [STATE_WIDTH - 1 : 0]      state = synchronization;
     
-    wire [H_POSITION_WIDTH-1 : 0] posY_Del1;
+    wire [H_POSITION_WIDTH - 1 : 0] posY_Del1;
     
-    wire [W_POSITION_WIDTH+1 : 0] PixelPosition [SAMPLES_PER_CLOCK-1 : 0];
+    wire [W_POSITION_WIDTH + 1 : 0] PixelPosition [N_CNTX - 1 : 0];
 
-    logic [P_GENERATION_WIDTH-1 : 0] pixGeneratorCnt  = 'd0;
-    logic [P_GENERATION_WIDTH-1 : 0] lineGeneratorCnt = 'd0;
-    logic [W_POSITION_WIDTH : 0]   generatorPosX    = 'd0;
+    logic [P_GENERATION_WIDTH - 1 : 0] pixGeneratorCnt  = 'd0;
+    logic [P_GENERATION_WIDTH - 1 : 0] lineGeneratorCnt = 'd0;
+    logic [W_POSITION_WIDTH       : 0] generatorPosX    = 'd0;
 
     logic validLineGeneration = 'd0;
     
-    logic [9:0] startCnt = 'd0;
-    logic frameStarted = 'd0;
+    logic [9:0] startCnt     = 'd0;
+    logic       frameStarted = 'd0;
 
     wire ValidInput = VIDEO_IN_tvalid && context_tready;
     
-    wire [BITS_PER_PIXEL-1 : 0] FullContext [CONTEXT_WIDTH*SAMPLES_PER_CLOCK-1 : 0][CONTEXT_SIZE-1 : 0];
+    wire [BITS_PER_PIXEL - 1 : 0] FullContext [CONTEXT_WIDTH * SAMPLES_PER_CLOCK - 1 : 0][CONTEXT_SIZE - 1 : 0];
     
     // First - column
     // Second - row
-    wire [TDATA_WIDTH-1 : 0] ContextWire [CONTEXT_WIDTH-1 : 0][CONTEXT_SIZE-1 : 0];
-    logic [TDATA_WIDTH-1 : 0] contextReg [CONTEXT_WIDTH-2 : 0][CONTEXT_SIZE-1 : 0] = '{default: '0};
+    wire  [TDATA_WIDTH - 1 : 0] ContextWire [CONTEXT_WIDTH - 1 : 0][CONTEXT_SIZE - 1 : 0];
+    logic [TDATA_WIDTH - 1 : 0] contextReg  [CONTEXT_WIDTH - 2 : 0][CONTEXT_SIZE - 1 : 0] = '{default: '0};
 
     // Calculate input data position
-    always @(posedge s_axis_aclk)
-    begin
-        if (VIDEO_IN_tuser)
-        begin
+    always @(posedge s_axis_aclk) begin
+        if (VIDEO_IN_tuser) begin
             posX <= 'd0;
             posY <= 'd0;
-            if (VIDEO_IN_tvalid && VIDEO_IN_tready && !frameStarted)
+ 
+            if (VIDEO_IN_tvalid && VIDEO_IN_tready && !frameStarted) begin : DEBUG_ONLY
                 startCnt <= startCnt+1;
+            end
         end
 
-        if (VIDEO_IN_tvalid && VIDEO_IN_tready)
-        begin
-            posX <= posX+1;
-            if(VIDEO_IN_tlast)
-            begin
+        if (VIDEO_IN_tvalid && VIDEO_IN_tready) begin
+            posX <= posX + 1;
+            if(VIDEO_IN_tlast) begin
                 posX <= 'd0;
-                posY <= posY+1;
-                if (posX == GROUPS-1)
-                    frameStarted <= 'd1;
+                posY <= posY + 1;
+                
+                if (posX == GROUPS - 1) begin   // When first line of the frist frame comes to the end
+                    frameStarted <= 'd1;        // Something like "latch" - once set, never fall
+                end
             end
         end
     end
 
     // Determine state of the machine based on the position
-    always @(posedge s_axis_aclk)
-    begin
+    always @(posedge s_axis_aclk) begin
         case(state)
             removeLines:
             begin
-                if (posY == BORDER_WIDTH)
+                if (posY == BORDER_WIDTH) begin   // Waiting for the first line in the context centre position
                     state <= removePixels;
+                end
             end
+            
             removePixels:
             begin
-                if (posX == FRAME_W_SHIFT-1 && ValidInput)
+                if (posX == FRAME_W_SHIFT - 1 && ValidInput) begin
                     state <= normalOperation;
+                end
             end
+            
             normalOperation:
             begin
-                if (VIDEO_IN_tlast && ValidInput)
+                if (VIDEO_IN_tlast && ValidInput) begin
                     state <= generatePixels;
+                end
             end
+            
             generatePixels:
             begin
-                if (context_tready)
-                begin
-                    pixGeneratorCnt <= pixGeneratorCnt+1;
-                    if (pixGeneratorCnt == FRAME_W_SHIFT-1)
-                    begin
+                if (context_tready) begin
+                    pixGeneratorCnt <= pixGeneratorCnt + 1;
+                    if (pixGeneratorCnt == FRAME_W_SHIFT - 1) begin
                         state <= removePixels;
                         pixGeneratorCnt <= 'd0;
                     end
-                    if (posY == HEIGHT)
-                    begin
+                    if (posY == HEIGHT) begin
                         state <= generateLines;
                         pixGeneratorCnt <= 'd0;
                     end
                 end
             end
+            
             generateLines:
             begin
-                if (context_tready)
-                begin
-                    generatorPosX <= generatorPosX+1;
-                    if (generatorPosX == LINE_BREAK_WIDTH-1)
+                if (context_tready) begin
+                    generatorPosX <= generatorPosX + 1;
+                    if (generatorPosX == LINE_BREAK_WIDTH - 1) begin
                         validLineGeneration <= 'd1;
-                    if (generatorPosX == GROUPS+LINE_BREAK_WIDTH-1)
-                    begin
+                    end                    
+                    if (generatorPosX == GROUPS + LINE_BREAK_WIDTH - 1) begin
                         generatorPosX <= 'd0;
                         validLineGeneration <= 'd0;
-                        lineGeneratorCnt <= lineGeneratorCnt+1;
-                        if (lineGeneratorCnt == BORDER_WIDTH-1)
-                        begin
+                        lineGeneratorCnt <= lineGeneratorCnt + 1;
+                        if (lineGeneratorCnt == BORDER_WIDTH - 1) begin
                             state <= removeLines;
                             lineGeneratorCnt <= 'd0;
                         end
                     end
                 end
             end
+            
             default: // (synchronization)
             begin
-                if (frameStarted && VIDEO_IN_tuser)
-                begin
+                if (frameStarted && VIDEO_IN_tuser) begin   // Skip first frame (frameStarted is set at the end of the first line of the first frame and VIDEO_IN_tuser comes with the second frame)
                     state <= removeLines;
                 end
             end
+            
         endcase
-
     end
 
     // DELAY:
     // -CONTEXT_WIDTH+1 for the context size
     // -1 for the read latency
-    for (genvar cntx_line = 1; cntx_line < CONTEXT_SIZE; cntx_line = cntx_line+1)
-    begin : BRAM_GEN
+    assign ContextWire[0][0] = VIDEO_IN_tdata;
+    for (genvar cntx_line = 1; cntx_line < CONTEXT_SIZE; cntx_line = cntx_line + 1) begin : BRAM_GEN
         delayLineBRAM_Xppc
         #(
-        .DATA_WIDTH(TDATA_WIDTH),
-        .DELAY     (GROUPS-CONTEXT_WIDTH)
-        ) long_delay
+            .DATA_WIDTH(TDATA_WIDTH),
+            .DELAY     (GROUPS - CONTEXT_WIDTH)
+        ) 
+        long_delay
         (
-            .clk (s_axis_aclk              ),
-            .ce  (ValidInput               ),
-            .rstn(s_axis_aresetn           ),
-            .din (ContextWire[CONTEXT_WIDTH-1][cntx_line-1]),
-            .dout(ContextWire[0][cntx_line])
+            .clk (s_axis_aclk                                   ),
+            .ce  (ValidInput                                    ),
+            .rstn(s_axis_aresetn                                ),
+            .din (ContextWire[CONTEXT_WIDTH - 1][cntx_line - 1] ),
+            .dout(ContextWire[0][cntx_line]                     )
         );
     end
-    assign ContextWire[0][0] = VIDEO_IN_tdata;
     
-    always @(posedge s_axis_aclk)
-    begin
-        if (ValidInput)
-        begin
+    always @(posedge s_axis_aclk) begin
+        if (ValidInput) begin
             contextReg[0] <= ContextWire[0];
-            contextReg[CONTEXT_WIDTH-2 : 1] <= contextReg[CONTEXT_WIDTH-3 : 0];
+            contextReg[CONTEXT_WIDTH - 2 : 1] <= contextReg[CONTEXT_WIDTH - 3 : 0];
         end
     end
     
-    assign ContextWire[CONTEXT_WIDTH-1 : 1] = contextReg[CONTEXT_WIDTH-2 : 0];
+    assign ContextWire[CONTEXT_WIDTH - 1 : 1] = contextReg[CONTEXT_WIDTH - 2 : 0];
     
     
     
@@ -241,13 +242,10 @@ module SNcntx_Xppc
 //        end
 //    end
     
-    for (genvar cntx_row = 0; cntx_row < CONTEXT_SIZE; cntx_row = cntx_row + 1)
-    begin : GENERATE_FULL_CONTEXT_ROWS
-        for (genvar cntx_col = 0; cntx_col < CONTEXT_WIDTH; cntx_col = cntx_col + 1)
-        begin : GENERATE_FULL_CONTEXT_COLS
-            for (genvar pix = 0; pix < SAMPLES_PER_CLOCK; pix = pix + 1)
-            begin : GENERATE_FULL_CONTEXT_NPPC
-                assign FullContext[cntx_col*SAMPLES_PER_CLOCK+SAMPLES_PER_CLOCK-1-pix][cntx_row] = ContextWire[cntx_col][cntx_row][(pix+1)*BITS_PER_PIXEL-1 -: BITS_PER_PIXEL];
+    for (genvar cntx_row = 0; cntx_row < CONTEXT_SIZE; cntx_row = cntx_row + 1) begin : GENERATE_FULL_CONTEXT_ROWS
+        for (genvar cntx_col = 0; cntx_col < CONTEXT_WIDTH; cntx_col = cntx_col + 1) begin : GENERATE_FULL_CONTEXT_COLS
+            for (genvar pix = 0; pix < SAMPLES_PER_CLOCK; pix = pix + 1) begin : GENERATE_FULL_CONTEXT_NPPC
+                assign FullContext[cntx_col * SAMPLES_PER_CLOCK + SAMPLES_PER_CLOCK - 1 - pix][cntx_row] = ContextWire[cntx_col][cntx_row][(pix + 1) * BITS_PER_PIXEL - 1 -: BITS_PER_PIXEL];
             end
         end
     end
@@ -257,22 +255,21 @@ module SNcntx_Xppc
 //        assign out_cntx[pix] = FullContext[FRAME_W_SHIFT*SAMPLES_PER_CLOCK+pix+1 : FRAME_W_SHIFT*SAMPLES_PER_CLOCK+pix-1][CONTEXT_SIZE-1 : 0];
 //    end
 
-    for (genvar cntx_row = 0; cntx_row < CONTEXT_SIZE; cntx_row = cntx_row + 1)
-    begin : GENERATE_OUTPUT_ROWS
-        for (genvar cntx_col = 0; cntx_col < CONTEXT_SIZE; cntx_col = cntx_col + 1)
-        begin : GENERATE_OUTPUT_COLS
-            for (genvar pix = 0; pix < SAMPLES_PER_CLOCK; pix = pix + 1)
-            begin : GENERATE_OUTPUT_NPPC
-                assign out_cntx[cntx_col][cntx_row][pix] = FullContext[FRAME_W_SHIFT*SAMPLES_PER_CLOCK-BORDER_WIDTH+pix+cntx_col][cntx_row];
+    for (genvar cntx_row = 0; cntx_row < CONTEXT_SIZE; cntx_row = cntx_row + 1) begin : GENERATE_OUTPUT_ROWS
+        for (genvar cntx_col = 0; cntx_col < CONTEXT_SIZE; cntx_col = cntx_col + 1) begin : GENERATE_OUTPUT_COLS
+            for (genvar pix = 0; pix < N_CNTX; pix = pix + 1) begin : GENERATE_OUTPUT_NCNTX
+                assign out_cntx[cntx_col][cntx_row][pix] = FullContext[FRAME_W_SHIFT * SAMPLES_PER_CLOCK - BORDER_WIDTH + pix + cntx_col][cntx_row];
             end
         end
     end
     
-    assign PixelPosition = state==normalOperation ? '{(posX<<2)-FRAME_W_SHIFT*SAMPLES_PER_CLOCK, (posX<<2)-FRAME_W_SHIFT*SAMPLES_PER_CLOCK+1, (posX<<2)-FRAME_W_SHIFT*SAMPLES_PER_CLOCK+2, (posX<<2)-FRAME_W_SHIFT*SAMPLES_PER_CLOCK+3} : '{WIDTH-FRAME_W_SHIFT*SAMPLES_PER_CLOCK+pixGeneratorCnt*SAMPLES_PER_CLOCK, WIDTH-FRAME_W_SHIFT*SAMPLES_PER_CLOCK+pixGeneratorCnt*SAMPLES_PER_CLOCK+1, WIDTH-FRAME_W_SHIFT*SAMPLES_PER_CLOCK+pixGeneratorCnt*SAMPLES_PER_CLOCK+2, WIDTH-FRAME_W_SHIFT*SAMPLES_PER_CLOCK+pixGeneratorCnt*SAMPLES_PER_CLOCK+3};
+//    assign PixelPosition = state == normalOperation ? 
+//                            '{(posX << 2) - FRAME_W_SHIFT * SAMPLES_PER_CLOCK, (posX << 2) - FRAME_W_SHIFT * SAMPLES_PER_CLOCK + 1, (posX << 2) - FRAME_W_SHIFT * SAMPLES_PER_CLOCK + 2, (posX << 2) - FRAME_W_SHIFT * SAMPLES_PER_CLOCK + 3} : // (posX << 2) valid only for 4 PPC (try with $clog2 for general case)
+//                            '{WIDTH - FRAME_W_SHIFT * SAMPLES_PER_CLOCK + pixGeneratorCnt * SAMPLES_PER_CLOCK, WIDTH - FRAME_W_SHIFT * SAMPLES_PER_CLOCK + pixGeneratorCnt * SAMPLES_PER_CLOCK + 1, WIDTH - FRAME_W_SHIFT * SAMPLES_PER_CLOCK + pixGeneratorCnt * SAMPLES_PER_CLOCK + 2, WIDTH - FRAME_W_SHIFT * SAMPLES_PER_CLOCK + pixGeneratorCnt * SAMPLES_PER_CLOCK + 3};
     
-    for (genvar pix = 0; pix < SAMPLES_PER_CLOCK; pix = pix + 1)
-    begin : GENERATE_OUTPUT_NPPC
-        assign out_pixel_valid[pix] = state == synchronization ? 'd1 : PixelPosition[pix] >= BORDER_WIDTH && PixelPosition[pix] < WIDTH-BORDER_WIDTH && posY_Del1 >= CONTEXT_SIZE-1 && state != generateLines;
+    for (genvar pix = 0; pix < N_CNTX; pix = pix + 1) begin : GENERATE_OUTPUT_NCNTX
+        assign PixelPosition[N_CNTX - 1 - pix] = state == normalOperation ? (posX << SHIFT_COEFF) - FRAME_W_SHIFT * SAMPLES_PER_CLOCK + pix : WIDTH - FRAME_W_SHIFT * SAMPLES_PER_CLOCK + pixGeneratorCnt * SAMPLES_PER_CLOCK + pix;
+        assign out_pixel_valid[pix] = state == synchronization ? 'd1 : PixelPosition[pix] >= BORDER_WIDTH && PixelPosition[pix] < WIDTH - BORDER_WIDTH && posY_Del1 >= CONTEXT_SIZE - 1 && state != generateLines;
     end
     
     assign context_tvalid = (state == normalOperation) || (state == synchronization) ? VIDEO_IN_tvalid : 
@@ -280,16 +277,21 @@ module SNcntx_Xppc
                             (state == generateLines && validLineGeneration) ? 'b1 : 'b0;
                             
     assign context_tlast =  (state == synchronization) ? VIDEO_IN_tlast :
-                            (state == generatePixels && pixGeneratorCnt == FRAME_W_SHIFT-1)? 'b1 :
-                            (state == generateLines && generatorPosX == GROUPS+LINE_BREAK_WIDTH-1) ? 'b1 : 'b0;
+                            (state == generatePixels && pixGeneratorCnt == FRAME_W_SHIFT - 1)? 'b1 :
+                            (state == generateLines && generatorPosX == GROUPS + LINE_BREAK_WIDTH - 1) ? 'b1 : 'b0;
+    
     assign VIDEO_IN_tready = context_tready;
+    
     assign context_tuser =  (state == synchronization) ? VIDEO_IN_tuser :
                             (posY < BORDER_WIDTH || (posY <= BORDER_WIDTH && posX <= FRAME_W_SHIFT)) && state != generateLines;
     
-    DelayEnable #(
+    DelayEnable 
+    #(
         .WIDTH(H_POSITION_WIDTH),
         .DELAY(FRAME_W_SHIFT)
-    ) DelayEnable_instance (
+    ) 
+    DelayEnable_instance 
+    (
         .InData(posY),
         .CLK_in(s_axis_aclk),
         .CLK_en(context_tready),
@@ -297,11 +299,11 @@ module SNcntx_Xppc
     );
     
 //    wire [TDATA_WIDTH-1 : 0] VIDEO_OUT_tdata;
-//    
-//for (genvar j = 0; j < SAMPLES_PER_CLOCK; j = j + 1)
-//begin
-//    assign VIDEO_OUT_tdata[BITS_PER_PIXEL*(SAMPLES_PER_CLOCK-j)-1 -: BITS_PER_PIXEL] = out_pixel_valid[j] ? out_cntx[CONTEXT_SIZE >> 1][CONTEXT_SIZE >> 1][j][BITS_PER_PIXEL-1 : 0] : 'd0;
-//end
+    
+//    for (genvar j = 0; j < SAMPLES_PER_CLOCK; j = j + 1)
+//    begin
+//        assign VIDEO_OUT_tdata[BITS_PER_PIXEL * (SAMPLES_PER_CLOCK - j) - 1 -: BITS_PER_PIXEL] = out_pixel_valid[j] ? out_cntx[CONTEXT_SIZE >> 1][CONTEXT_SIZE >> 1][j][BITS_PER_PIXEL - 1 : 0] : 'd0;
+//    end
 
 //    ILA_context LogicAnalizer
 //    (
