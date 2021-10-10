@@ -56,7 +56,6 @@ cv::Mat Stereovision::fold(cv::Mat imgL, cv::Mat imgR) {
     unsigned char* pl = (unsigned char*)(imgL.data);
     unsigned char* pr = (unsigned char*)(imgR.data);
 
-
     for (int row = 0; row < img.rows; ++row) {
         for (int col = 0; col < img.cols; ++col) {
             // Even - left column
@@ -496,48 +495,99 @@ std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::cost_a
     return l;
 }
 
-std::vector<cv::Mat> Stereovision::semi_global(std::vector<std::vector<std::vector<std::vector<uint8_t>>>> c){
-    
+std::vector<cv::Mat> Stereovision::semi_global(std::vector<std::vector<std::vector<std::vector<uint8_t>>>> c, const uint8_t d_range){
+
+
     auto cl = c[0];
     auto cr = c[1];
 
     int h = c[0].size();
     int w = c[0][0].size();
 
-    // Cost Agregation 
+    // Cost aggregation 
     auto ll = cost_agregation(cl, h, w);
     std::cout << "Half Done" << '\n';
     auto lr = cost_agregation(cr, h, w);
 
-    cv::Mat dispL(h, w, CV_8UC1);
-    cv::Mat dispR(h, w, CV_8UC1);
+    // Sum of cost aggregations
+    std::vector<std::vector<uint8_t>> width(w);
+    std::vector<std::vector<std::vector<uint8_t>>> sl(h, width);
+    std::vector<std::vector<std::vector<uint8_t>>> sr(h, width);
 
-    unsigned char* pdl = (unsigned char*)(dispL.data);
-    unsigned char* pdr = (unsigned char*)(dispR.data);
 
-    
     for (int y = 0; y < h; ++y) {
         for (int x = 0; x < w; ++x) {
             int dl_len = cl[y][x].size();
             int dr_len = cr[y][x].size();
-            std::vector<uint8_t>sl(dl_len);
-            std::vector<uint8_t>sr(dr_len);
             for (int d = 0; d < dl_len; ++d) {
-                sl[d] = uint8_t(uint16_t(ll[0][y][x][d]));// + ll[1][y][x][d] + ll[2][y][x][d] + ll[3][y][x][d]) / 4);
+                sl[y][x].push_back(uint8_t(uint16_t(ll[0][y][x][d] + ll[1][y][x][d] + ll[2][y][x][d] + ll[3][y][x][d]) / 4));
             }
             for (int d = 0; d < dr_len; ++d) {
-                sr[d] = uint8_t(uint16_t(lr[0][y][x][d]));// + lr[1][y][x][d] + lr[2][y][x][d] + lr[3][y][x][d]) / 4);
+                sr[y][x].push_back(uint8_t(uint16_t(lr[0][y][x][d] + lr[1][y][x][d] + lr[2][y][x][d] + lr[3][y][x][d]) / 4));
             }
-            std::vector<uint8_t>::iterator resultl = (std::min_element(sl.begin(), sl.end()));
-            std::vector<uint8_t>::iterator resultr = (std::min_element(sr.begin(), sr.end()));
-            pdl[dispL.step * y + x] = (unsigned char)(std::distance(sl.begin(), resultl));
-            pdr[dispR.step * y + x] = (unsigned char)(std::distance(sr.begin(), resultr));
+        }
+    }
+
+
+    // Disparity computiations 
+    cv::Mat dispL(h, w, CV_8UC1);
+    cv::Mat dispR(h, w, CV_8UC1);
+    cv::Mat dispR_simp(h, w, CV_8UC1);   // simplified (based on designated disparity from left image)
+    std::vector<uint8_t> range_simp(d_range);
+    std::vector<std::vector<uint8_t>> width_simp(w, range_simp);
+    std::vector<std::vector<std::vector<uint8_t>>> vect_simp(h, width_simp);
+
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+            for (int d = 0; d < d_range; d++) {
+
+                if (sl[y].size() <= (x + d)) {
+                    vect_simp[y][x][d] = 255;
+                }
+                else if (sl[y][x + d].size() <= d) {
+                    vect_simp[y][x][d] = 255;
+                }
+                else {
+                    vect_simp[y][x][d] = sl[y][x + d][d];
+                }
+            }
+
+            /*int d = 0;
+            bool d_done = false;
+            while (!d_done) {
+                vect_simp[y][x][d] = sl[y][x + d][d];
+                d++;
+                if (sl[y].size() <= (x + d)) {
+                    d_done = true;
+                }
+                else if (sl[y][x + d].size() <= d) {
+                    d_done = true;
+                }
+            }*/
+        }
+    }
+
+    unsigned char* pdl = (unsigned char*)(dispL.data);
+    unsigned char* pdr = (unsigned char*)(dispR.data);
+    unsigned char* pdr_simp = (unsigned char*)(dispR_simp.data);
+
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+
+            std::vector<uint8_t>::iterator resultl = (std::min_element(sl[y][x].begin(), sl[y][x].end()));
+            std::vector<uint8_t>::iterator resultr = (std::min_element(sr[y][x].begin(), sr[y][x].end()));
+            std::vector<uint8_t>::iterator resultr_simp = (std::min_element(vect_simp[y][x].begin(), vect_simp[y][x].end()));
+            pdl[dispL.step * y + x] = (unsigned char)(std::distance(sl[y][x].begin(), resultl));
+            pdr[dispR.step * y + x] = (unsigned char)(std::distance(sr[y][x].begin(), resultr));
+            pdr_simp[dispR_simp.step * y + x] = (unsigned char)(std::distance(vect_simp[y][x].begin(), resultr_simp));
+
         }
     }
 
     std::vector<cv::Mat> disp;
     disp.push_back(dispL);
     disp.push_back(dispR);
+    disp.push_back(dispR_simp);
 
     return disp;
 }
