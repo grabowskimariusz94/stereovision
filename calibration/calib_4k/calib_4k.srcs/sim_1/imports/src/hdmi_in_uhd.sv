@@ -36,7 +36,7 @@ module hdmi_in_uhd
     localparam hp = 100; //porch
     //vertical
     localparam vr = IMAGE_HEIGHT; //resolution
-    localparam vp = 100; //porch
+    localparam vp = 1000; //porch
 
     // States
     localparam init_frame = 3'd0;

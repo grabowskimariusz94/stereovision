@@ -25,23 +25,26 @@ module image_buffer#(
   input wire  aclk,
   input wire  aresetn,
 
-  output wire  s_axis_tready,
-  input wire [AXIS_DATA_WIDTH-1 : 0] s_axis_tdata,
-  input wire  s_axis_tvalid,
-  input wire  s_axis_tlast,
-  input wire  s_axis_tuser,
+  output logic  s_axis_tready,
+  input  logic [AXIS_DATA_WIDTH-1 : 0] s_axis_tdata,
+  input  logic  s_axis_tvalid,
+  input  logic  s_axis_tlast,
+  input  logic  s_axis_tuser,
   
-//  input  wire  [SHIFT_WIDTH-1:0] pos_x,
-//  input  wire  [SHIFT_WIDTH-1:0] pos_y,
+  output logic  new_pos_tready,
+  output logic  new_pos_tuser,
+  input  logic  new_pos_tvalid,
+  input  logic  [NPPC-1:0][$clog2(WIDTH)-1:0]  new_pos_x,
+  input  logic  [NPPC-1:0][$clog2(HEIGHT)-1:0] new_pos_y,
   
-  output wire [AXIS_DATA_WIDTH-1 : 0] m_axis_0_tdata,
-  output wire [AXIS_DATA_WIDTH-1 : 0] m_axis_1_tdata,
-  output wire [AXIS_DATA_WIDTH-1 : 0] m_axis_2_tdata,
-  output wire [AXIS_DATA_WIDTH-1 : 0] m_axis_3_tdata,
-  inout wire  m_axis_tvalid,
-  input wire  m_axis_tready,
-  inout wire  m_axis_tlast,
-  inout wire  m_axis_tuser
+  output logic [AXIS_DATA_WIDTH-1 : 0] m_axis_0_tdata,
+  output logic [AXIS_DATA_WIDTH-1 : 0] m_axis_1_tdata,
+  output logic [AXIS_DATA_WIDTH-1 : 0] m_axis_2_tdata,
+  output logic [AXIS_DATA_WIDTH-1 : 0] m_axis_3_tdata,
+  output logic  m_axis_tvalid,
+  input  logic  m_axis_tready,
+  output logic  m_axis_tlast,
+  output logic  m_axis_tuser
 );
 
 typedef enum {SYNCH, NORMAL, SKIP_LINES, GEN_LINES} state_t;
@@ -57,9 +60,6 @@ logic [POS_X_W-1 : 0] pos_x;
 logic [POS_Y_W-1 : 0] pos_y;
 logic [POS_X_W : 0] gen_pos_x;
 logic [SHIFT_WIDTH-1 : 0] gen_pos_y;
-
-logic [$clog2(WIDTH)-1 : 0]  new_pos_x;
-logic [$clog2(HEIGHT)-1 : 0] new_pos_y;
 
 logic valid_gen_line = 0;
 
@@ -83,6 +83,10 @@ logic [AXIS_DATA_WIDTH/2-1:0]   din_1;
 logic tvalid;
 logic tlast;
 logic tuser;
+
+logic out_tvalid;
+logic out_tlast;
+logic out_tuser;
 
 logic [AXIS_DATA_WIDTH/2-1:0]   dout_00;
 logic [AXIS_DATA_WIDTH/2-1:0]   dout_01;
@@ -187,34 +191,34 @@ begin
  end
 end
 
-always_ff @(posedge aclk) 
-begin
- if (!aresetn) begin
-   new_pos_y <= 0; 
-   new_pos_x <= 0; 
- end else begin 
-   if (m_axis_tuser && !m_axis_tvalid) begin
-     new_pos_y <= 0; 
-     new_pos_x <= 0; 
-   end else begin
-     if (m_axis_tvalid == 1'b1)
-       if(new_pos_x == WIDTH-NPPC) begin
-         new_pos_x <= 0; 
-         if(new_pos_y == HEIGHT-1)
-           new_pos_y <= 0; 
-         else
-           new_pos_y <= new_pos_y + 1; 
-       end
-       else 
-         new_pos_x <= new_pos_x + NPPC;
-   end
- end
-end
+//always_ff @(posedge aclk) 
+//begin
+// if (!aresetn) begin
+//   new_pos_y <= 0; 
+//   new_pos_x <= 0; 
+// end else begin 
+//   if (m_axis_tuser && !m_axis_tvalid) begin
+//     new_pos_y <= 0; 
+//     new_pos_x <= 0; 
+//   end else begin
+//     if (m_axis_tvalid == 1'b1)
+//       if(new_pos_x == WIDTH-NPPC) begin
+//         new_pos_x <= 0; 
+//         if(new_pos_y == HEIGHT-1)
+//           new_pos_y <= 0; 
+//         else
+//           new_pos_y <= new_pos_y + 1; 
+//       end
+//       else 
+//         new_pos_x <= new_pos_x + NPPC;
+//   end
+// end
+//end
 
-assign read_addr_00 = ((new_pos_y%BUFFER_LINES)/2+new_pos_y[0])*(WIDTH/NPPC)+new_pos_x/NPPC+new_pos_x[0];
-assign read_addr_01 = ((new_pos_y%BUFFER_LINES)/2+new_pos_y[0])*(WIDTH/NPPC)+new_pos_x/NPPC;
-assign read_addr_10 = ((new_pos_y%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_x/NPPC+new_pos_x[0];
-assign read_addr_11 = ((new_pos_y%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_x/NPPC;
+assign read_addr_00 = ((new_pos_y[0]%BUFFER_LINES)/2+new_pos_y[0][0])*(WIDTH/NPPC)+new_pos_x[0]/NPPC+new_pos_x[0][0];
+assign read_addr_01 = ((new_pos_y[0]%BUFFER_LINES)/2+new_pos_y[0][0])*(WIDTH/NPPC)+new_pos_x[0]/NPPC;
+assign read_addr_10 = ((new_pos_y[0]%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_x[0]/NPPC+new_pos_x[0][0];
+assign read_addr_11 = ((new_pos_y[0]%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_x[0]/NPPC;
 
 always_ff @(posedge aclk) 
 begin
@@ -425,17 +429,33 @@ xpm_memory_sdpram #(
     .sbiterrb()
 );
 
-assign m_axis_0_tdata  = new_pos_y[0] ? new_pos_x[0] ? {dout_10[1*BPP+BPP-1-:BPP],dout_11[1*BPP+BPP-1-:BPP],dout_10[0*BPP+BPP-1-:BPP],dout_11[0*BPP+BPP-1-:BPP]} 
-                                                     : {dout_11[1*BPP+BPP-1-:BPP],dout_10[1*BPP+BPP-1-:BPP],dout_11[0*BPP+BPP-1-:BPP],dout_10[0*BPP+BPP-1-:BPP]} 
-                                      : new_pos_x[0] ? {dout_00[1*BPP+BPP-1-:BPP],dout_01[1*BPP+BPP-1-:BPP],dout_00[0*BPP+BPP-1-:BPP],dout_01[0*BPP+BPP-1-:BPP]} 
-                                                     : {dout_01[1*BPP+BPP-1-:BPP],dout_00[1*BPP+BPP-1-:BPP],dout_01[0*BPP+BPP-1-:BPP],dout_00[0*BPP+BPP-1-:BPP]};
-assign m_axis_tvalid = ((state == NORMAL) || (state == SYNCH)) ? tvalid : 
-                          (state == GEN_LINES && valid_gen_line) ? 1'b1 : 1'b0;
-assign m_axis_tlast  = ((state == NORMAL) || (state == SYNCH)) ? tlast : 
-                          (state == GEN_LINES && gen_pos_x == POS_X_RANGE+LINE_BREAK-1) ? 1'b1 : 1'b0;
-assign m_axis_tuser  = (state == SYNCH) ? tuser:
-                          ((pos_y < MAX_SHIFT_DOWN+1 || (pos_y == MAX_SHIFT_DOWN+1 && pos_x == 0) ) && state != GEN_LINES) ? 1'b1 : 1'b0;
+assign out_tvalid = ((state == NORMAL) || (state == SYNCH)) ? tvalid : 
+                     (state == GEN_LINES && valid_gen_line) ? 1'b1 : 1'b0;
+assign out_tlast  = ((state == NORMAL) || (state == SYNCH)) ? tlast : 
+                     (state == GEN_LINES && gen_pos_x == POS_X_RANGE+LINE_BREAK-1) ? 1'b1 : 1'b0;
+assign out_tuser  = (state == SYNCH) ? tuser:
+                     ((pos_y < MAX_SHIFT_DOWN+1 || (pos_y == MAX_SHIFT_DOWN+1 && pos_x == 0) ) && state != GEN_LINES) ? 1'b1 : 1'b0;
 
-assign s_axis_tready = 1'b1;
+assign new_pos_tready = out_tvalid;
+assign new_pos_tuser = out_tuser;
+
+assign m_axis_0_tdata  = new_pos_y[0][0] ? new_pos_x[0][0] ? {dout_10[1*BPP+BPP-1-:BPP],dout_11[1*BPP+BPP-1-:BPP],dout_10[0*BPP+BPP-1-:BPP],dout_11[0*BPP+BPP-1-:BPP]} 
+                                                           : {dout_11[1*BPP+BPP-1-:BPP],dout_10[1*BPP+BPP-1-:BPP],dout_11[0*BPP+BPP-1-:BPP],dout_10[0*BPP+BPP-1-:BPP]} 
+                                         : new_pos_x[0][0] ? {dout_00[1*BPP+BPP-1-:BPP],dout_01[1*BPP+BPP-1-:BPP],dout_00[0*BPP+BPP-1-:BPP],dout_01[0*BPP+BPP-1-:BPP]} 
+                                                           : {dout_01[1*BPP+BPP-1-:BPP],dout_00[1*BPP+BPP-1-:BPP],dout_01[0*BPP+BPP-1-:BPP],dout_00[0*BPP+BPP-1-:BPP]};
+always_ff @(posedge aclk)
+begin
+ if (!aresetn) begin
+    m_axis_tvalid <= 0; 
+    m_axis_tlast  <= 0; 
+    m_axis_tuser  <= 0; 
+  end else begin 
+    m_axis_tvalid <= out_tvalid;
+    m_axis_tlast  <= out_tlast;
+    m_axis_tuser  <= out_tuser;
+  end
+end
+
+assign s_axis_tready = 1'b1; // TO DO
 
 endmodule
