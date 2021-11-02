@@ -165,6 +165,28 @@ def initUndistorRectifyMap_HW(fx,fy,cx,cy,cxNew,cyNew,fxNewInv,fyNewInv,distCoef
 
     return mapx_int,mapy_int,mapx_fraq,mapy_fraq
 
+def remap(gray, mapx, mapy,Y,X):
+    dst = np.zeros((Y, X), "uint8")
+    for j in range(Y):
+        for i in range(X):
+            y0 = math.floor(mapy[j, i])
+            x0 = math.floor(mapx[j, i])
+            if ((j+y0) in range(Y)) and ((i+x0) in range(X)):
+                y = mapy[j, i]
+                x = mapx[j, i]
+                dx1 = x - x0
+                dx2 = 1 - dx1
+                dy1 = y - y0
+                dy2 = 1 - dy1
+                p00 = gray[j + y0, i + x0]
+                p01 = gray[j + y0, min(i + x0 + 1, X - 1)]
+                p10 = gray[min(j + y0 + 1, Y - 1), i + x0]
+                p11 = gray[min(j + y0 + 1, Y - 1), min(i + x0 + 1, X - 1)]
+                p0x = p00 * dx2 + p01 * dx1
+                p1x = p10 * dx2 + p11 * dx1
+                dst[j, i] = p0x * dy2 + p1x * dy1
+    return dst
+
 [fx1,fy1,cx1,cy1] = np.array([fx1,fy1,cx1,cy1])
 [fx2,fy2,cx2,cy2] = np.array([fx2,fy2,cx2,cy2])
 [cxNew1,cyNew1] = np.array([cxNew1,cyNew1])
@@ -180,48 +202,22 @@ RInv2 = np.array(RInv2)
 mapx_L_int,mapy_L_int,mapx_L_fraq,mapy_L_fraq = initUndistorRectifyMap_HW(fx1,fy1,cx1,cy1,cxNew1,cyNew1,fxNewInv1,fyNewInv1,distCoeffs1,RInv1,Y,X)
 mapx_R_int,mapy_R_int,mapx_R_fraq,mapy_R_fraq = initUndistorRectifyMap_HW(fx2,fy2,cx2,cy2,cxNew2,cyNew2,fxNewInv2,fyNewInv2,distCoeffs2,RInv2,Y,X)
 
-mapx_L, mapy_L = mapx_L_int+mapx_L_fraq/(256 * 4),  mapy_L_int+mapy_L_fraq/(256 * 4)
-mapx_R, mapy_R = mapx_R_int+mapx_R_fraq/(256 * 4),  mapy_R_int+mapy_R_fraq/(256 * 4)
+mapx_L, mapy_L = mapx_L_int + mapx_L_fraq / (2**PREC),  mapy_L_int + mapy_L_fraq / (2**PREC)
+mapx_R, mapy_R = mapx_R_int + mapx_R_fraq / (2**PREC),  mapy_R_int + mapy_R_fraq / (2**PREC)
 
-dst_L2 = np.zeros((Y,X),"uint8")
-dst_R2 = np.zeros((Y,X),"uint8")
+# print("mapsL")
+# print(mapx_L_int)
+# print(mapy_L_int)
+#
+# print("mapsR")
+# print(mapx_R_int)
+# print(mapy_R_int)
+
 gray_L = cv2.cvtColor(img_l, cv2.COLOR_BGR2GRAY)
 gray_R = cv2.cvtColor(img_r, cv2.COLOR_BGR2GRAY)
 
-for j in range(Y):
-    for i in range(X):
-        y0 = math.floor(mapy_L[j,i])
-        x0 = math.floor(mapx_L[j,i])
-        y = mapy_L[j,i]
-        x = mapx_L[j,i]
-        dx1 = x - x0
-        dx2 = 1 - dx1
-        dy1 = y - y0
-        dy2 = 1 - dy1
-        p00 = gray_L[j+y0, i+x0]
-        p01 = gray_L[j+y0, min(i+x0 + 1, X - 1)]
-        p10 = gray_L[min(j+y0 + 1, Y - 1), i+x0]
-        p11 = gray_L[min(j+y0 + 1, Y - 1), min(i+x0 + 1, X - 1)]
-        p0x = p00 * dx2 + p01 * dx1
-        p1x = p10 * dx2 + p11 * dx1
-        dst_L2[j,i] = p0x * dy2 + p1x * dy1
-for j in range(Y):
-    for i in range(X):
-        y0 = math.floor(mapy_R[j,i])
-        x0 = math.floor(mapx_R[j,i])
-        y = mapy_R[j,i]
-        x = mapx_R[j,i]
-        dx1 = x - x0
-        dx2 = 1 - dx1
-        dy1 = y - y0
-        dy2 = 1 - dy1
-        p00 = gray_R[j+y0, i+x0]
-        p01 = gray_R[j+y0, min(i+x0 + 1, X - 1)]
-        p10 = gray_R[min(j+y0 + 1, Y - 1), i+x0]
-        p11 = gray_R[min(j+y0 + 1, Y - 1), min(i+x0 + 1, X - 1)]
-        p0x = p00 * dx2 + p01 * dx1
-        p1x = p10 * dx2 + p11 * dx1
-        dst_R2[j,i] = p0x * dy2 + p1x * dy1
+dst_L2 = remap(gray_L, mapx_L, mapy_L,Y,X)
+dst_R2 = remap(gray_R, mapx_R, mapy_R,Y,X)
 
 #####################################
 ############# Results ###############

@@ -18,8 +18,6 @@ module Map_Calc#
 		parameter DATA_WIDTH = 8,
 		parameter MAX_SAMPLES_PER_CLOCK = 4,
 		
-		parameter MAX_SHIFT = 52,
-		parameter SHIFT_WIDTH = 10,
 		parameter PREC = 8,
 		parameter PREC_INTER = 3,
 		parameter NUM_OF_DIST_COEFFS = 5,
@@ -39,12 +37,13 @@ module Map_Calc#
 	(
         input aclk,
         input aresetn,
-        input c_en,     // connect to tvalid
-        input last,     // connect to tlast
-        input user,     // connect to tuser
-        output ready,   // connect to tready
+       // input last,   
+        input user, 
+        input ready,   
+        output valid,   
         
-		output logic [MAX_SAMPLES_PER_CLOCK-1:0][SHIFT_WIDTH+PREC-1 : 0] xL,xR,yL,yR
+		output logic [MAX_SAMPLES_PER_CLOCK-1:0][$clog2(WIDTH)+PREC-1 : 0] xL,xR,
+		output logic [MAX_SAMPLES_PER_CLOCK-1:0][$clog2(HEIGHT)+PREC-1 : 0] yL,yR
     );
     
     
@@ -54,41 +53,45 @@ module Map_Calc#
     
     localparam integer MULT_LATENCY = 3;
     localparam integer DIV_LATENCY = 29;
-    localparam integer LATENCY = MULT_LATENCY*7+DIV_LATENCY+8;
+    localparam integer LATENCY = MULT_LATENCY*8+DIV_LATENCY+7;//8;
     
-    logic [HEIGHT_W - 1:0] v;
-    logic [WIDTH_W - 1:0] u;
     
-    logic [$clog2(LATENCY)-1:0] ready_count;
-    logic en;
-    assign en = c_en|~ready;
+    
+    logic [MAX_W - 1:0] v;
+    logic [MAX_W - 1:0] u;
+    
+    logic [$clog2(LATENCY)-1:0] valid_count;
+    logic en;             
+    logic user_r; 
+    
+    assign en = ready|~valid;
+    
+    always @(posedge aclk) user_r <= user;
     
     always @(posedge aclk, negedge aresetn) begin
-        if (!aresetn) begin
-            u <= 0;
-            v <= 0;
-            ready_count <= LATENCY;
-        end else begin
-            if (en) begin
-                if (last && u!=MAX_SAMPLES_PER_CLOCK*LATENCY-MAX_SAMPLES_PER_CLOCK) begin// if out of synch
-                    u <= 0; 
-                    ready_count <= LATENCY;
-                end else begin
-                    if(ready_count!=0)
-                        ready_count <= ready_count - 1;
-                    if (u>=WIDTH-MAX_SAMPLES_PER_CLOCK) begin
-                        u<=0; 
-                        if (v==HEIGHT-1) v<=0; else v<=v+1;
-                    end else begin
-                        u<=u+MAX_SAMPLES_PER_CLOCK;
-                        if(user) v <= 0; // ensure when tuser then v=0
-                    end         
-                end
-            end
+      if (!aresetn) begin
+        u <= 0;
+        v <= 0;
+        valid_count <= LATENCY;
+      end else begin
+        if ( user==1 && user_r==0 ) begin
+          u <= 0;
+          v <= 0;
+          valid_count <= LATENCY;
+        end else if (en) begin
+          if(valid_count!=0)
+            valid_count <= valid_count - 1;
+          if (u>=WIDTH-MAX_SAMPLES_PER_CLOCK) begin
+            u<=0; 
+            if (v==HEIGHT-1) v<=0; else v<=v+1;
+          end else begin
+            u<=u+MAX_SAMPLES_PER_CLOCK;
+          end   
         end
+      end
     end
     
-    assign ready = !ready_count;
+    assign valid = !valid_count;
     
     logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(MAX_W+PREC+1)-1:0] x_diff;
     logic signed [(MAX_W+PREC+1)-1:0] y_diff;
@@ -276,8 +279,8 @@ module Map_Calc#
     logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(PREC+PREC_INTER+1)-1:0] y1L_frac,y1R_frac;
     logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(PREC+PREC_INTER+2)-1:0] x1L,x1R;
     logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(PREC+PREC_INTER+2)-1:0] y1L,y1R;
-    logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(3*MULT_LATENCY+2)-1:0][(PREC+PREC_INTER+2)-1:0] x1L_buf,x1R_buf;
-    logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(3*MULT_LATENCY+2)-1:0][(PREC+PREC_INTER+2)-1:0] y1L_buf,y1R_buf;
+    logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(4*MULT_LATENCY+2)-1:0][(PREC+PREC_INTER+2)-1:0] x1L_buf,x1R_buf;
+    logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(4*MULT_LATENCY+2)-1:0][(PREC+PREC_INTER+2)-1:0] y1L_buf,y1R_buf;
     
     for (genvar i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
         div_13_13 XWL( // latency: 28
@@ -329,10 +332,10 @@ module Map_Calc#
                 x1R[i] <= 0;
                 y1L[i] <= 0;
                 y1R[i] <= 0;
-                x1L_buf[i] <= '{(3*MULT_LATENCY+2){0}}; 
-                x1R_buf[i] <= '{(3*MULT_LATENCY+2){0}};
-                y1L_buf[i] <= '{(3*MULT_LATENCY+2){0}}; 
-                y1R_buf[i] <= '{(3*MULT_LATENCY+2){0}};
+                x1L_buf[i] <= '{(4*MULT_LATENCY+2){0}}; 
+                x1R_buf[i] <= '{(4*MULT_LATENCY+2){0}};
+                y1L_buf[i] <= '{(4*MULT_LATENCY+2){0}}; 
+                y1R_buf[i] <= '{(4*MULT_LATENCY+2){0}};
             end
         end else begin
             if (en) begin
@@ -342,13 +345,13 @@ module Map_Calc#
                     y1L[i] <= {y1L_int[i][1:0],{(PREC+PREC_INTER){1'b0}}}+{y1L_frac[i][(PREC+PREC_INTER+1)-1],y1L_frac[i]};
                     y1R[i] <= {y1R_int[i][1:0],{(PREC+PREC_INTER){1'b0}}}+{y1R_frac[i][(PREC+PREC_INTER+1)-1],y1R_frac[i]};
                     x1L_buf[i][0] <= x1L[i];
-                    x1L_buf[i][(3*MULT_LATENCY+2)-1:1] <= x1L_buf[i][(3*MULT_LATENCY+2)-2:0];
+                    x1L_buf[i][(4*MULT_LATENCY+2)-1:1] <= x1L_buf[i][(4*MULT_LATENCY+2)-2:0];
                     x1R_buf[i][0] <= x1R[i];
-                    x1R_buf[i][(3*MULT_LATENCY+2)-1:1] <= x1R_buf[i][(3*MULT_LATENCY+2)-2:0];
+                    x1R_buf[i][(4*MULT_LATENCY+2)-1:1] <= x1R_buf[i][(4*MULT_LATENCY+2)-2:0];
                     y1L_buf[i][0] <= y1L[i];
-                    y1L_buf[i][(3*MULT_LATENCY+2)-1:1] <= y1L_buf[i][(3*MULT_LATENCY+2)-2:0];
+                    y1L_buf[i][(4*MULT_LATENCY+2)-1:1] <= y1L_buf[i][(4*MULT_LATENCY+2)-2:0];
                     y1R_buf[i][0] <= y1R[i];
-                    y1R_buf[i][(3*MULT_LATENCY+2)-1:1] <= y1R_buf[i][(3*MULT_LATENCY+2)-2:0];
+                    y1R_buf[i][(4*MULT_LATENCY+2)-1:1] <= y1R_buf[i][(4*MULT_LATENCY+2)-2:0];
                 end
             end
         end
@@ -357,8 +360,8 @@ module Map_Calc#
     
     logic [MAX_SAMPLES_PER_CLOCK-1:0][(PREC+PREC_INTER+2)-1:0] x1L2,x1R2;
     logic [MAX_SAMPLES_PER_CLOCK-1:0][(PREC+PREC_INTER+2)-1:0] y1L2,y1R2;
-    logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(2*MULT_LATENCY+1)-1:0][(PREC+PREC_INTER+2)-1:0] x1L2_buf,x1R2_buf;
-    logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(2*MULT_LATENCY+1)-1:0][(PREC+PREC_INTER+2)-1:0] y1L2_buf,y1R2_buf;
+    logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(3*MULT_LATENCY+1)-1:0][(PREC+PREC_INTER+2)-1:0] x1L2_buf,x1R2_buf;
+    logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(3*MULT_LATENCY+1)-1:0][(PREC+PREC_INTER+2)-1:0] y1L2_buf,y1R2_buf;
     
     for (genvar i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
         mult_13_13 mult_x1Lx1L( // latency: 3
@@ -394,36 +397,36 @@ module Map_Calc#
     always @(posedge aclk, negedge aresetn) begin
         if (!aresetn) begin
             for (integer i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
-                x1L2_buf[i] <= '{(2*MULT_LATENCY+1){0}}; 
-                x1R2_buf[i] <= '{(2*MULT_LATENCY+1){0}};
-                y1L2_buf[i] <= '{(2*MULT_LATENCY+1){0}}; 
-                y1R2_buf[i] <= '{(2*MULT_LATENCY+1){0}};
+                x1L2_buf[i] <= '{(3*MULT_LATENCY+1){0}}; 
+                x1R2_buf[i] <= '{(3*MULT_LATENCY+1){0}};
+                y1L2_buf[i] <= '{(3*MULT_LATENCY+1){0}}; 
+                y1R2_buf[i] <= '{(3*MULT_LATENCY+1){0}};
             end
         end else begin
             if (en) begin
                 for (integer i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
                     x1L2_buf[i][0] <= x1L2[i];
-                    x1L2_buf[i][(2*MULT_LATENCY+1)-1:1] <= x1L2_buf[i][(2*MULT_LATENCY+1)-2:0];
+                    x1L2_buf[i][(3*MULT_LATENCY+1)-1:1] <= x1L2_buf[i][(3*MULT_LATENCY+1)-2:0];
                     x1R2_buf[i][0] <= x1R2[i];
-                    x1R2_buf[i][(2*MULT_LATENCY+1)-1:1] <= x1R2_buf[i][(2*MULT_LATENCY+1)-2:0];
+                    x1R2_buf[i][(3*MULT_LATENCY+1)-1:1] <= x1R2_buf[i][(3*MULT_LATENCY+1)-2:0];
                     y1L2_buf[i][0] <= y1L2[i];
-                    y1L2_buf[i][(2*MULT_LATENCY+1)-1:1] <= y1L2_buf[i][(2*MULT_LATENCY+1)-2:0];
+                    y1L2_buf[i][(3*MULT_LATENCY+1)-1:1] <= y1L2_buf[i][(3*MULT_LATENCY+1)-2:0];
                     y1R2_buf[i][0] <= y1R2[i];
-                    y1R2_buf[i][(2*MULT_LATENCY+1)-1:1] <= y1R2_buf[i][(2*MULT_LATENCY+1)-2:0];
+                    y1R2_buf[i][(3*MULT_LATENCY+1)-1:1] <= y1R2_buf[i][(3*MULT_LATENCY+1)-2:0];
                 end
             end
         end
     end
     
     logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(PREC+PREC_INTER+2)-1:0] rL2,rR2;
-    logic signed [MAX_SAMPLES_PER_CLOCK-1:0][2*MULT_LATENCY-1:0][(PREC+PREC_INTER+2)-1:0] rL2_buf,rR2_buf;
+    logic signed [MAX_SAMPLES_PER_CLOCK-1:0][3*MULT_LATENCY-1:0][(PREC+PREC_INTER+2)-1:0] rL2_buf,rR2_buf;
     always @(posedge aclk, negedge aresetn) begin
         if (!aresetn) begin
             for (integer i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
                 rL2[i] <= 0;
                 rR2[i] <= 0;
-                rL2_buf[i] <= '{(2*MULT_LATENCY){0}}; 
-                rR2_buf[i] <= '{(2*MULT_LATENCY){0}};
+                rL2_buf[i] <= '{(3*MULT_LATENCY){0}}; 
+                rR2_buf[i] <= '{(3*MULT_LATENCY){0}};
             end
         end else begin
             if (en) begin
@@ -431,24 +434,25 @@ module Map_Calc#
                     rL2[i] <= x1L2[i]+y1L2[i];
                     rR2[i] <= x1R2[i]+y1R2[i];
                     rL2_buf[i][0] <= rL2[i];
-                    rL2_buf[i][2*MULT_LATENCY-1:1] <= rL2_buf[i][2*MULT_LATENCY-2:0];
+                    rL2_buf[i][3*MULT_LATENCY-1:1] <= rL2_buf[i][3*MULT_LATENCY-2:0];
                     rR2_buf[i][0] <= rR2[i];
-                    rR2_buf[i][2*MULT_LATENCY-1:1] <= rR2_buf[i][2*MULT_LATENCY-2:0];
+                    rR2_buf[i][3*MULT_LATENCY-1:1] <= rR2_buf[i][3*MULT_LATENCY-2:0];
                 end
             end
         end
     end
     
     logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(PREC+PREC_INTER+2)-1:0] rL22,rR22;
+    logic signed [MAX_SAMPLES_PER_CLOCK-1:0][MULT_LATENCY-1:0][(PREC+PREC_INTER+2)-1:0] rL22_buf,rR22_buf;
     for (genvar i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
-        mult_13_13 mult_x1Lx1L( // latency: 3
+        mult_13_13 mult_rL2rL2( // latency: 3
             .CLK(aclk),
             .A(rL2[i]),
             .B(rL2[i]),
             .CE(en),
             .P(rL22[i])
         );
-        mult_13_13 mult_x1Rx1R(
+        mult_13_13 mult_rR2rR2(
             .CLK(aclk),
             .A(rR2[i]),
             .B(rR2[i]),
@@ -457,36 +461,87 @@ module Map_Calc#
         );
     end
     
-    logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(PREC+PREC_INTER+2)-1:0] rL2_Coef,rR2_Coef;
+    always @(posedge aclk, negedge aresetn) begin
+        if (!aresetn) begin
+            for (integer i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
+                rL22_buf[i] <= '{(MULT_LATENCY){0}}; 
+                rR22_buf[i] <= '{(MULT_LATENCY){0}};
+            end
+        end else begin
+            if (en) begin
+                for (integer i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
+                    rL22_buf[i][0] <= rL22[i];
+                    rL22_buf[i][MULT_LATENCY-1:1] <= rL22_buf[i][MULT_LATENCY-2:0];
+                    rR22_buf[i][0] <= rR22[i];
+                    rR22_buf[i][MULT_LATENCY-1:1] <= rR22_buf[i][MULT_LATENCY-2:0];
+                end
+            end
+        end
+    end
+    
+    logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(PREC+PREC_INTER+2)-1:0] rL23,rR23;
+    for (genvar i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
+        mult_13_13 mult_rL2rL2rL2( // latency: 3
+            .CLK(aclk),
+            .A(rL22[i]),
+            .B(rL2_buf[i][MULT_LATENCY-1]),
+            .CE(en),
+            .P(rL23[i])
+        );
+        mult_13_13 mult_rR2rR2rR2(
+            .CLK(aclk),
+            .A(rR22[i]),
+            .B(rR2_buf[i][MULT_LATENCY-1]),
+            .CE(en),
+            .P(rR23[i])
+        );
+    end
+    
+    logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(PREC+PREC_INTER+2)-1:0] rL21_Coef,rR21_Coef;
     logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(PREC+PREC_INTER+2)-1:0] rL22_Coef,rR22_Coef;
+    logic signed [MAX_SAMPLES_PER_CLOCK-1:0][(PREC+PREC_INTER+2)-1:0] rL23_Coef,rR23_Coef;
     for (genvar i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
         mult_13_13 mult_rL2_Coef( // latency: 3
             .CLK(aclk),
-            .A(rL2_buf[i][MULT_LATENCY-1]),
+            .A(rL2_buf[i][2*MULT_LATENCY-1]),
             .B(distCoeffsL[0]),
             .CE(en),
-            .P(rL2_Coef[i])
+            .P(rL21_Coef[i])
         );
         mult_13_13 mult_rR2_Coef(
             .CLK(aclk),
-            .A(rR2_buf[i][MULT_LATENCY-1]),
+            .A(rR2_buf[i][2*MULT_LATENCY-1]),
             .B(distCoeffsR[0]),
             .CE(en),
-            .P(rR2_Coef[i])
+            .P(rR21_Coef[i])
         );
         mult_13_13 mult_rL22_Coef( 
             .CLK(aclk),
-            .A(rL22[i]),
+            .A(rL22_buf[i][MULT_LATENCY-1]),
             .B(distCoeffsL[1]),
             .CE(en),
             .P(rL22_Coef[i])
         );
         mult_13_13 mult_rR22_Coef(
             .CLK(aclk),
-            .A(rR22[i]),
+            .A(rR22_buf[i][MULT_LATENCY-1]),
             .B(distCoeffsR[1]),
             .CE(en),
             .P(rR22_Coef[i])
+        );
+        mult_13_13 mult_rL23_Coef( 
+            .CLK(aclk),
+            .A(rL23[i]),
+            .B(distCoeffsL[4]),
+            .CE(en),
+            .P(rL23_Coef[i])
+        );
+        mult_13_13 mult_rR23_Coef(
+            .CLK(aclk),
+            .A(rR23[i]),
+            .B(distCoeffsR[4]),
+            .CE(en),
+            .P(rR23_Coef[i])
         );
     end
     
@@ -501,8 +556,8 @@ module Map_Calc#
         end else begin
             if (en) begin
                 for (integer i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin 
-                    krL[i] <= 2**(PREC+PREC_INTER) + rL2_Coef[i] + rL22_Coef[i];
-                    krR[i] <= 2**(PREC+PREC_INTER) + rR2_Coef[i] + rR22_Coef[i];
+                    krL[i] <= 2**(PREC+PREC_INTER) + rL21_Coef[i] + rL22_Coef[i] + rL23_Coef[i] ;
+                    krR[i] <= 2**(PREC+PREC_INTER) + rR21_Coef[i] + rR22_Coef[i] + rL23_Coef[i] ;
                 end
             end
         end
@@ -512,28 +567,28 @@ module Map_Calc#
     for (genvar i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
         mult_13_13 mult_kr_x1L( // latency: 3
             .CLK(aclk),
-            .A(x1L_buf[i][(3*MULT_LATENCY+2)-1]),
+            .A(x1L_buf[i][(4*MULT_LATENCY+2)-1]),
             .B(krL[i]),
             .CE(en),
             .P(krx1L[i])
         );
         mult_13_13 mult_kr_x1R(
             .CLK(aclk),
-            .A(x1R_buf[i][(3*MULT_LATENCY+2)-1]),
+            .A(x1R_buf[i][(4*MULT_LATENCY+2)-1]),
             .B(krR[i]),
             .CE(en),
             .P(krx1R[i])
         );
         mult_13_13 mult_kr_y1L( 
             .CLK(aclk),
-            .A(y1L_buf[i][(3*MULT_LATENCY+2)-1]),
+            .A(y1L_buf[i][(4*MULT_LATENCY+2)-1]),
             .B(krL[i]),
             .CE(en),
             .P(kry1L[i])
         );
         mult_13_13 mult_kr_y1R(
             .CLK(aclk),
-            .A(y1R_buf[i][(3*MULT_LATENCY+2)-1]),
+            .A(y1R_buf[i][(4*MULT_LATENCY+2)-1]),
             .B(krR[i]),
             .CE(en),
             .P(kry1R[i])
@@ -544,15 +599,15 @@ module Map_Calc#
     for (genvar i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
         mult_13_13 mult_x1L_y1L( // latency: 3
             .CLK(aclk),
-            .A(x1L_buf[i][(2*MULT_LATENCY+2)-1]),
-            .B(y1L_buf[i][(2*MULT_LATENCY+2)-1]),
+            .A(x1L_buf[i][(3*MULT_LATENCY+2)-1]),
+            .B(y1L_buf[i][(3*MULT_LATENCY+2)-1]),
             .CE(en),
             .P(x1y1L[i])
         );
         mult_13_13 mult_x1R_y1R(
             .CLK(aclk),
-            .A(x1R_buf[i][(2*MULT_LATENCY+2)-1]),
-            .B(y1R_buf[i][(2*MULT_LATENCY+2)-1]),
+            .A(x1R_buf[i][(3*MULT_LATENCY+2)-1]),
+            .B(y1R_buf[i][(3*MULT_LATENCY+2)-1]),
             .CE(en),
             .P(x1y1R[i])
         );
@@ -605,10 +660,10 @@ module Map_Calc#
         end else begin
             if (en) begin
                 for (integer i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin 
-                    x1L2r2[i] <= {x1L2_buf[i][(2*MULT_LATENCY+1)-1][(PREC+PREC_INTER+1)-1:0],1'b0} + rL2_buf[i][2*MULT_LATENCY-1];
-                    x1R2r2[i] <= {x1R2_buf[i][(2*MULT_LATENCY+1)-1][(PREC+PREC_INTER+1)-1:0],1'b0} + rR2_buf[i][2*MULT_LATENCY-1];
-                    y1L2r2[i] <= {y1L2_buf[i][(2*MULT_LATENCY+1)-1][(PREC+PREC_INTER+1)-1:0],1'b0} + rL2_buf[i][2*MULT_LATENCY-1];
-                    y1R2r2[i] <= {y1R2_buf[i][(2*MULT_LATENCY+1)-1][(PREC+PREC_INTER+1)-1:0],1'b0} + rR2_buf[i][2*MULT_LATENCY-1];
+                    x1L2r2[i] <= {x1L2_buf[i][(3*MULT_LATENCY+1)-1][(PREC+PREC_INTER+1)-1:0],1'b0} + rL2_buf[i][3*MULT_LATENCY-1];
+                    x1R2r2[i] <= {x1R2_buf[i][(3*MULT_LATENCY+1)-1][(PREC+PREC_INTER+1)-1:0],1'b0} + rR2_buf[i][3*MULT_LATENCY-1];
+                    y1L2r2[i] <= {y1L2_buf[i][(3*MULT_LATENCY+1)-1][(PREC+PREC_INTER+1)-1:0],1'b0} + rL2_buf[i][3*MULT_LATENCY-1];
+                    y1R2r2[i] <= {y1R2_buf[i][(3*MULT_LATENCY+1)-1][(PREC+PREC_INTER+1)-1:0],1'b0} + rR2_buf[i][3*MULT_LATENCY-1];
                 end
             end
         end
@@ -726,33 +781,43 @@ module Map_Calc#
         end
     end
     
-    always @(posedge aclk, negedge aresetn) begin
-        if (!aresetn) begin
-            for (integer i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
-                xL[i] <= 0; 
-                xR[i] <= 0; 
-                yL[i] <= 0; 
-                yR[i] <= 0; 
-            end
-        end else begin
-            if (en) begin
-                if(u>=MAX_SAMPLES_PER_CLOCK*LATENCY-MAX_SAMPLES_PER_CLOCK) begin
-                    for (integer i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
-                        xL[i] <= x3L[i]-{(u+i+(-(MAX_SAMPLES_PER_CLOCK*LATENCY-MAX_SAMPLES_PER_CLOCK)-MAX_SHIFT)),{PREC{1'b0}}}; 
-                        xR[i] <= x3R[i]-{(u+i+(-(MAX_SAMPLES_PER_CLOCK*LATENCY-MAX_SAMPLES_PER_CLOCK)-MAX_SHIFT)),{PREC{1'b0}}}; 
-                        yL[i] <= y3L[i]-{v-MAX_SHIFT,{PREC{1'b0}}}; 
-                        yR[i] <= y3R[i]-{v-MAX_SHIFT,{PREC{1'b0}}}; 
-                    end
-                end else begin
-                    for (integer i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
-                        xL[i] <= x3L[i]-{(u+i+(-(MAX_SAMPLES_PER_CLOCK*LATENCY-MAX_SAMPLES_PER_CLOCK)+WIDTH-MAX_SHIFT)),{PREC{1'b0}}}; 
-                        xR[i] <= x3R[i]-{(u+i+(-(MAX_SAMPLES_PER_CLOCK*LATENCY-MAX_SAMPLES_PER_CLOCK)+WIDTH-MAX_SHIFT)),{PREC{1'b0}}}; 
-                        yL[i] <= (v!=0)? y3L[i]-{(v-1-MAX_SHIFT),{PREC{1'b0}}} : y3L[i]-{(HEIGHT-1-MAX_SHIFT),{PREC{1'b0}}}; 
-                        yR[i] <= (v!=0)? y3R[i]-{(v-1-MAX_SHIFT),{PREC{1'b0}}} : y3R[i]-{(HEIGHT-1-MAX_SHIFT),{PREC{1'b0}}}; ;
-                    end
-                end 
-            end
-        end
-    end
+    generate 
+      for (genvar i=0; i< MAX_SAMPLES_PER_CLOCK; i++) begin
+        assign xL[i] = x3L[i][$clog2(WIDTH)+PREC-1 : 0];
+        assign xR[i] = x3R[i][$clog2(WIDTH)+PREC-1 : 0];
+        assign yL[i] = y3L[i][$clog2(HEIGHT)+PREC-1 : 0];
+        assign yR[i] = y3R[i][$clog2(HEIGHT)+PREC-1 : 0];
+      end
+    endgenerate
+    
+    
+//    always @(posedge aclk, negedge aresetn) begin
+//        if (!aresetn) begin
+//            for (integer i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
+//                xL[i] <= 0; 
+//                xR[i] <= 0; 
+//                yL[i] <= 0; 
+//                yR[i] <= 0; 
+//            end
+//        end else begin
+//            if (en) begin
+//                if(u>=MAX_SAMPLES_PER_CLOCK*LATENCY-MAX_SAMPLES_PER_CLOCK) begin
+//                    for (integer i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
+//                        xL[i] <= x3L[i]-{(u+i+(-(MAX_SAMPLES_PER_CLOCK*LATENCY-MAX_SAMPLES_PER_CLOCK)-(MAX_SHIFT))),{PREC{1'b0}}}; 
+//                        xR[i] <= x3R[i]-{(u+i+(-(MAX_SAMPLES_PER_CLOCK*LATENCY-MAX_SAMPLES_PER_CLOCK)-(MAX_SHIFT))),{PREC{1'b0}}}; 
+//                        yL[i] <= y3L[i]-{v-(MAX_SHIFT),{PREC{1'b0}}}; 
+//                        yR[i] <= y3R[i]-{v-(MAX_SHIFT),{PREC{1'b0}}}; 
+//                    end
+//                end else begin
+//                    for (integer i=0; i < MAX_SAMPLES_PER_CLOCK; i++) begin
+//                        xL[i] <= x3L[i]-{(u+i+(-(MAX_SAMPLES_PER_CLOCK*LATENCY-MAX_SAMPLES_PER_CLOCK)+WIDTH-(MAX_SHIFT))),{PREC{1'b0}}}; 
+//                        xR[i] <= x3R[i]-{(u+i+(-(MAX_SAMPLES_PER_CLOCK*LATENCY-MAX_SAMPLES_PER_CLOCK)+WIDTH-(MAX_SHIFT))),{PREC{1'b0}}}; 
+//                        yL[i] <= (v!=0)? y3L[i]-{(v-1-(MAX_SHIFT)),{PREC{1'b0}}} : y3L[i]-{(HEIGHT-1-(MAX_SHIFT)),{PREC{1'b0}}}; 
+//                        yR[i] <= (v!=0)? y3R[i]-{(v-1-(MAX_SHIFT)),{PREC{1'b0}}} : y3R[i]-{(HEIGHT-1-(MAX_SHIFT)),{PREC{1'b0}}}; ;
+//                    end
+//                end 
+//            end
+//        end
+//    end
     
 endmodule
