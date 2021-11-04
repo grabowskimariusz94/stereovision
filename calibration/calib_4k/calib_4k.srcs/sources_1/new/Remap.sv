@@ -79,85 +79,7 @@ module Remap #(
 	assign s_axis_l_tready = 1'b1;
 	assign s_axis_r_tready = 1'b1;
 	
-		
-//	logic [(DATA_WIDTH+3)-1:0] out_cntx_lN [CNTX_SIZE][CNTX_SIZE][NPPC];
-//	logic buf_r_tvalid, buf_r_tuser, buf_r_tlast;
-//	logic buf_l_tvalid, buf_l_tuser, buf_l_tlast;
-//	logic buf_l_tvalidN, buf_l_tuserN, buf_l_tlastN;
-//	logic buf_tready;
 	
-//	assign buf_tready = m_axis_l_tready&m_axis_r_tready;
-	
-//	Ncntx_Xppc
-//    #(
-//        .C_S00_DATA_WIDTH(DATA_WIDTH),    // Width of component data
-//        .C_S00_AXIS_TDATA_WIDTH(AXIS_TDATA_WIDTH),   // Width of TDATA
-//        .C_S00_MAX_SAMPLES_PER_CLOCK(NPPC),    // Number of samples per clock    
-      
-//        .C_S00_CNTX_SIZE(CNTX_SIZE),    // Size of context
-//        .C_S00_PIXELS_PER_LINE(WIDTH), // Pixels per one line
-//        .C_S00_LINES_IN_FRAME(HEIGHT), // Lines in one frame of video
-    
-//        .C_M01_N_OUTPUT_CNTX(NPPC)
-//    ) NXL
-//    (
-//        // Clock signals
-//        .aclk(aclk),
-//        .aresetn(aresetn),
-//        .aclken(1'b1),
-            
-//        // Ports of AXIS Video Slave S00
-//        .s00_axis_video_tdata({s_axis_l_tdata[7-:8],s_axis_l_tdata[15-:8],s_axis_l_tdata[23-:8],s_axis_l_tdata[31-:8]}),
-//        .s00_axis_video_tuser(s_axis_l_tuser),
-//        .s00_axis_video_tlast(s_axis_l_tlast&(!s_axis_l_tlast_buf)),
-//        .s00_axis_video_tvalid(s_axis_l_tvalid),
-//        .s00_axis_video_tready(),
-        
-        
-//        .out_cntx(out_cntx_l),
-//        .m01_axis_video_tvalid(buf_l_tvalid),
-//        .m01_axis_video_tlast(buf_l_tlast),
-//        .m01_axis_video_tready(buf_tready),
-//        .m01_axis_video_tuser(buf_l_tuser),
-    
-//        .out_cntx_valid()
-//    );
-    
-//    Ncntx_Xppc
-//    #(
-//        .C_S00_DATA_WIDTH(DATA_WIDTH),    // Width of component data
-//        .C_S00_AXIS_TDATA_WIDTH(AXIS_TDATA_WIDTH),   // Width of TDATA
-//        .C_S00_MAX_SAMPLES_PER_CLOCK(NPPC),    // Number of samples per clock    
-      
-//        .C_S00_CNTX_SIZE(CNTX_SIZE),    // Size of context
-//        .C_S00_PIXELS_PER_LINE(WIDTH), // Pixels per one line
-//        .C_S00_LINES_IN_FRAME(HEIGHT), // Lines in one frame of video
-    
-//        .C_M01_N_OUTPUT_CNTX(NPPC)
-//    ) NXR
-//    (
-//        // Clock signals
-//        .aclk(aclk),
-//        .aresetn(aresetn),
-//        .aclken(1'b1),
-            
-//        // Ports of AXIS Video Slave S00
-//        .s00_axis_video_tdata({s_axis_r_tdata[7-:8],s_axis_r_tdata[15-:8],s_axis_r_tdata[23-:8],s_axis_r_tdata[31-:8]}),
-//        .s00_axis_video_tuser(s_axis_r_tuser),
-//        .s00_axis_video_tlast(s_axis_r_tlast&(!s_axis_r_tlast_buf)),
-//        .s00_axis_video_tvalid(s_axis_r_tvalid),
-//        .s00_axis_video_tready(s_axis_r_tready),
-        
-        
-//        .out_cntx(out_cntx_r),
-//        .m01_axis_video_tvalid(buf_r_tvalid),
-//        .m01_axis_video_tlast(buf_r_tlast),
-//        .m01_axis_video_tready(buf_tready),
-//        .m01_axis_video_tuser(buf_r_tuser),
-    
-//        .out_cntx_valid()
-//    );
-
 logic new_pos_tready;
 logic new_pos_tvalid;
 logic new_pos_tuser;
@@ -236,7 +158,8 @@ image_buffer#(
   .aresetn(aresetn),
 
   .s_axis_tready(s_axis_l_tready),
-  .s_axis_tdata(s_axis_l_tdata),
+  .s_axis_l_tdata(s_axis_l_tdata),
+  .s_axis_r_tdata(s_axis_r_tdata),
   .s_axis_tvalid(s_axis_l_tvalid),
   .s_axis_tlast(s_axis_l_tlast),
   .s_axis_tuser(s_axis_l_tuser),
@@ -244,13 +167,19 @@ image_buffer#(
   .new_pos_tready(new_pos_tready),
   .new_pos_tuser(new_pos_tuser),
   .new_pos_tvalid(new_pos_tvalid),
-  .new_pos_x(new_pos_xL_int),
-  .new_pos_y(new_pos_yL_int),
+  .new_pos_l_x(new_pos_xL_int),
+  .new_pos_l_y(new_pos_yL_int),
+  .new_pos_r_x(new_pos_xR_int),
+  .new_pos_r_y(new_pos_yR_int),
   
-  .m_axis_00_tdata(buf_00L_tdata),
-  .m_axis_01_tdata(buf_01L_tdata),
-  .m_axis_10_tdata(buf_10L_tdata),
-  .m_axis_11_tdata(buf_11L_tdata),
+  .m_axis_l_00_tdata(buf_00L_tdata),
+  .m_axis_l_01_tdata(buf_01L_tdata),
+  .m_axis_l_10_tdata(buf_10L_tdata),
+  .m_axis_l_11_tdata(buf_11L_tdata),
+  .m_axis_r_00_tdata(buf_00R_tdata),
+  .m_axis_r_01_tdata(buf_01R_tdata),
+  .m_axis_r_10_tdata(buf_10R_tdata),
+  .m_axis_r_11_tdata(buf_11R_tdata),
   .m_axis_tvalid(buf_tvalid),
   .m_axis_tready(buf_tready),
   .m_axis_tlast(buf_tlast),
@@ -469,314 +398,7 @@ image_buffer#(
             assign  m_axis_r_tdata[i * BPP  - 1 + BPP -: BPP] = add_fxy_outR[i][PREC+BPP-1-:BPP];
         end
     endgenerate
-
     
-//    generate
-//       for (genvar i = 0; i < NPPC; i = i + 1) begin : BIL_INT_L
-          
-//            // fxy1 = (x2 - X)*f11 + (X - x1)*f21;
-//            mult_8_8_16 mult_x2x_f11 (                                  // latency: 3
-//              .CLK(aclk                                                  ), 
-//              .A({1'b1,{PREC{1'b0}}}-xL[i][PREC-1:0]                      ),  
-//              .B( out_cntx_l[CNTX_SIZE-((2*MAX_SHIFT)-yL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH])][CNTX_SIZE-((2*MAX_SHIFT)-xL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH])][i][BPP-1:0] ),  
-//              .P(mult_x2x_f11_outL[i]           )   
-//            );
-            
-//            mult_8_8_16 mult_xx1_f21 (                                  
-//              .CLK(aclk                                                         ),  
-//              .A({1'b0,xL[i][PREC-1:0]}                          ),  
-//              .B(out_cntx_l[CNTX_SIZE-((2*MAX_SHIFT)-yL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH])][CNTX_SIZE-((2*MAX_SHIFT)-(xL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1))][i][BPP-1:0]  ), 
-//              .P(mult_xx1_f21_outL[i]           )   
-//            );
-            
-            
-//            add_16_16_16 add_f11_f21 (                                  // latency: 2
-//              .A(mult_x2x_f11_outL[i]), 
-//              .B(mult_xx1_f21_outL[i]),  
-//              .CLK(aclk                                             ),  
-//              .S(add_f11_f21_outL[i]   )   
-//            );
-            
-//            // fxy2 = (x2 - X)*f12 + (X - x1)*f22;
-//            mult_8_8_16 mult_x2x_f12 (                                  // latency: 3
-//              .CLK(aclk                                                         ),  
-//              .A({1'b1,{PREC{1'b0}}}-xL[i][PREC-1:0]                          ),  
-//              .B(out_cntx_l[CNTX_SIZE-((2*MAX_SHIFT)-(yL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1))][CNTX_SIZE-((2*MAX_SHIFT)-xL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH])][i][BPP-1:0]  ),  
-//              .P(mult_x2x_f12_outL[i]            )   
-//            );
-            
-//            mult_8_8_16 mult_xx1_f22 (                                 
-//              .CLK(aclk                                                         ),  
-//              .A({1'b0,xL[i][PREC-1:0]}                           ),  
-//              .B(out_cntx_l[CNTX_SIZE-((2*MAX_SHIFT)-(yL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1))][CNTX_SIZE-((2*MAX_SHIFT)-(xL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1))][i][BPP-1:0] ),  
-//              .P(mult_xx1_f22_outL[i]          ) 
-//            );
-            
-//             add_16_16_16 add_f12_f22 (                                      // latency: 2
-//              .A(mult_x2x_f12_outL[i]   ),  
-//              .B(mult_xx1_f22_outL[i]   ),  
-//              .CLK(aclk                                                 ),  
-//              .S(add_f12_f22_outL[i]      )  
-//            );
-            
-            
-//            // fxy = (y2 - Y)*fxy1 + (Y - y1)*fxy2;
-//            mult_8_8_16 mult_y2y_fxy1 (                                    // latency: 3
-//              .CLK(aclk                                                 ), 
-//              .A({1'b1,{PREC{1'b0}}}-yL[i][PREC-1:0]                   ),  
-//              .B(add_f11_f21_outL[i][PREC+BPP-1-:BPP]       ),  
-//              .P(mult_y2y_fxy1_outL[i]   )  
-//            );
-            
-//            mult_8_8_16 mult_yy1_fxy2 (                                    
-//              .CLK(aclk                                                 ),  
-//              .A({1'b0,yL[i][PREC-1:0]}                    ),  
-//              .B(add_f12_f22_outL[i][PREC+BPP-1-:BPP]       ), 
-//              .P(mult_yy1_fxy2_outL[i]   )  
-//            );
-            
-            
-//            add_16_16_16 add_fxy (                                          // latency: 2
-//              .A(mult_y2y_fxy1_outL[i]   ),
-//              .B(mult_yy1_fxy2_outL[i]  ),  
-//              .CLK(aclk                                                 ),
-//              .S(add_fxy_outL[i]         )   
-//            );
-            
-            
-//            assign  m_axis_l_tdata[i * BPP  - 1 + BPP -: BPP] = add_fxy_outL[i][PREC+BPP-1-:BPP];
-//        end
-//    endgenerate
-    
-//    generate
-//       for (genvar i = 0; i < NPPC; i = i + 1) begin : BIL_INT_R
-          
-//            // fxy1 = (x2 - X)*f11 + (X - x1)*f21;
-//            mult_8_8_16 mult_x2x_f11 (                                  // latency: 3
-//              .CLK(aclk                                                  ), 
-//              .A({1'b1,{PREC{1'b0}}}-xR[i][PREC-1:0]                      ),  
-//              .B( out_cntx_r[(2*MAX_SHIFT)-yR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]][CNTX_SIZE-((2*MAX_SHIFT)-xR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH])][i][BPP-1:0] ),  
-//              .P(mult_x2x_f11_outR[i]           )   
-//            );
-            
-//            mult_8_8_16 mult_xx1_f21 (                                  
-//              .CLK(aclk                                                         ),  
-//              .A({1'b0,xR[i][PREC-1:0]}                          ),  
-//              .B(out_cntx_r[(2*MAX_SHIFT)-yR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]][CNTX_SIZE-((2*MAX_SHIFT)-(xR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1))][i][BPP-1:0]  ), 
-//              .P(mult_xx1_f21_outR[i]           )   
-//            );
-            
-            
-//            add_16_16_16 add_f11_f21 (                                  // latency: 2
-//              .A(mult_x2x_f11_outR[i]), 
-//              .B(mult_xx1_f21_outR[i]),  
-//              .CLK(aclk                                             ),  
-//              .S(add_f11_f21_outR[i]   )   
-//            );
-            
-//            // fxy2 = (x2 - X)*f12 + (X - x1)*f22;
-//            mult_8_8_16 mult_x2x_f12 (                                  // latency: 3
-//              .CLK(aclk                                                         ),  
-//              .A({1'b1,{PREC{1'b0}}}-xR[i][PREC-1:0]                          ),  
-//              .B(out_cntx_r[(2*MAX_SHIFT)-(yR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1)][CNTX_SIZE-((2*MAX_SHIFT)-xR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH])][i][BPP-1:0]  ),  
-//              .P(mult_x2x_f12_outR[i]            )   
-//            );
-            
-//            mult_8_8_16 mult_xx1_f22 (                                 
-//              .CLK(aclk                                                         ),  
-//              .A({1'b0,xR[i][PREC-1:0]}                           ),  
-//              .B(out_cntx_r[(2*MAX_SHIFT)-(yR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1)][CNTX_SIZE-((2*MAX_SHIFT)-(xR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1))][i][BPP-1:0] ),  
-//              .P(mult_xx1_f22_outR[i]          ) 
-//            );
-            
-//             add_16_16_16 add_f12_f22 (                                      // latency: 2
-//              .A(mult_x2x_f12_outR[i]   ),  
-//              .B(mult_xx1_f22_outR[i]   ),  
-//              .CLK(aclk                                                 ),  
-//              .S(add_f12_f22_outR[i]      )  
-//            );
-            
-            
-//            // fxy = (y2 - Y)*fxy1 + (Y - y1)*fxy2;
-//            mult_8_8_16 mult_y2y_fxy1 (                                    // latency: 3
-//              .CLK(aclk                                                 ), 
-//              .A({1'b1,{PREC{1'b0}}}-yR[i][PREC-1:0]                   ),  
-//              .B(add_f11_f21_outR[i][PREC+BPP-1-:BPP]       ),  
-//              .P(mult_y2y_fxy1_outR[i]   )  
-//            );
-            
-//            mult_8_8_16 mult_yy1_fxy2 (                                    
-//              .CLK(aclk                                                 ),  
-//              .A({1'b0,yR[i][PREC-1:0]}                    ),  
-//              .B(add_f12_f22_outR[i][PREC+BPP-1-:BPP]       ), 
-//              .P(mult_yy1_fxy2_outR[i]   )  
-//            );
-            
-            
-//            add_16_16_16 add_fxy (                                          // latency: 2
-//              .A(mult_y2y_fxy1_outR[i]   ),
-//              .B(mult_yy1_fxy2_outR[i]  ),  
-//              .CLK(aclk                                                 ),
-//              .S(add_fxy_outR[i]         )   
-//            );
-            
-            
-//            assign  m_axis_r_tdata[i * BPP  - 1 + BPP -: BPP] = add_fxy_outR[i][PREC+BPP-1-:BPP];
-//        end
-//    endgenerate 
-    
-//    generate
-//       for (genvar i = 0; i < NPPC; i = i + 1) begin : BIL_INT_L
-          
-//            // fxy1 = (x2 - X)*f11 + (X - x1)*f21;
-//            mult_8_8_16 mult_x2x_f11 (                                  // latency: 3
-//              .CLK(aclk                                                  ), 
-//              .A({1'b1,{PREC{1'b0}}}-xL[i][PREC-1:0]                      ),  
-//              .B( out_cntx_l[CNTX_SIZE-1-((2*MAX_SHIFT)-yL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH])][(2*MAX_SHIFT)-xL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]][i][BPP-1:0] ),  
-//              .P(mult_x2x_f11_outL[i]           )   
-//            );
-            
-//            mult_8_8_16 mult_xx1_f21 (                                  
-//              .CLK(aclk                                                         ),  
-//              .A({1'b0,xL[i][PREC-1:0]}                          ),  
-//              .B(out_cntx_l[CNTX_SIZE-1-((2*MAX_SHIFT)-yL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH])][(2*MAX_SHIFT)-(xL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1)][i][BPP-1:0]  ), 
-//              .P(mult_xx1_f21_outL[i]           )   
-//            );
-            
-            
-//            add_16_16_16 add_f11_f21 (                                  // latency: 2
-//              .A(mult_x2x_f11_outL[i]), 
-//              .B(mult_xx1_f21_outL[i]),  
-//              .CLK(aclk                                             ),  
-//              .S(add_f11_f21_outL[i]   )   
-//            );
-            
-//            // fxy2 = (x2 - X)*f12 + (X - x1)*f22;
-//            mult_8_8_16 mult_x2x_f12 (                                  // latency: 3
-//              .CLK(aclk                                                         ),  
-//              .A({1'b1,{PREC{1'b0}}}-xL[i][PREC-1:0]                          ),  
-//              .B(out_cntx_l[CNTX_SIZE-1-((2*MAX_SHIFT)-(yL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1))][(2*MAX_SHIFT)-xL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]][i][BPP-1:0]  ),  
-//              .P(mult_x2x_f12_outL[i]            )   
-//            );
-            
-//            mult_8_8_16 mult_xx1_f22 (                                 
-//              .CLK(aclk                                                         ),  
-//              .A({1'b0,xL[i][PREC-1:0]}                           ),  
-//              .B(out_cntx_l[CNTX_SIZE-1-((2*MAX_SHIFT)-(yL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1))][(2*MAX_SHIFT)-(xL[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1)][i][BPP-1:0] ),  
-//              .P(mult_xx1_f22_outL[i]          ) 
-//            );
-            
-//             add_16_16_16 add_f12_f22 (                                      // latency: 2
-//              .A(mult_x2x_f12_outL[i]   ),  
-//              .B(mult_xx1_f22_outL[i]   ),  
-//              .CLK(aclk                                                 ),  
-//              .S(add_f12_f22_outL[i]      )  
-//            );
-            
-            
-//            // fxy = (y2 - Y)*fxy1 + (Y - y1)*fxy2;
-//            mult_8_8_16 mult_y2y_fxy1 (                                    // latency: 3
-//              .CLK(aclk                                                 ), 
-//              .A({1'b1,{PREC{1'b0}}}-yL[i][PREC-1:0]                   ),  
-//              .B(add_f11_f21_outL[i][PREC+BPP-1-:BPP]       ),  
-//              .P(mult_y2y_fxy1_outL[i]   )  
-//            );
-            
-//            mult_8_8_16 mult_yy1_fxy2 (                                    
-//              .CLK(aclk                                                 ),  
-//              .A({1'b0,yL[i][PREC-1:0]}                    ),  
-//              .B(add_f12_f22_outL[i][PREC+BPP-1-:BPP]       ), 
-//              .P(mult_yy1_fxy2_outL[i]   )  
-//            );
-            
-            
-//            add_16_16_16 add_fxy (                                          // latency: 2
-//              .A(mult_y2y_fxy1_outL[i]   ),
-//              .B(mult_yy1_fxy2_outL[i]  ),  
-//              .CLK(aclk                                                 ),
-//              .S(add_fxy_outL[i]         )   
-//            );
-            
-            
-//            assign  m_axis_l_tdata[i * BPP  - 1 + BPP -: BPP] = add_fxy_outL[i][PREC+BPP-1-:BPP];
-//        end
-//    endgenerate
-    
-//    generate
-//       for (genvar i = 0; i < NPPC; i = i + 1) begin : BIL_INT_R
-          
-//            // fxy1 = (x2 - X)*f11 + (X - x1)*f21;
-//            mult_8_8_16 mult_x2x_f11 (                                  // latency: 3
-//              .CLK(aclk                                                  ), 
-//              .A({1'b1,{PREC{1'b0}}}-xR[i][PREC-1:0]                      ),  
-//              .B( out_cntx_r[(2*MAX_SHIFT)-yR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]][(2*MAX_SHIFT)-xR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]][i][BPP-1:0] ),  
-//              .P(mult_x2x_f11_outR[i]           )   
-//            );
-            
-//            mult_8_8_16 mult_xx1_f21 (                                  
-//              .CLK(aclk                                                         ),  
-//              .A({1'b0,xR[i][PREC-1:0]}                          ),  
-//              .B(out_cntx_r[(2*MAX_SHIFT)-yR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]][(2*MAX_SHIFT)-(xR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1)][i][BPP-1:0]  ), 
-//              .P(mult_xx1_f21_outR[i]           )   
-//            );
-            
-            
-//            add_16_16_16 add_f11_f21 (                                  // latency: 2
-//              .A(mult_x2x_f11_outR[i]), 
-//              .B(mult_xx1_f21_outR[i]),  
-//              .CLK(aclk                                             ),  
-//              .S(add_f11_f21_outR[i]   )   
-//            );
-            
-//            // fxy2 = (x2 - X)*f12 + (X - x1)*f22;
-//            mult_8_8_16 mult_x2x_f12 (                                  // latency: 3
-//              .CLK(aclk                                                         ),  
-//              .A({1'b1,{PREC{1'b0}}}-xR[i][PREC-1:0]                          ),  
-//              .B(out_cntx_r[(2*MAX_SHIFT)-(yR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1)][(2*MAX_SHIFT)-xR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]][i][BPP-1:0]  ),  
-//              .P(mult_x2x_f12_outR[i]            )   
-//            );
-            
-//            mult_8_8_16 mult_xx1_f22 (                                 
-//              .CLK(aclk                                                         ),  
-//              .A({1'b0,xR[i][PREC-1:0]}                           ),  
-//              .B(out_cntx_r[(2*MAX_SHIFT)-(yR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1)][(2*MAX_SHIFT)-(xR[i][SHIFT_WIDTH+PREC-1-:SHIFT_WIDTH]+1)][i][BPP-1:0] ),  
-//              .P(mult_xx1_f22_outR[i]          ) 
-//            );
-            
-//             add_16_16_16 add_f12_f22 (                                      // latency: 2
-//              .A(mult_x2x_f12_outR[i]   ),  
-//              .B(mult_xx1_f22_outR[i]   ),  
-//              .CLK(aclk                                                 ),  
-//              .S(add_f12_f22_outR[i]      )  
-//            );
-            
-            
-//            // fxy = (y2 - Y)*fxy1 + (Y - y1)*fxy2;
-//            mult_8_8_16 mult_y2y_fxy1 (                                    // latency: 3
-//              .CLK(aclk                                                 ), 
-//              .A({1'b1,{PREC{1'b0}}}-yR[i][PREC-1:0]                   ),  
-//              .B(add_f11_f21_outR[i][PREC+BPP-1-:BPP]       ),  
-//              .P(mult_y2y_fxy1_outR[i]   )  
-//            );
-            
-//            mult_8_8_16 mult_yy1_fxy2 (                                    
-//              .CLK(aclk                                                 ),  
-//              .A({1'b0,yR[i][PREC-1:0]}                    ),  
-//              .B(add_f12_f22_outR[i][PREC+BPP-1-:BPP]       ), 
-//              .P(mult_yy1_fxy2_outR[i]   )  
-//            );
-            
-            
-//            add_16_16_16 add_fxy (                                          // latency: 2
-//              .A(mult_y2y_fxy1_outR[i]   ),
-//              .B(mult_yy1_fxy2_outR[i]  ),  
-//              .CLK(aclk                                                 ),
-//              .S(add_fxy_outR[i]         )   
-//            );
-            
-            
-//            assign  m_axis_r_tdata[i * BPP  - 1 + BPP -: BPP] = add_fxy_outR[i][PREC+BPP-1-:BPP];
-//        end
-//    endgenerate 
+    assign buf_tready = m_axis_l_tready & m_axis_r_tready;
     
 endmodule

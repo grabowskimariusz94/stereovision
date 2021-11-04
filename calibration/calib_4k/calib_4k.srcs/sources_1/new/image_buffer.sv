@@ -25,7 +25,8 @@ module image_buffer#(
   input wire  aresetn,
 
   output logic  s_axis_tready,
-  input  logic [AXIS_TDATA_WIDTH-1 : 0] s_axis_tdata,
+  input  logic [AXIS_TDATA_WIDTH-1 : 0] s_axis_l_tdata,
+  input  logic [AXIS_TDATA_WIDTH-1 : 0] s_axis_r_tdata,
   input  logic  s_axis_tvalid,
   input  logic  s_axis_tlast,
   input  logic  s_axis_tuser,
@@ -33,13 +34,19 @@ module image_buffer#(
   output logic  new_pos_tready,
   output logic  new_pos_tuser,
   input  logic  new_pos_tvalid,
-  input  logic  [NPPC-1:0][$clog2(WIDTH)-1:0]  new_pos_x,
-  input  logic  [NPPC-1:0][$clog2(HEIGHT)-1:0] new_pos_y,
+  input  logic  [NPPC-1:0][$clog2(WIDTH)-1:0]  new_pos_l_x,
+  input  logic  [NPPC-1:0][$clog2(HEIGHT)-1:0] new_pos_l_y,
+  input  logic  [NPPC-1:0][$clog2(WIDTH)-1:0]  new_pos_r_x,
+  input  logic  [NPPC-1:0][$clog2(HEIGHT)-1:0] new_pos_r_y,
   
-  output logic [AXIS_TDATA_WIDTH-1 : 0] m_axis_00_tdata,
-  output logic [AXIS_TDATA_WIDTH-1 : 0] m_axis_01_tdata,
-  output logic [AXIS_TDATA_WIDTH-1 : 0] m_axis_10_tdata,
-  output logic [AXIS_TDATA_WIDTH-1 : 0] m_axis_11_tdata,
+  output logic [AXIS_TDATA_WIDTH-1 : 0] m_axis_l_00_tdata,
+  output logic [AXIS_TDATA_WIDTH-1 : 0] m_axis_l_01_tdata,
+  output logic [AXIS_TDATA_WIDTH-1 : 0] m_axis_l_10_tdata,
+  output logic [AXIS_TDATA_WIDTH-1 : 0] m_axis_l_11_tdata,
+  output logic [AXIS_TDATA_WIDTH-1 : 0] m_axis_r_00_tdata,
+  output logic [AXIS_TDATA_WIDTH-1 : 0] m_axis_r_01_tdata,
+  output logic [AXIS_TDATA_WIDTH-1 : 0] m_axis_r_10_tdata,
+  output logic [AXIS_TDATA_WIDTH-1 : 0] m_axis_r_11_tdata,
   output logic  m_axis_tvalid,
   input  logic  m_axis_tready,
   output logic  m_axis_tlast,
@@ -71,21 +78,33 @@ logic                     write_addr_line_parity;
 logic                     write_en_0;
 logic                     write_en_1;
 
-logic  [NPPC-1:0][BRAM_SIZE_W-1:0]  read_addr_00;
-logic  [NPPC-1:0][BRAM_SIZE_W-1:0]  read_addr_01;
-logic  [NPPC-1:0][BRAM_SIZE_W-1:0]  read_addr_10;
-logic  [NPPC-1:0][BRAM_SIZE_W-1:0]  read_addr_11;
+logic  [NPPC-1:0][BRAM_SIZE_W-1:0]  read_addr_l_00;
+logic  [NPPC-1:0][BRAM_SIZE_W-1:0]  read_addr_l_01;
+logic  [NPPC-1:0][BRAM_SIZE_W-1:0]  read_addr_l_10;
+logic  [NPPC-1:0][BRAM_SIZE_W-1:0]  read_addr_l_11;
+logic  [NPPC-1:0][BRAM_SIZE_W-1:0]  read_addr_r_00;
+logic  [NPPC-1:0][BRAM_SIZE_W-1:0]  read_addr_r_01;
+logic  [NPPC-1:0][BRAM_SIZE_W-1:0]  read_addr_r_10;
+logic  [NPPC-1:0][BRAM_SIZE_W-1:0]  read_addr_r_11;
 
-logic  [NPPC-1:0][$clog2(WIDTH)-1:0]  new_pos_x_r;
-logic  [NPPC-1:0][$clog2(HEIGHT)-1:0] new_pos_y_r;
+logic  [NPPC-1:0][$clog2(WIDTH)-1:0]  new_pos_l_x_r;
+logic  [NPPC-1:0][$clog2(HEIGHT)-1:0] new_pos_l_y_r;
+logic  [NPPC-1:0][$clog2(WIDTH)-1:0]  new_pos_r_x_r;
+logic  [NPPC-1:0][$clog2(HEIGHT)-1:0] new_pos_r_y_r;
 
-logic [AXIS_TDATA_WIDTH/2-1:0]   din_0;
-logic [AXIS_TDATA_WIDTH/2-1:0]   din_1;
+logic [AXIS_TDATA_WIDTH/2-1:0]   din_l_0;
+logic [AXIS_TDATA_WIDTH/2-1:0]   din_l_1;
+logic [AXIS_TDATA_WIDTH/2-1:0]   din_r_0;
+logic [AXIS_TDATA_WIDTH/2-1:0]   din_r_1;
 
-logic [NPPC-1:0][AXIS_TDATA_WIDTH/2-1:0]   dout_00;
-logic [NPPC-1:0][AXIS_TDATA_WIDTH/2-1:0]   dout_01;
-logic [NPPC-1:0][AXIS_TDATA_WIDTH/2-1:0]   dout_10;
-logic [NPPC-1:0][AXIS_TDATA_WIDTH/2-1:0]   dout_11;
+logic [NPPC-1:0][AXIS_TDATA_WIDTH/2-1:0]   dout_l_00;
+logic [NPPC-1:0][AXIS_TDATA_WIDTH/2-1:0]   dout_l_01;
+logic [NPPC-1:0][AXIS_TDATA_WIDTH/2-1:0]   dout_l_10;
+logic [NPPC-1:0][AXIS_TDATA_WIDTH/2-1:0]   dout_l_11;
+logic [NPPC-1:0][AXIS_TDATA_WIDTH/2-1:0]   dout_r_00;
+logic [NPPC-1:0][AXIS_TDATA_WIDTH/2-1:0]   dout_r_01;
+logic [NPPC-1:0][AXIS_TDATA_WIDTH/2-1:0]   dout_r_10;
+logic [NPPC-1:0][AXIS_TDATA_WIDTH/2-1:0]   dout_r_11;
 
 logic tvalid;
 logic tlast;
@@ -219,28 +238,38 @@ end
 
 generate
   for(genvar i = 0; i < NPPC; i++) begin 
-    assign read_addr_00[i] = (((new_pos_y[i]+new_pos_y[i][0])%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_x[i]/NPPC+new_pos_x[i][0]*new_pos_x[i][1];
-    assign read_addr_01[i] = (((new_pos_y[i]+new_pos_y[i][0])%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_x[i]/NPPC;
-    assign read_addr_10[i] = ((new_pos_y[i]%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_x[i]/NPPC+new_pos_x[i][0]*new_pos_x[i][1];
-    assign read_addr_11[i] = ((new_pos_y[i]%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_x[i]/NPPC;
+    assign read_addr_l_00[i] = (((new_pos_l_y[i]+new_pos_l_y[i][0])%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_l_x[i]/NPPC+new_pos_l_x[i][0]*new_pos_l_x[i][1];
+    assign read_addr_l_01[i] = (((new_pos_l_y[i]+new_pos_l_y[i][0])%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_l_x[i]/NPPC;
+    assign read_addr_l_10[i] = ((new_pos_l_y[i]%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_l_x[i]/NPPC+new_pos_l_x[i][0]*new_pos_l_x[i][1];
+    assign read_addr_l_11[i] = ((new_pos_l_y[i]%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_l_x[i]/NPPC;
+    assign read_addr_r_00[i] = (((new_pos_r_y[i]+new_pos_r_y[i][0])%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_r_x[i]/NPPC+new_pos_r_x[i][0]*new_pos_r_x[i][1];
+    assign read_addr_r_01[i] = (((new_pos_r_y[i]+new_pos_r_y[i][0])%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_r_x[i]/NPPC;
+    assign read_addr_r_10[i] = ((new_pos_r_y[i]%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_r_x[i]/NPPC+new_pos_r_x[i][0]*new_pos_r_x[i][1];
+    assign read_addr_r_11[i] = ((new_pos_r_y[i]%BUFFER_LINES)/2)*(WIDTH/NPPC)+new_pos_r_x[i]/NPPC;
   end
 endgenerate
 
 always @(posedge aclk)
 begin
-  new_pos_y_r <= new_pos_y;
-  new_pos_x_r <= new_pos_x;
+  new_pos_l_y_r <= new_pos_l_y;
+  new_pos_l_x_r <= new_pos_l_x;
+  new_pos_r_y_r <= new_pos_r_y;
+  new_pos_r_x_r <= new_pos_r_x;
 end
 
 always_ff @(posedge aclk) 
 begin
   if (!aresetn) begin
-    din_0 <= 0; 
-    din_1 <= 0; 
+    din_l_0 <= 0; 
+    din_l_1 <= 0; 
+    din_r_0 <= 0; 
+    din_r_1 <= 0; 
   end else begin 
     if (s_axis_tvalid) begin
-      din_0 <= {s_axis_tdata[2*BPP+BPP-1-:BPP],s_axis_tdata[0*BPP+BPP-1-:BPP]};
-      din_1 <= {s_axis_tdata[3*BPP+BPP-1-:BPP],s_axis_tdata[1*BPP+BPP-1-:BPP]};
+      din_l_0 <= {s_axis_l_tdata[2*BPP+BPP-1-:BPP],s_axis_l_tdata[0*BPP+BPP-1-:BPP]};
+      din_l_1 <= {s_axis_l_tdata[3*BPP+BPP-1-:BPP],s_axis_l_tdata[1*BPP+BPP-1-:BPP]};
+      din_r_0 <= {s_axis_r_tdata[2*BPP+BPP-1-:BPP],s_axis_r_tdata[0*BPP+BPP-1-:BPP]};
+      din_r_1 <= {s_axis_r_tdata[3*BPP+BPP-1-:BPP],s_axis_r_tdata[1*BPP+BPP-1-:BPP]};
     end
   end
 end
@@ -262,7 +291,7 @@ end
 //assign read_position = (shifted_write_position<PIXELS_PER_LINE/MAX_SAMPLES_PER_CLOCK) ? shifted_write_position :  (shifted_write_position - PIXELS_PER_LINE/MAX_SAMPLES_PER_CLOCK);
 
 generate
-  for(genvar i = 0; i < NPPC; i++) begin: brams
+  for(genvar i = 0; i < NPPC; i++) begin: brams_l
     xpm_memory_sdpram #(    
       .MEMORY_SIZE(BRAM_SIZE),    
       .MEMORY_PRIMITIVE("block"), 
@@ -293,7 +322,7 @@ generate
         .ena(write_en_0),           
         .wea(tvalid),     
         .addra(write_addr_0),  
-        .dina(din_0),     
+        .dina(din_l_0),     
         .injectdbiterra(1'b0),
         .injectsbiterra(1'b0),
         
@@ -302,8 +331,8 @@ generate
         .enb(1'b1),
         .rstb(1'b0),  
         .regceb(1'b0),
-        .addrb(read_addr_00[i]),          
-        .doutb(dout_00[i]),  
+        .addrb(read_addr_l_00[i]),          
+        .doutb(dout_l_00[i]),  
         .dbiterrb(),
         .sbiterrb()
     );
@@ -338,7 +367,7 @@ generate
         .ena(write_en_0),           
         .wea(tvalid),     
         .addra(write_addr_0),  
-        .dina(din_1),     
+        .dina(din_l_1),     
         .injectdbiterra(1'b0),
         .injectsbiterra(1'b0),
         
@@ -347,8 +376,8 @@ generate
         .enb(1'b1),
         .rstb(1'b0),  
         .regceb(1'b0),
-        .addrb(read_addr_01[i]),          
-        .doutb(dout_01[i]),  
+        .addrb(read_addr_l_01[i]),          
+        .doutb(dout_l_01[i]),  
         .dbiterrb(),
         .sbiterrb()
     );
@@ -383,7 +412,7 @@ generate
         .ena(write_en_1),           
         .wea(tvalid),     
         .addra(write_addr_1),  
-        .dina(din_0),     
+        .dina(din_l_0),     
         .injectdbiterra(1'b0),
         .injectsbiterra(1'b0),
         
@@ -392,8 +421,8 @@ generate
         .enb(1'b1),
         .rstb(1'b0),  
         .regceb(1'b0),
-        .addrb(read_addr_10[i]),          
-        .doutb(dout_10[i]),  
+        .addrb(read_addr_l_10[i]),          
+        .doutb(dout_l_10[i]),  
         .dbiterrb(),
         .sbiterrb()
     );
@@ -428,7 +457,7 @@ generate
         .ena(write_en_1),           
         .wea(tvalid),     
         .addra(write_addr_1),  
-        .dina(din_1),     
+        .dina(din_l_1),     
         .injectdbiterra(1'b0),
         .injectsbiterra(1'b0),
         
@@ -437,12 +466,196 @@ generate
         .enb(1'b1),
         .rstb(1'b0),  
         .regceb(1'b0),
-        .addrb(read_addr_11[i]),          
-        .doutb(dout_11[i]),  
+        .addrb(read_addr_l_11[i]),          
+        .doutb(dout_l_11[i]),  
         .dbiterrb(),
         .sbiterrb()
     );
-  end: brams
+  end: brams_l
+endgenerate
+
+generate
+  for(genvar i = 0; i < NPPC; i++) begin: brams_r
+    xpm_memory_sdpram #(    
+      .MEMORY_SIZE(BRAM_SIZE),    
+      .MEMORY_PRIMITIVE("block"), 
+      .CLOCKING_MODE ("common_clock"),// independent_clock         
+      .MEMORY_INIT_FILE("none"),        
+      .MEMORY_INIT_PARAM("0"),      
+      .USE_MEM_INIT(0),               
+      .WAKEUP_TIME("disable_sleep"),      
+      .MESSAGE_CONTROL(0),              
+      .MEMORY_OPTIMIZATION("true"), 
+      
+      // Port A module parameters
+      .WRITE_DATA_WIDTH_A(AXIS_TDATA_WIDTH/2),  
+      .BYTE_WRITE_WIDTH_A(AXIS_TDATA_WIDTH/2),  
+      .ADDR_WIDTH_A(BRAM_SIZE_W),      
+       
+       // Port B module parameters
+      .READ_DATA_WIDTH_B(AXIS_TDATA_WIDTH/2),  
+      .ADDR_WIDTH_B(BRAM_SIZE_W),             
+      .READ_RESET_VALUE_B("0"),    
+      .READ_LATENCY_B(1),     
+      .WRITE_MODE_B ("read_first")      
+    ) bram_00 (
+        .sleep(1'b0),
+        
+        // Port A module ports
+        .clka(aclk),         
+        .ena(write_en_0),           
+        .wea(tvalid),     
+        .addra(write_addr_0),  
+        .dina(din_r_0),     
+        .injectdbiterra(1'b0),
+        .injectsbiterra(1'b0),
+        
+        // Port B module ports
+        .clkb(aclk),
+        .enb(1'b1),
+        .rstb(1'b0),  
+        .regceb(1'b0),
+        .addrb(read_addr_r_00[i]),          
+        .doutb(dout_r_00[i]),  
+        .dbiterrb(),
+        .sbiterrb()
+    );
+    
+    xpm_memory_sdpram #(    
+      .MEMORY_SIZE(BRAM_SIZE),    
+      .MEMORY_PRIMITIVE("block"), 
+      .CLOCKING_MODE ("common_clock"),// independent_clock         
+      .MEMORY_INIT_FILE("none"),        
+      .MEMORY_INIT_PARAM("0"),      
+      .USE_MEM_INIT(0),               
+      .WAKEUP_TIME("disable_sleep"),      
+      .MESSAGE_CONTROL(0),              
+      .MEMORY_OPTIMIZATION("true"), 
+      
+      // Port A module parameters
+      .WRITE_DATA_WIDTH_A(AXIS_TDATA_WIDTH/2),  
+      .BYTE_WRITE_WIDTH_A(AXIS_TDATA_WIDTH/2),  
+      .ADDR_WIDTH_A(BRAM_SIZE_W),      
+       
+       // Port B module parameters
+      .READ_DATA_WIDTH_B(AXIS_TDATA_WIDTH/2),  
+      .ADDR_WIDTH_B(BRAM_SIZE_W),             
+      .READ_RESET_VALUE_B("0"),    
+      .READ_LATENCY_B(1),     
+      .WRITE_MODE_B ("read_first")      
+    ) bram_01 (
+        .sleep(1'b0),
+        
+        // Port A module ports
+        .clka(aclk),         
+        .ena(write_en_0),           
+        .wea(tvalid),     
+        .addra(write_addr_0),  
+        .dina(din_r_1),     
+        .injectdbiterra(1'b0),
+        .injectsbiterra(1'b0),
+        
+        // Port B module ports
+        .clkb(aclk),
+        .enb(1'b1),
+        .rstb(1'b0),  
+        .regceb(1'b0),
+        .addrb(read_addr_r_01[i]),          
+        .doutb(dout_r_01[i]),  
+        .dbiterrb(),
+        .sbiterrb()
+    );
+    
+    xpm_memory_sdpram #(    
+      .MEMORY_SIZE(BRAM_SIZE),    
+      .MEMORY_PRIMITIVE("block"), 
+      .CLOCKING_MODE ("common_clock"),// independent_clock         
+      .MEMORY_INIT_FILE("none"),        
+      .MEMORY_INIT_PARAM("0"),      
+      .USE_MEM_INIT(0),               
+      .WAKEUP_TIME("disable_sleep"),      
+      .MESSAGE_CONTROL(0),              
+      .MEMORY_OPTIMIZATION("true"), 
+      
+      // Port A module parameters
+      .WRITE_DATA_WIDTH_A(AXIS_TDATA_WIDTH/2),  
+      .BYTE_WRITE_WIDTH_A(AXIS_TDATA_WIDTH/2),  
+      .ADDR_WIDTH_A(BRAM_SIZE_W),      
+       
+       // Port B module parameters
+      .READ_DATA_WIDTH_B(AXIS_TDATA_WIDTH/2),  
+      .ADDR_WIDTH_B(BRAM_SIZE_W),             
+      .READ_RESET_VALUE_B("0"),    
+      .READ_LATENCY_B(1),     
+      .WRITE_MODE_B ("read_first")      
+    ) bram_10 (
+        .sleep(1'b0),
+        
+        // Port A module ports
+        .clka(aclk),         
+        .ena(write_en_1),           
+        .wea(tvalid),     
+        .addra(write_addr_1),  
+        .dina(din_r_0),     
+        .injectdbiterra(1'b0),
+        .injectsbiterra(1'b0),
+        
+        // Port B module ports
+        .clkb(aclk),
+        .enb(1'b1),
+        .rstb(1'b0),  
+        .regceb(1'b0),
+        .addrb(read_addr_r_10[i]),          
+        .doutb(dout_r_10[i]),  
+        .dbiterrb(),
+        .sbiterrb()
+    );
+    
+    xpm_memory_sdpram #(    
+      .MEMORY_SIZE(BRAM_SIZE),    
+      .MEMORY_PRIMITIVE("block"), 
+      .CLOCKING_MODE ("common_clock"),// independent_clock         
+      .MEMORY_INIT_FILE("none"),        
+      .MEMORY_INIT_PARAM("0"),      
+      .USE_MEM_INIT(0),               
+      .WAKEUP_TIME("disable_sleep"),      
+      .MESSAGE_CONTROL(0),              
+      .MEMORY_OPTIMIZATION("true"), 
+      
+      // Port A module parameters
+      .WRITE_DATA_WIDTH_A(AXIS_TDATA_WIDTH/2),  
+      .BYTE_WRITE_WIDTH_A(AXIS_TDATA_WIDTH/2),  
+      .ADDR_WIDTH_A(BRAM_SIZE_W),      
+       
+       // Port B module parameters
+      .READ_DATA_WIDTH_B(AXIS_TDATA_WIDTH/2),  
+      .ADDR_WIDTH_B(BRAM_SIZE_W),             
+      .READ_RESET_VALUE_B("0"),    
+      .READ_LATENCY_B(1),     
+      .WRITE_MODE_B ("read_first")      
+    ) bram_11 (
+        .sleep(1'b0),
+        
+        // Port A module ports
+        .clka(aclk),         
+        .ena(write_en_1),           
+        .wea(tvalid),     
+        .addra(write_addr_1),  
+        .dina(din_r_1),     
+        .injectdbiterra(1'b0),
+        .injectsbiterra(1'b0),
+        
+        // Port B module ports
+        .clkb(aclk),
+        .enb(1'b1),
+        .rstb(1'b0),  
+        .regceb(1'b0),
+        .addrb(read_addr_r_11[i]),          
+        .doutb(dout_r_11[i]),  
+        .dbiterrb(),
+        .sbiterrb()
+    );
+  end: brams_r
 endgenerate
 
 assign out_tvalid = ((state == NORMAL) || (state == SYNCH)) ? tvalid : 
@@ -504,38 +717,75 @@ assign new_pos_tuser = out_tuser;
 
 generate
   for(genvar i = 0; i < NPPC; i++) begin
-    assign m_axis_00_tdata[i*BPP+BPP-1-:BPP] = new_pos_y_r[i][0] ? new_pos_x_r[i][0] ? new_pos_x_r[i][1] ? dout_11[i][1*BPP+BPP-1-:BPP]
-                                                                                                         : dout_11[i][0*BPP+BPP-1-:BPP]
-                                                                                     : new_pos_x_r[i][1] ? dout_10[i][1*BPP+BPP-1-:BPP]
-                                                                                                         : dout_10[i][0*BPP+BPP-1-:BPP]
-                                                                 : new_pos_x_r[i][0] ? new_pos_x_r[i][1] ? dout_01[i][1*BPP+BPP-1-:BPP]
-                                                                                                         : dout_01[i][0*BPP+BPP-1-:BPP]
-                                                                                     : new_pos_x_r[i][1] ? dout_00[i][1*BPP+BPP-1-:BPP]
-                                                                                                         : dout_00[i][0*BPP+BPP-1-:BPP];
-    assign m_axis_01_tdata[i*BPP+BPP-1-:BPP] = new_pos_y_r[i][0] ? new_pos_x_r[i][0] ? !new_pos_x_r[i][1] ? dout_10[i][1*BPP+BPP-1-:BPP]
-                                                                                                          : dout_10[i][0*BPP+BPP-1-:BPP]
-                                                                                     :  new_pos_x_r[i][1] ? dout_11[i][1*BPP+BPP-1-:BPP]
-                                                                                                          : dout_11[i][0*BPP+BPP-1-:BPP]
-                                                                 : new_pos_x_r[i][0] ? !new_pos_x_r[i][1] ? dout_00[i][1*BPP+BPP-1-:BPP]
-                                                                                                          : dout_00[i][0*BPP+BPP-1-:BPP]
-                                                                                     :  new_pos_x_r[i][1] ? dout_01[i][1*BPP+BPP-1-:BPP]
-                                                                                                          : dout_01[i][0*BPP+BPP-1-:BPP];
-    assign m_axis_10_tdata[i*BPP+BPP-1-:BPP] = new_pos_y_r[i][0] ? new_pos_x_r[i][0] ? new_pos_x_r[i][1] ? dout_01[i][1*BPP+BPP-1-:BPP]
-                                                                                                         : dout_01[i][0*BPP+BPP-1-:BPP]
-                                                                                     : new_pos_x_r[i][1] ? dout_00[i][1*BPP+BPP-1-:BPP]
-                                                                                                         : dout_00[i][0*BPP+BPP-1-:BPP]
-                                                                 : new_pos_x_r[i][0] ? new_pos_x_r[i][1] ? dout_11[i][1*BPP+BPP-1-:BPP]
-                                                                                                         : dout_11[i][0*BPP+BPP-1-:BPP]
-                                                                                     : new_pos_x_r[i][1] ? dout_10[i][1*BPP+BPP-1-:BPP]
-                                                                                                         : dout_10[i][0*BPP+BPP-1-:BPP];
-    assign m_axis_11_tdata[i*BPP+BPP-1-:BPP] = new_pos_y_r[i][0] ? new_pos_x_r[i][0] ? !new_pos_x_r[i][1] ? dout_00[i][1*BPP+BPP-1-:BPP]
-                                                                                                          : dout_00[i][0*BPP+BPP-1-:BPP]
-                                                                                     :  new_pos_x_r[i][1] ? dout_01[i][1*BPP+BPP-1-:BPP]
-                                                                                                          : dout_01[i][0*BPP+BPP-1-:BPP]
-                                                                 : new_pos_x_r[i][0] ? !new_pos_x_r[i][1] ? dout_10[i][1*BPP+BPP-1-:BPP]
-                                                                                                          : dout_10[i][0*BPP+BPP-1-:BPP]
-                                                                                     :  new_pos_x_r[i][1] ? dout_11[i][1*BPP+BPP-1-:BPP]
-                                                                                                          : dout_11[i][0*BPP+BPP-1-:BPP];
+    assign m_axis_l_00_tdata[i*BPP+BPP-1-:BPP] = new_pos_l_y_r[i][0] ? new_pos_l_x_r[i][0] ? new_pos_l_x_r[i][1] ? dout_l_11[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_l_11[i][0*BPP+BPP-1-:BPP]
+                                                                                           : new_pos_l_x_r[i][1] ? dout_l_10[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_l_10[i][0*BPP+BPP-1-:BPP]
+                                                                     : new_pos_l_x_r[i][0] ? new_pos_l_x_r[i][1] ? dout_l_01[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_l_01[i][0*BPP+BPP-1-:BPP]
+                                                                                           : new_pos_l_x_r[i][1] ? dout_l_00[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_l_00[i][0*BPP+BPP-1-:BPP];
+    assign m_axis_l_01_tdata[i*BPP+BPP-1-:BPP] = new_pos_l_y_r[i][0] ? new_pos_l_x_r[i][0] ? !new_pos_l_x_r[i][1] ? dout_l_10[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_l_10[i][0*BPP+BPP-1-:BPP]
+                                                                                           :  new_pos_l_x_r[i][1] ? dout_l_11[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_l_11[i][0*BPP+BPP-1-:BPP]
+                                                                     : new_pos_l_x_r[i][0] ? !new_pos_l_x_r[i][1] ? dout_l_00[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_l_00[i][0*BPP+BPP-1-:BPP]
+                                                                                           :  new_pos_l_x_r[i][1] ? dout_l_01[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_l_01[i][0*BPP+BPP-1-:BPP];
+    assign m_axis_l_10_tdata[i*BPP+BPP-1-:BPP] = new_pos_l_y_r[i][0] ? new_pos_l_x_r[i][0] ? new_pos_l_x_r[i][1] ? dout_l_01[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_l_01[i][0*BPP+BPP-1-:BPP]
+                                                                                           : new_pos_l_x_r[i][1] ? dout_l_00[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_l_00[i][0*BPP+BPP-1-:BPP]
+                                                                     : new_pos_l_x_r[i][0] ? new_pos_l_x_r[i][1] ? dout_l_11[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_l_11[i][0*BPP+BPP-1-:BPP]
+                                                                                           : new_pos_l_x_r[i][1] ? dout_l_10[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_l_10[i][0*BPP+BPP-1-:BPP];
+    assign m_axis_l_11_tdata[i*BPP+BPP-1-:BPP] = new_pos_l_y_r[i][0] ? new_pos_l_x_r[i][0] ? !new_pos_l_x_r[i][1] ? dout_l_00[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_l_00[i][0*BPP+BPP-1-:BPP]
+                                                                                           :  new_pos_l_x_r[i][1] ? dout_l_01[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_l_01[i][0*BPP+BPP-1-:BPP]
+                                                                     : new_pos_l_x_r[i][0] ? !new_pos_l_x_r[i][1] ? dout_l_10[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_l_10[i][0*BPP+BPP-1-:BPP]
+                                                                                           :  new_pos_l_x_r[i][1] ? dout_l_11[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_l_11[i][0*BPP+BPP-1-:BPP];
+  end
+endgenerate   
+
+generate
+  for(genvar i = 0; i < NPPC; i++) begin
+    assign m_axis_r_00_tdata[i*BPP+BPP-1-:BPP] = new_pos_r_y_r[i][0] ? new_pos_r_x_r[i][0] ? new_pos_r_x_r[i][1] ? dout_r_11[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_r_11[i][0*BPP+BPP-1-:BPP]
+                                                                                           : new_pos_r_x_r[i][1] ? dout_r_10[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_r_10[i][0*BPP+BPP-1-:BPP]
+                                                                     : new_pos_r_x_r[i][0] ? new_pos_r_x_r[i][1] ? dout_r_01[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_r_01[i][0*BPP+BPP-1-:BPP]
+                                                                                           : new_pos_r_x_r[i][1] ? dout_r_00[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_r_00[i][0*BPP+BPP-1-:BPP];
+    assign m_axis_r_01_tdata[i*BPP+BPP-1-:BPP] = new_pos_r_y_r[i][0] ? new_pos_r_x_r[i][0] ? !new_pos_r_x_r[i][1] ? dout_r_10[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_r_10[i][0*BPP+BPP-1-:BPP]
+                                                                                           :  new_pos_r_x_r[i][1] ? dout_r_11[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_r_11[i][0*BPP+BPP-1-:BPP]
+                                                                     : new_pos_r_x_r[i][0] ? !new_pos_r_x_r[i][1] ? dout_r_00[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_r_00[i][0*BPP+BPP-1-:BPP]
+                                                                                           :  new_pos_r_x_r[i][1] ? dout_r_01[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_r_01[i][0*BPP+BPP-1-:BPP];
+    assign m_axis_r_10_tdata[i*BPP+BPP-1-:BPP] = new_pos_r_y_r[i][0] ? new_pos_r_x_r[i][0] ? new_pos_r_x_r[i][1] ? dout_r_01[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_r_01[i][0*BPP+BPP-1-:BPP]
+                                                                                           : new_pos_r_x_r[i][1] ? dout_r_00[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_r_00[i][0*BPP+BPP-1-:BPP]
+                                                                     : new_pos_r_x_r[i][0] ? new_pos_r_x_r[i][1] ? dout_r_11[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_r_11[i][0*BPP+BPP-1-:BPP]
+                                                                                           : new_pos_r_x_r[i][1] ? dout_r_10[i][1*BPP+BPP-1-:BPP]
+                                                                                                                 : dout_r_10[i][0*BPP+BPP-1-:BPP];
+    assign m_axis_r_11_tdata[i*BPP+BPP-1-:BPP] = new_pos_r_y_r[i][0] ? new_pos_r_x_r[i][0] ? !new_pos_r_x_r[i][1] ? dout_r_00[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_r_00[i][0*BPP+BPP-1-:BPP]
+                                                                                           :  new_pos_r_x_r[i][1] ? dout_r_01[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_r_01[i][0*BPP+BPP-1-:BPP]
+                                                                     : new_pos_r_x_r[i][0] ? !new_pos_r_x_r[i][1] ? dout_r_10[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_r_10[i][0*BPP+BPP-1-:BPP]
+                                                                                           :  new_pos_r_x_r[i][1] ? dout_r_11[i][1*BPP+BPP-1-:BPP]
+                                                                                                                  : dout_r_11[i][0*BPP+BPP-1-:BPP];
   end
 endgenerate   
 
