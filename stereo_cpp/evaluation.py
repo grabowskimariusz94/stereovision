@@ -15,13 +15,14 @@ def bad(orig, calc,thres: int) -> float:
     h, w = orig.shape
     diff = np.zeros(orig.shape)
     s = 0
-    for y in range(2,h-2):
-        for x in range(63,w-2):
+    for y in range(1,h-1):
+        for x in range(64,w-64):
             diff[y][x] = (np.abs(int(calc[y][x]) - int(orig[y][x])))
             if diff[y][x]>=thres:
-                s = s+1
-    result = s/((h-2)*(w-63))
-    plt.imshow(diff*100 , cmap='gray')
+                if orig[y][x]!=0:
+                    s = s+1
+    result = s/((h-2)*(w-128))
+    plt.imshow(diff , cmap='gray')
     plt.show()
     return result
 
@@ -50,9 +51,9 @@ def evaluation(origl,origr,displ,dispr):#,namel,namer):
     #plt.imsave(namer,dispr)
 
 def test_01():
-    dispCPP_L, dispCPP_R = read("test/dispCPP_L.pgm","test/dispCPP_R.pgm")
-    dispFPGA_L,dispFPGA_R= read("test/dispL_00.pgm","test/dispR_00.pgm")
-    evaluation(dispCPP_L,dispCPP_R,dispFPGA_L,dispFPGA_R)
+    dispCPP_L, dispCPP_R = read("Qk/origL.png","Qk/origR.png")
+    dispFPGA_L,dispFPGA_R= read("Qk/dispL0p.pgm","Qk/dispR0p.pgm")
+    evaluation(dispCPP_L*256,dispCPP_R*256,dispFPGA_L,dispFPGA_R)
 
 if __name__ == '__main__':
     test_01()

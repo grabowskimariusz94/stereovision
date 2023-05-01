@@ -166,7 +166,7 @@ std::vector<cv::Mat> Stereovision::unfold_tk(cv::Mat img) {
             // If we are not at the first pixel and also not in the last line
             if ( col > 0 && col < img.cols ) {
                 int col_w = col - 4;
-                std::cout << col_w << std::endl;
+                //std::cout << col_w << std::endl;
                 // Left image
                 // L0
                 pl[imgL.step * row + col_w+0] =  four_ppc_nd[0];
@@ -239,6 +239,22 @@ uint8_t Stereovision::sad(cv::Mat img_base, cv::Mat img_match, int min_y, int ma
     return sad_val;
 }
 
+uint8_t Stereovision::census(cv::Mat img_base, cv::Mat img_match, int y, int x, int min_y, int max_y, int min_x, int max_x, int d) {
+    unsigned char* pb = (unsigned char*)(img_base.data);
+    unsigned char* pm = (unsigned char*)(img_match.data);
+
+    int ham_distance;
+    ham_distance = 0;
+
+    for (int j = min_y; j <= max_y; ++j) {
+        for (int i = min_x; i <= max_x; ++i) {
+            ham_distance = ((pb[img_base.step * y + x] > pb[img_base.step * j + i]) ^ (pm[img_base.step * y + x + d] > pm[img_base.step * j + i + d])) ? (ham_distance + 1) : ham_distance;
+        }
+    }
+    ham_distance = (ham_distance > 15) ? 15 : ham_distance;
+    return ham_distance;
+}
+
 uint8_t Stereovision::calcR(cv::Mat img, int  x, int y, uint8_t win) {
     uint8_t R = 0;
     int h = img.rows;
@@ -262,6 +278,42 @@ std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::disp_e
     //////////////////////////////////////////////////////////////////////////////
     //SAD
     //////////////////////////////////////////////////////////////////////////////
+    //std::vector<std::vector<uint8_t>> width(w);
+    //std::vector<std::vector<std::vector<uint8_t>>> cl(h, width), cr(h, width);
+    //std::vector<std::vector<std::vector<std::vector<uint8_t>>>> c;
+
+    //for (int y = 0; y < h; ++y) {
+    //    int min_y = (y - win < 0) ? 0 : (y - win);
+    //    int max_y = (y + win > h - 1) ? (h - 1) : (y + win);
+    //    for (int x = -1; x < w-1; ++x) { // shifted to right like in FPGA
+    //        int min_x = (x - win < 0) ? 0 : (x - win);
+    //        int max_x = (x + win > w - 1) ? (w - 1) : (x + win);
+
+    //        int dl_min = (-(d_range - 1) > -min_x) ? (-(d_range - 1)) : (-min_x);
+    //        int dl_max = 0;
+    //        int dr_min = 0;
+    //        int dr_max = ((d_range - 1) < w - max_x) ? (d_range - 1) : (w - max_x);
+
+
+    //        std::vector<uint8_t> sadsl(dl_max - dl_min + 1);
+    //        std::vector<uint8_t> sadsr(dr_max - dr_min + 1);
+
+    //        for (int i = dl_min; i <= dl_max; ++i) {
+    //            sadsl[-i + dl_max] = (sad(imgL, imgR, min_y, max_y, min_x, max_x, i));
+    //        }
+    //        for (int i = dr_min; i <= dr_max; ++i) {
+    //            sadsr[i - dr_min] = (sad(imgR, imgL, min_y, max_y, min_x, max_x, i));
+    //        } 
+    //        cl[y][x+1] = sadsl; //-1 cause shifted tp right
+    //        cr[y][x+1] = sadsr;
+
+    //    }
+    //}
+
+    //////////////////////////////////////////////////////////////////////////////
+    //Census
+    /////////////////////////////////////////////////////////////////////////////
+
     std::vector<std::vector<uint8_t>> width(w);
     std::vector<std::vector<std::vector<uint8_t>>> cl(h, width), cr(h, width);
     std::vector<std::vector<std::vector<std::vector<uint8_t>>>> c;
@@ -269,7 +321,7 @@ std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::disp_e
     for (int y = 0; y < h; ++y) {
         int min_y = (y - win < 0) ? 0 : (y - win);
         int max_y = (y + win > h - 1) ? (h - 1) : (y + win);
-        for (int x = -1; x < w-1; ++x) { // shifted to right like in FPGA
+        for (int x = -1; x < w - 1; ++x) { // shifted to right like in fpga
             int min_x = (x - win < 0) ? 0 : (x - win);
             int max_x = (x + win > w - 1) ? (w - 1) : (x + win);
 
@@ -279,20 +331,21 @@ std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::disp_e
             int dr_max = ((d_range - 1) < w - max_x) ? (d_range - 1) : (w - max_x);
 
 
-            std::vector<uint8_t> sadsl(dl_max - dl_min + 1);
-            std::vector<uint8_t> sadsr(dr_max - dr_min + 1);
+            std::vector<uint8_t> censussl(dl_max - dl_min + 1);
+            std::vector<uint8_t> censussr(dr_max - dr_min + 1);
 
             for (int i = dl_min; i <= dl_max; ++i) {
-                sadsl[-i + dl_max] = (sad(imgL, imgR, min_y, max_y, min_x, max_x, i));
+                censussl[-i + dl_max] = (census(imgL, imgR, y, x, min_y, max_y, min_x, max_x, i));
             }
             for (int i = dr_min; i <= dr_max; ++i) {
-                sadsr[i - dr_min] = (sad(imgR, imgL, min_y, max_y, min_x, max_x, i));
-            } 
-            cl[y][x+1] = sadsl; //-1 cause shifted tp right
-            cr[y][x+1] = sadsr;
+                censussr[i - dr_min] = (census(imgR, imgL, y, x, min_y, max_y, min_x, max_x, i));
+            }
+            cl[y][x + 1] = censussl; //-1 cause shifted tp right
+            cr[y][x + 1] = censussr;
 
         }
     }
+
     //////////////////////////////////////////////////////////////////////////////
     //disparity estimation based on area-based non-parametric rank-transform
     /////////////////////////////////////////////////////////////////////////////
@@ -327,7 +380,7 @@ std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::disp_e
     return c;
 }
 
-std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::cost_agregation(std::vector<std::vector<std::vector<uint8_t>>> c, int h, int w) {
+std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::cost_agregation_HW(std::vector<std::vector<std::vector<uint8_t>>> c, int h, int w) {
     
     std::vector<std::vector<uint8_t>> width(w);
     std::vector<std::vector<std::vector<uint8_t>>> height(h, width);
@@ -495,7 +548,473 @@ std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::cost_a
     return l;
 }
 
-std::vector<cv::Mat> Stereovision::semi_global(std::vector<std::vector<std::vector<std::vector<uint8_t>>>> c, const uint8_t d_range){
+std::vector<std::vector<std::vector<std::vector<uint8_t>>>> Stereovision::cost_agregation_all(std::vector<std::vector<std::vector<uint8_t>>> c, int h, int w) {
+
+    std::vector<std::vector<uint8_t>> width(w);
+    std::vector<std::vector<std::vector<uint8_t>>> height(h, width);
+    std::vector<std::vector<std::vector<std::vector<uint8_t>>>> l(9, height);
+
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+            int d_len = c[y][x].size();
+
+            uint8_t min_prev_0_HW = 0;
+            uint8_t min_prev_0 = 0;
+            uint8_t min_prev_45 = 0;
+            uint8_t min_prev_90 = 0;
+            uint8_t min_prev_135 = 0;
+
+            std::vector<uint8_t> prev_path_calc_0;
+            std::vector<uint8_t> prev_path_calc_0x;
+            for (int d = 0; d < d_len; ++d) {
+                if (x < 4) {
+                    switch (x % 4) {
+                    case 0:
+                        prev_path_calc_0.push_back(0);
+                        break;
+                    case 1:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(0 + c[y][x - 1][d]) / 2));
+                        break;
+                    case 2:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(0 + c[y][x - 2][d] + 2 * c[y][x - 1][d]) / 4));
+                        break;
+                    case 3:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(0 + c[y][x - 3][d] + c[y][x - 2][d] + c[y][x - 1][d]) / 4));
+                        break;
+                    default:
+                        prev_path_calc_0.push_back(0);
+                        break;
+                    }
+                }
+                else {
+                    switch (x % 4) {
+                    case 0:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    case 1:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(l[0][y][x - 2][d] + (c[y][x - 1][d] - l[0][y][x - 2][d]) / lambda)));
+                        break;
+                    case 2:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(l[0][y][x - 3][d] + ((c[y][x - 2][d] + c[y][x - 1][d]) / 2 - l[0][y][x - 3][d])/lambda)));
+                        break;
+                    case 3:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(l[0][y][x - 4][d] + (((c[y][x - 3][d] + c[y][x - 2][d]) / 2 + c[y][x - 1][d]) / 2 - l[0][y][x - 4][d]) / lambda)));
+                        break;
+                    default:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    }
+                }
+                
+                
+                
+                /*else {
+                    switch (x % 4) {
+                    case 0:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    case 1:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(l[0][y][x - 2][d] + c[y][x - 1][d])/2));
+                        break;
+                    case 2:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(l[0][y][x - 3][d] + ((c[y][x - 2][d] + c[y][x - 1][d]) / 2))/2));
+                        break;
+                    case 3:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(l[0][y][x - 4][d] + (((c[y][x - 3][d] + c[y][x - 2][d]) / 2 + c[y][x - 1][d]) / 2)) /2));
+                        break;
+                    default:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    }
+                }*/
+
+
+                /*else {
+                    switch (x % 4) {
+                    case 0:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    case 1:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(l[0][y][x - 2][d] + (1 / lambda) * (c[y][x - 1][d] - l[0][y][x - 2][d]))));
+                        break;
+                    case 2:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(l[0][y][x - 3][d] + (1 / lambda) * (((c[y][x - 2][d] + c[y][x - 1][d]) / 2) - l[0][y][x - 3][d]))));
+                        break;
+                    case 3:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(l[0][y][x - 4][d] + (1 / lambda) * ((((c[y][x - 3][d] + c[y][x - 2][d]) / 2 + c[y][x - 1][d]) / 2) - l[0][y][x - 4][d]))));
+                        break;
+                    default:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    }
+                }*/
+
+                // mean
+               /* else {
+                    switch (x % 4) {
+                    case 0:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    case 1:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t( l[0][y][x - 2][d] + c[y][x - 1][d])/2));
+                        break;
+                    case 2:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t( l[0][y][x - 3][d] + (c[y][x - 2][d] + c[y][x - 1][d]) / 2)/2));
+                        break;
+                    case 3:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t( l[0][y][x - 4][d] + ((c[y][x - 3][d] + c[y][x - 2][d])/2 + c[y][x - 1][d]) / 2)/2));
+                        break;
+                    default:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    }
+                }*/
+
+               /* else {
+                    switch (x % 4) {
+                    case 0:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    case 1:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t( l[0][y][x - 2][d] + (1/lambda) * (c[y][x - 1][d] - l[0][y][x - 2][d]))));
+                        break;
+                    case 2:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t( l[0][y][x - 3][d] + (1 / lambda) * ((c[y][x - 2][d] + c[y][x - 1][d]) / 2 - l[0][y][x - 3][d]))));
+                        break;
+                    case 3:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t( l[0][y][x - 4][d] + (1 / lambda) * ((((c[y][x - 3][d] + c[y][x - 2][d])/2 + c[y][x - 1][d]) / 2) - l[0][y][x - 4][d]))));
+                        break;
+                    default:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    }
+                }*/
+
+                // 16 l
+               /* else {
+                    switch (x % 4) {
+                    case 0:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    case 1:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(16 * l[0][y][x - 2][d] + c[y][x - 1][d]) / 17));
+                        break;
+                    case 2:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(16 * l[0][y][x - 3][d] + (c[y][x - 2][d] + c[y][x - 1][d])/2) / 17));
+                        break;
+                    case 3:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(16 * l[0][y][x - 4][d] + (c[y][x - 3][d] + c[y][x - 2][d] + c[y][x - 1][d])/3) / 17));
+                        break;
+                    default:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    }
+                }*/
+
+                //scaled
+                /*else { 
+                    switch (x % 4) {
+                    case 0:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    case 1:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(1*l[0][y][x - 2][d] + c[y][x - 1][d]) / 2));
+                        break;
+                    case 2:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(uint16_t(l[0][y][x - 3][d] + c[y][x - 2][d])/2 + c[y][x - 1][d]) / 2));
+                        break;
+                    case 3:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(uint16_t(uint16_t(l[0][y][x - 4][d] + c[y][x - 3][d])/2 + c[y][x - 2][d])/2 + 2*c[y][x - 1][d]) / 8));
+                        break;
+                    default:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    }
+                }*/
+
+                // 50-50
+                /*else {
+                    switch (x % 4) {
+                    case 0:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    case 1:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(1*l[0][y][x - 2][d] + c[y][x - 1][d]) / 2));
+                        break;
+                    case 2:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(uint16_t(l[0][y][x - 3][d] + c[y][x - 2][d])/2 + c[y][x - 1][d]) / 2));
+                        break;
+                    case 3:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(uint16_t(uint16_t(l[0][y][x - 4][d] + c[y][x - 3][d])/2 + c[y][x - 2][d])/2 + 2*c[y][x - 1][d]) / 8));
+                        break;
+                    default:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    }
+                }*/
+
+                // only l
+                /*else {
+                    switch (x % 4) {
+                    case 0:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    case 1:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(1 * l[0][y][x - 2][d])));
+                        break;
+                    case 2:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(1 * l[0][y][x - 3][d])));
+                        break;
+                    case 3:
+                        prev_path_calc_0.push_back(uint8_t(uint16_t(1 * l[0][y][x - 4][d])));
+                        break;
+                    default:
+                        prev_path_calc_0.push_back(l[0][y][x - 1][d]);
+                        break;
+                    }
+                }*/
+            }
+
+            if (x != 0)
+                min_prev_0_HW = *std::min_element(prev_path_calc_0.begin(), prev_path_calc_0.end());
+
+            if (x != 0)
+                min_prev_0 = *std::min_element(l[1][y][x - 1].begin(), l[1][y][x - 1].end());
+            if (y != 0 && x != 0)
+                min_prev_45 = *std::min_element(l[2][y - 1][x - 1].begin(), l[2][y - 1][x - 1].end());
+            if (y != 0)
+                min_prev_90 = *std::min_element(l[3][y - 1][x].begin(), l[3][y - 1][x].end());
+            if (y != 0 && x != (w - 1))
+                min_prev_135 = *std::min_element(l[4][y - 1][x + 1].begin(), l[4][y - 1][x + 1].end());
+            
+
+            for (int d = 0; d < d_len; ++d) {
+
+                // 0 HW
+                if (x == 0) {
+                    l[0][y][x].push_back(c[y][x][d]);
+                }
+                else {
+                    std::vector<uint16_t> data_with_penalty;
+                    // 0 - disp
+                    // 1 - disp - 1
+                    // 2 - disp + 1
+                    // 3 - disp min
+                    data_with_penalty.push_back(uint16_t(prev_path_calc_0[d]));
+                    switch (x % 4) {
+                    case 0:
+                        data_with_penalty.push_back((d != 0) ? uint16_t(prev_path_calc_0[d - 1] + 0 * lambda_P1 + P1) : uint16_t(255));
+                        data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(prev_path_calc_0[d + 1] + 0 * lambda_P1 + P1) : uint16_t(255));
+                        data_with_penalty.push_back(uint16_t(min_prev_0_HW + 0 * lambda_P2 + P2));
+                        break;
+                    case 1:
+                        data_with_penalty.push_back((d != 0) ? uint16_t(prev_path_calc_0[d - 1] + 1 * lambda_P1 + P1) : uint16_t(255));
+                        data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(prev_path_calc_0[d + 1] + 1 * lambda_P1 + P1) : uint16_t(255));
+                        data_with_penalty.push_back(uint16_t(min_prev_0_HW + 1 * lambda_P2 + P2));
+                        break;
+                    case 2:
+                        data_with_penalty.push_back((d != 0) ? uint16_t(prev_path_calc_0[d - 1] + 2 * lambda_P1 + P1) : uint16_t(255));
+                        data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(prev_path_calc_0[d + 1] + 2 * lambda_P1 + P1) : uint16_t(255));
+                        data_with_penalty.push_back(uint16_t(min_prev_0_HW + 2 * lambda_P2 + P2));
+                        break;
+                    case 3:
+                        data_with_penalty.push_back((d != 0) ? uint16_t(prev_path_calc_0[d - 1] + 3 * lambda_P1 + P1) : uint16_t(255));
+                        data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(prev_path_calc_0[d + 1] + 3 * lambda_P1 + P1) : uint16_t(255));
+                        data_with_penalty.push_back(uint16_t(min_prev_0_HW + 3 * lambda_P2 + P2));
+                        break;
+                    default:
+                        break;
+                    }
+                    uint16_t l_0 = uint16_t(c[y][x][d]) + *std::min_element(data_with_penalty.begin(), data_with_penalty.end()) - uint16_t(min_prev_0_HW);
+
+                    l[0][y][x].push_back((l_0 < 255) ? uint8_t(l_0) : 255);
+                }
+
+                //0
+                if (x == 0) {
+                    l[1][y][x].push_back(c[y][x][d]);
+                }
+                else {
+                    std::vector<uint16_t> data_with_penalty;
+                    // 0 - disp
+                    // 1 - disp - 1
+                    // 2 - disp + 1
+                    // 3 - disp min
+                    data_with_penalty.push_back(uint16_t(l[1][y][x - 1][d]));
+                    data_with_penalty.push_back((d != 0) ? uint16_t(l[1][y][x - 1][d - 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(l[1][y][x - 1][d + 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back(uint16_t(min_prev_0 + P2));
+                    uint16_t l_0 = uint16_t(c[y][x][d]) + *std::min_element(data_with_penalty.begin(), data_with_penalty.end()) - uint16_t(min_prev_0);
+
+                    l[1][y][x].push_back((l_0 < 255) ? uint8_t(l_0) : 255);
+                }
+
+                //45
+                if (y == 0 || x == 0) {
+                    l[2][y][x].push_back(c[y][x][d]);
+                }
+                else {
+                    std::vector<uint16_t> data_with_penalty;
+                    // 0 - disp
+                    // 1 - disp - 1
+                    // 2 - disp + 1
+                    // 3 - disp min
+                    data_with_penalty.push_back(uint16_t(l[2][y - 1][x - 1][d]));
+                    data_with_penalty.push_back((d != 0) ? uint16_t(l[2][y - 1][x - 1][d - 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(l[2][y - 1][x - 1][d + 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back(uint16_t(min_prev_45 + P2));
+                    uint16_t l_45 = uint16_t(c[y][x][d]) + *std::min_element(data_with_penalty.begin(), data_with_penalty.end()) - uint16_t(min_prev_45);
+
+                    l[2][y][x].push_back((l_45 < 255) ? uint8_t(l_45) : 255);
+                }
+
+                //90
+                if (y == 0) {
+                    l[3][y][x].push_back(c[y][x][d]);
+                }
+                else {
+                    std::vector<uint16_t> data_with_penalty;
+                    // 0 - disp
+                    // 1 - disp - 1
+                    // 2 - disp + 1
+                    // 3 - disp min
+                    data_with_penalty.push_back(uint16_t(l[3][y - 1][x][d]));
+                    data_with_penalty.push_back((d != 0) ? uint16_t(l[3][y - 1][x][d - 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(l[3][y - 1][x][d + 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back(uint16_t(min_prev_90 + P2));
+                    uint16_t l_90 = uint16_t(c[y][x][d]) + *std::min_element(data_with_penalty.begin(), data_with_penalty.end()) - uint16_t(min_prev_90);
+
+                    l[3][y][x].push_back((l_90 < 255) ? uint8_t(l_90) : 255);
+                }
+
+                //135
+                if (y == 0 || x == (w - 1)) {
+                    l[4][y][x].push_back(c[y][x][d]);
+                }
+                else {
+                    std::vector<uint16_t> data_with_penalty;
+                    // 0 - disp
+                    // 1 - disp - 1
+                    // 2 - disp + 1
+                    // 3 - disp min
+                    data_with_penalty.push_back(uint16_t(l[4][y - 1][x + 1][d]));
+                    data_with_penalty.push_back((d != 0) ? uint16_t(l[4][y - 1][x + 1][d - 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(l[4][y - 1][x + 1][d + 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back(uint16_t(min_prev_90 + P2));
+                    uint16_t l_135 = uint16_t(c[y][x][d]) + *std::min_element(data_with_penalty.begin(), data_with_penalty.end()) - uint16_t(min_prev_135);
+
+                    l[4][y][x].push_back((l_135 < 255) ? uint8_t(l_135) : 255);
+                }
+            }
+        }
+    }
+
+    for (int y = h-1; y >= 0; --y) {
+        for (int x = w-1; x >= 0; --x) {
+            int d_len = c[y][x].size();
+
+            uint8_t min_prev_180 = 0;
+            uint8_t min_prev_225 = 0;
+            uint8_t min_prev_270 = 0;
+            uint8_t min_prev_315 = 0;
+
+            if (d_len) {
+                if (x != (w - 1))
+                    min_prev_180 = *std::min_element(l[5][y][x + 1].begin(), l[5][y][x + 1].end());
+                if (y != (h - 1) && x != (w - 1))
+                    min_prev_225 = *std::min_element(l[6][y + 1][x + 1].begin(), l[6][y + 1][x + 1].end());
+                if (y != (h - 1))
+                    min_prev_270 = *std::min_element(l[7][y + 1][x].begin(), l[7][y + 1][x].end());
+                if (y != (h - 1) && x != 0)
+                    min_prev_315 = *std::min_element(l[8][y + 1][x - 1].begin(), l[8][y + 1][x - 1].end());
+            }
+
+            for (int d = 0; d < d_len; ++d) {
+
+                //180
+                if (x == (w - 1)) {
+                    l[5][y][x].push_back(c[y][x][d]);
+                }
+                else {
+                    std::vector<uint16_t> data_with_penalty;
+                    // 0 - disp
+                    // 1 - disp - 1
+                    // 2 - disp + 1
+                    // 3 - disp min
+                    data_with_penalty.push_back(uint16_t(l[5][y][x + 1][d]));
+                    data_with_penalty.push_back((d != 0) ? uint16_t(l[5][y][x + 1][d - 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(l[5][y][x + 1][d + 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back(uint16_t(min_prev_180 + P2));
+                    uint16_t l_180 = uint16_t(c[y][x][d]) + *std::min_element(data_with_penalty.begin(), data_with_penalty.end()) - uint16_t(min_prev_180);
+
+                    l[5][y][x].push_back((l_180 < 255) ? uint8_t(l_180) : 255);
+                }
+
+                //225
+                if (y == (h - 1) || x == (w - 1)) {
+                    l[6][y][x].push_back(c[y][x][d]);
+                }
+                else {
+                    std::vector<uint16_t> data_with_penalty;
+                    // 0 - disp
+                    // 1 - disp - 1
+                    // 2 - disp + 1
+                    // 3 - disp min
+                    data_with_penalty.push_back(uint16_t(l[6][y + 1][x + 1][d]));
+                    data_with_penalty.push_back((d != 0) ? uint16_t(l[6][y + 1][x + 1][d - 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(l[6][y + 1][x + 1][d + 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back(uint16_t(min_prev_225 + P2));
+                    uint16_t l_225 = uint16_t(c[y][x][d]) + *std::min_element(data_with_penalty.begin(), data_with_penalty.end()) - uint16_t(min_prev_225);
+
+                    l[6][y][x].push_back((l_225 < 255) ? uint8_t(l_225) : 255);
+                }
+
+                //270
+                if (y == (h - 1)) {
+                    l[7][y][x].push_back(c[y][x][d]);
+                }
+                else {
+                    std::vector<uint16_t> data_with_penalty;
+                    // 0 - disp
+                    // 1 - disp - 1
+                    // 2 - disp + 1
+                    // 3 - disp min
+                    data_with_penalty.push_back(uint16_t(l[7][y + 1][x][d]));
+                    data_with_penalty.push_back((d != 0) ? uint16_t(l[7][y + 1][x][d - 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(l[7][y + 1][x][d + 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back(uint16_t(min_prev_270 + P2));
+                    uint16_t l_270 = uint16_t(c[y][x][d]) + *std::min_element(data_with_penalty.begin(), data_with_penalty.end()) - uint16_t(min_prev_270);
+
+                    l[7][y][x].push_back((l_270 < 255) ? uint8_t(l_270) : 255);
+                }
+
+                //315
+                if (y == (h - 1) || x == 0) {
+                    l[8][y][x].push_back(c[y][x][d]);
+                }
+                else {
+                    std::vector<uint16_t> data_with_penalty;
+                    // 0 - disp
+                    // 1 - disp - 1
+                    // 2 - disp + 1
+                    // 3 - disp min
+                    data_with_penalty.push_back(uint16_t(l[8][y + 1][x - 1][d]));
+                    data_with_penalty.push_back((d != 0) ? uint16_t(l[8][y + 1][x - 1][d - 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back((d != (d_len - 1)) ? uint16_t(l[8][y + 1][x - 1][d + 1] + P1) : uint16_t(255 + P1));
+                    data_with_penalty.push_back(uint16_t(min_prev_315 + P2));
+                    uint16_t l_315 = uint16_t(c[y][x][d]) + *std::min_element(data_with_penalty.begin(), data_with_penalty.end()) - uint16_t(min_prev_315);
+
+                    l[8][y][x].push_back((l_315 < 255) ? uint8_t(l_315) : 255);
+                }
+            }
+        }
+    }
+    return l;
+}
+
+
+
+std::vector<cv::Mat> Stereovision::semi_global_HW(std::vector<std::vector<std::vector<std::vector<uint8_t>>>> c, const uint8_t d_range){
 
 
     auto cl = c[0];
@@ -505,9 +1024,9 @@ std::vector<cv::Mat> Stereovision::semi_global(std::vector<std::vector<std::vect
     int w = c[0][0].size();
 
     // Cost aggregation 
-    auto ll = cost_agregation(cl, h, w);
+    auto ll = cost_agregation_HW(cl, h, w);
     std::cout << "Half Done" << '\n';
-    auto lr = cost_agregation(cr, h, w);
+    auto lr = cost_agregation_HW(cr, h, w);
 
     // Sum of cost aggregations
     std::vector<std::vector<uint8_t>> width(w);
@@ -588,6 +1107,143 @@ std::vector<cv::Mat> Stereovision::semi_global(std::vector<std::vector<std::vect
     disp.push_back(dispL);
     disp.push_back(dispR);
     disp.push_back(dispR_simp);
+
+    return disp;
+}
+
+std::vector<cv::Mat> Stereovision::semi_global_all(std::vector<std::vector<std::vector<std::vector<uint8_t>>>> c, const uint8_t d_range) {
+
+
+    auto cl = c[0];
+    auto cr = c[1];
+
+    int h = c[0].size();
+    int w = c[0][0].size();
+
+    // Cost aggregation 
+    auto ll = cost_agregation_all(cl, h, w);
+    std::cout << "Half Done" << '\n';
+    auto lr = cost_agregation_all(cr, h, w);
+
+    // Sum of cost aggregations
+    std::vector<std::vector<uint8_t>> width(w);
+    std::vector<std::vector<std::vector<uint8_t>>> sl_HW(h, width);
+    std::vector<std::vector<std::vector<uint8_t>>> sr_HW(h, width);
+    std::vector<std::vector<std::vector<uint8_t>>> sl_SW_3(h, width);
+    std::vector<std::vector<std::vector<uint8_t>>> sr_SW_3(h, width);
+    std::vector<std::vector<std::vector<uint8_t>>> sl_SW_4(h, width);
+    std::vector<std::vector<std::vector<uint8_t>>> sr_SW_4(h, width);
+    std::vector<std::vector<std::vector<uint8_t>>> sl_SW_8(h, width);
+    std::vector<std::vector<std::vector<uint8_t>>> sr_SW_8(h, width);
+
+
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+            int dl_len = cl[y][x].size();
+            int dr_len = cr[y][x].size();
+            for (int d = 0; d < dl_len; ++d) {
+                sl_HW[y][x].push_back(uint8_t(uint16_t(ll[0][y][x][d] + ll[2][y][x][d] + ll[3][y][x][d] + ll[4][y][x][d]) / 4));
+                sl_SW_3[y][x].push_back(uint8_t(uint16_t(ll[2][y][x][d] + ll[3][y][x][d] + ll[4][y][x][d]) / 4));
+                sl_SW_4[y][x].push_back(uint8_t(uint16_t(ll[1][y][x][d] + ll[2][y][x][d] + ll[3][y][x][d] + ll[4][y][x][d]) / 4));
+                sl_SW_8[y][x].push_back(uint8_t(uint16_t(ll[1][y][x][d] + ll[2][y][x][d] + ll[3][y][x][d] + ll[4][y][x][d] + ll[5][y][x][d] + ll[6][y][x][d] + ll[7][y][x][d] + ll[8][y][x][d]) / 8));
+            }
+            for (int d = 0; d < dr_len; ++d) {
+                sr_HW[y][x].push_back(uint8_t(uint16_t(lr[0][y][x][d] + lr[2][y][x][d] + lr[3][y][x][d] + lr[4][y][x][d]) / 4));
+                sr_SW_3[y][x].push_back(uint8_t(uint16_t(lr[2][y][x][d] + lr[3][y][x][d] + lr[4][y][x][d]) / 4));
+                sr_SW_4[y][x].push_back(uint8_t(uint16_t(lr[1][y][x][d] + lr[2][y][x][d] + lr[3][y][x][d] + lr[4][y][x][d]) / 4));
+                sr_SW_8[y][x].push_back(uint8_t(uint16_t(lr[1][y][x][d] + lr[2][y][x][d] + lr[3][y][x][d] + lr[4][y][x][d] + lr[5][y][x][d] + lr[6][y][x][d] + lr[7][y][x][d] + lr[8][y][x][d]) / 8));
+            }
+        }
+    }
+
+
+    // Disparity computiations 
+    cv::Mat dispL_HW(h, w, CV_8UC1);
+    cv::Mat dispR_HW(h, w, CV_8UC1);
+    cv::Mat dispL_SW_3(h, w, CV_8UC1);
+    cv::Mat dispR_SW_3(h, w, CV_8UC1);
+    cv::Mat dispL_SW_4(h, w, CV_8UC1);
+    cv::Mat dispR_SW_4(h, w, CV_8UC1);
+    cv::Mat dispL_SW_8(h, w, CV_8UC1);
+    cv::Mat dispR_SW_8(h, w, CV_8UC1);
+    //cv::Mat dispR_simp(h, w, CV_8UC1);   // simplified (based on designated disparity from left image)
+    //std::vector<uint8_t> range_simp(d_range);
+    //std::vector<std::vector<uint8_t>> width_simp(w, range_simp);
+    //std::vector<std::vector<std::vector<uint8_t>>> vect_simp(h, width_simp);
+
+    //for (int y = 0; y < h; ++y) {
+    //    for (int x = 0; x < w; ++x) {
+    //        for (int d = 0; d < d_range; d++) {
+
+    //            if (sl[y].size() <= (x + d)) {
+    //                vect_simp[y][x][d] = 255;
+    //            }
+    //            else if (sl[y][x + d].size() <= d) {
+    //                vect_simp[y][x][d] = 255;
+    //            }
+    //            else {
+    //                vect_simp[y][x][d] = sl[y][x + d][d];
+    //            }
+    //        }
+
+    //        /*int d = 0;
+    //        bool d_done = false;
+    //        while (!d_done) {
+    //            vect_simp[y][x][d] = sl[y][x + d][d];
+    //            d++;
+    //            if (sl[y].size() <= (x + d)) {
+    //                d_done = true;
+    //            }
+    //            else if (sl[y][x + d].size() <= d) {
+    //                d_done = true;
+    //            }
+    //        }*/
+    //    }
+    //}
+
+    unsigned char* pdl_HW   = (unsigned char*)(dispL_HW.data);
+    unsigned char* pdr_HW   = (unsigned char*)(dispR_HW.data);
+    unsigned char* pdl_SW_3 = (unsigned char*)(dispL_SW_3.data);
+    unsigned char* pdr_SW_3 = (unsigned char*)(dispR_SW_3.data);
+    unsigned char* pdl_SW_4 = (unsigned char*)(dispL_SW_4.data);
+    unsigned char* pdr_SW_4 = (unsigned char*)(dispR_SW_4.data);
+    unsigned char* pdl_SW_8 = (unsigned char*)(dispL_SW_8.data);
+    unsigned char* pdr_SW_8 = (unsigned char*)(dispR_SW_8.data);
+    //unsigned char* pdr_simp = (unsigned char*)(dispR_simp.data);
+
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+            std::vector<uint8_t>::iterator resultl_HW   = (std::min_element(sl_HW  [y][x].begin(), sl_HW  [y][x].end()));
+            std::vector<uint8_t>::iterator resultr_HW   = (std::min_element(sr_HW  [y][x].begin(), sr_HW  [y][x].end()));
+            std::vector<uint8_t>::iterator resultl_SW_3 = (std::min_element(sl_SW_3[y][x].begin(), sl_SW_3[y][x].end()));
+            std::vector<uint8_t>::iterator resultr_SW_3 = (std::min_element(sr_SW_3[y][x].begin(), sr_SW_3[y][x].end()));
+            std::vector<uint8_t>::iterator resultl_SW_4 = (std::min_element(sl_SW_4[y][x].begin(), sl_SW_4[y][x].end()));
+            std::vector<uint8_t>::iterator resultr_SW_4 = (std::min_element(sr_SW_4[y][x].begin(), sr_SW_4[y][x].end()));
+            std::vector<uint8_t>::iterator resultl_SW_8 = (std::min_element(sl_SW_8[y][x].begin(), sl_SW_8[y][x].end()));
+            std::vector<uint8_t>::iterator resultr_SW_8 = (std::min_element(sr_SW_8[y][x].begin(), sr_SW_8[y][x].end()));
+            //std::vector<uint8_t>::iterator resultr_simp = (std::min_element(vect_simp[y][x].begin(), vect_simp[y][x].end()));
+            pdl_HW  [dispL_HW  .step * y + x] = (unsigned char)(std::distance(sl_HW  [y][x].begin(), resultl_HW  ));
+            pdr_HW  [dispR_HW  .step * y + x] = (unsigned char)(std::distance(sr_HW  [y][x].begin(), resultr_HW  ));
+            pdl_SW_3[dispL_SW_3.step * y + x] = (unsigned char)(std::distance(sl_SW_3[y][x].begin(), resultl_SW_3));
+            pdr_SW_3[dispR_SW_3.step * y + x] = (unsigned char)(std::distance(sr_SW_3[y][x].begin(), resultr_SW_3));
+            pdl_SW_4[dispL_SW_4.step * y + x] = (unsigned char)(std::distance(sl_SW_4[y][x].begin(), resultl_SW_4));
+            pdr_SW_4[dispR_SW_4.step * y + x] = (unsigned char)(std::distance(sr_SW_4[y][x].begin(), resultr_SW_4));
+            pdl_SW_8[dispL_SW_8.step * y + x] = (unsigned char)(std::distance(sl_SW_8[y][x].begin(), resultl_SW_8));
+            pdr_SW_8[dispR_SW_8.step * y + x] = (unsigned char)(std::distance(sr_SW_8[y][x].begin(), resultr_SW_8));
+            //pdr_simp[dispR_simp.step * y + x] = (unsigned char)(std::distance(vect_simp[y][x].begin(), resultr_simp));
+        }
+    }
+
+    std::vector<cv::Mat> disp;
+    disp.push_back(dispL_HW);
+    disp.push_back(dispR_HW);
+    disp.push_back(dispL_SW_3);
+    disp.push_back(dispR_SW_3);
+    disp.push_back(dispL_SW_4);
+    disp.push_back(dispR_SW_4);
+    disp.push_back(dispL_SW_8);
+    disp.push_back(dispR_SW_8);
+    //disp.push_back(dispR_simp);
 
     return disp;
 }
@@ -675,7 +1331,7 @@ std::vector<cv::Mat> Stereovision::consistency_check(std::vector<cv::Mat> disp) 
 }
 
 
-void Stereovision::save_after_disp_est(std::vector<std::vector<std::vector<std::vector<uint8_t>>>> c, const std::string file_name_l, const std::string file_name_r,const uint8_t d_range) {
+void Stereovision::save_after_disp_est(std::vector<std::vector<std::vector<std::vector<uint8_t>>>> c, const std::string file_name_l, const std::string file_name_r, bool with_normalizing, const uint8_t d_range) {
     int h = c[0].size();
     int w = c[0][0].size();
     cv::Mat dispL(h, w, CV_8UC1);
@@ -692,6 +1348,20 @@ void Stereovision::save_after_disp_est(std::vector<std::vector<std::vector<std::
             pdr[dispR.step * y + x] = (unsigned char)(std::distance(c[1][y][x].begin(), resultr));
         }
     }
-    write(dispL, file_name_l, true, d_range);
-    write(dispR, file_name_r, true, d_range);
+
+    cv::Mat dispL_heat(h, w, CV_8UC3);
+    cv::Mat dispR_heat(h, w, CV_8UC3);
+
+    cv::applyColorMap(dispL * (256 / d_range), dispL_heat, cv::COLORMAP_JET);
+    cv::applyColorMap(dispR * (256 / d_range), dispR_heat, cv::COLORMAP_JET);
+
+    std::filesystem::path file_name_l_heat = file_name_l;
+    std::filesystem::path file_name_r_heat = file_name_r;
+    file_name_l_heat.replace_extension();
+    file_name_r_heat.replace_extension();
+
+    write(dispL, file_name_l, with_normalizing, d_range);
+    write(dispR, file_name_r, with_normalizing, d_range);
+    write(dispL_heat, file_name_l + "_heat.png", with_normalizing, d_range);
+    write(dispR_heat, file_name_r + "_heat.png", with_normalizing, d_range);
 }
